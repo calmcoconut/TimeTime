@@ -61,42 +61,47 @@ public class AppRepository {
     }
 
     // insert into database methods
-    void insertActivity(Activity activity) {
+    void insertActivity(final Activity activity) {
         AppDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
+                mActivityDao.insert(activity);
             }
         });
     }
 
-    void insertCategory(Category category) {
+    void insertCategory(final Category category) {
         AppDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
+                mCategoryDao.insert(category);
             }
         });
     }
 
-    void insertColor (Color color) {
+    void insertColor (final Color color) {
         AppDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
+                mColorDao.insert(color);
             }
         });
     }
 
-    void insertIcon (Icon icon) {
+    void insertIcon (final Icon icon) {
         AppDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
+                mIconDao.insert(icon);
             }
         });
     }
 
-    void insertTimeTracker (TimeTracker timeTracker) {
+    void insertTimeTracker (final TimeTracker timeTracker) {
         AppDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
+                mTimeTrackerDao.insert(timeTracker);
             }
         });
     }
