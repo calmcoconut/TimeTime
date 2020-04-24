@@ -25,7 +25,7 @@ public class AppRepository {
 
     AppRepository (Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
-        //DAOS
+        //DAOs
         mActivityDao = db.activityDao();
         mCategoryDao = db.categoryDao();
         mColorDao = db.colorDao();
