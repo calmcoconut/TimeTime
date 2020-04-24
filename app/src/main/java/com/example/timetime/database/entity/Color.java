@@ -1,16 +1,19 @@
 package com.example.timetime.database.entity;
 
-import androidx.room.*;
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 
 @Entity(tableName = "color_table")
-public class Colors {
+public class Color {
     // default colors from light red to deep orange
-    @PrimaryKey(autoGenerate = true)
-    private int colorID;
+    @PrimaryKey()
+    private String mColor;
     @ColumnInfo(name = "color")
-    private String color;
-
+    @NonNull
+    protected String color;
     public static void defaultColors() {
         final String[] mDefaultColors = {
                 "ff5252", "ff1744", "d50000"   // light reds
@@ -32,21 +35,16 @@ public class Colors {
         };
     }
 
+    public Color (@NonNull String color) {
+        this.mColor = color;
+    }
+
     public String getColor() {
-        return color;
+        return mColor;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setColor(String mColor) {
+        this.mColor = mColor;
     }
-
-    public int getColorID() {
-        return colorID;
-    }
-
-    public void setColorID(int colorID) {
-        this.colorID = colorID;
-    }
-
 }
 

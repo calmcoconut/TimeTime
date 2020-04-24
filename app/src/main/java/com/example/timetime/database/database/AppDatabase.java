@@ -5,9 +5,9 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import com.example.timetime.database.dao.ColorsDao;
-import com.example.timetime.database.entity.Colors;
+import com.example.timetime.database.entity.Color;
 
-@Database (entities = Colors.class, version = 1)
+@Database (entities = Color.class, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase INSTANCE;
     public abstract ColorsDao colorsDao();

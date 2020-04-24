@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import com.example.timetime.database.database.AppDatabase;
-import com.example.timetime.database.entity.Colors;
+import com.example.timetime.database.entity.Color;
 
 import java.util.List;
 
@@ -21,18 +21,18 @@ public class DatabaseInitializer {
         populateWithTestData(db);
     }
 
-    public static Colors addColor (final AppDatabase db, Colors color) {
+    public static Color addColor (final AppDatabase db, Color color) {
         db.colorsDao().insertAll(color);
         return color;
     }
 
     private static void populateWithTestData(AppDatabase db){
-        Colors color = new Colors();
+        Color color = new Color();
         color.setColor("FF4081");
         addColor(db,color);
 
-        List<Colors> colorsList = db.colorsDao().getAll();
-        Log.d(DatabaseInitializer.TAG,"Rows Count: " + colorsList.size());
+        List<Color> colorList = db.colorsDao().getAll();
+        Log.d(DatabaseInitializer.TAG,"Rows Count: " + colorList.size());
     }
 
     private static class PopulateDbAsync extends AsyncTask<Void,Void,Void> {
