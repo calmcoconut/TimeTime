@@ -27,7 +27,7 @@ public abstract class AppDatabase extends RoomDatabase {
     // Threads for async, background tasks
     private static final int NUMBER_OF_THREADS = 4;
     // executor to handle background, async tasks
-    static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
+    public static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
     // onOpen database call back
     private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
@@ -46,7 +46,7 @@ public abstract class AppDatabase extends RoomDatabase {
     };
 
     // singleton class to initiate the db when called
-    static AppDatabase getDatabase (final Context context) {
+    public static AppDatabase getDatabase(final Context context) {
         if (INSTANCE==null) {
             synchronized (AppDatabase.class) {
                 if (INSTANCE==null) {
