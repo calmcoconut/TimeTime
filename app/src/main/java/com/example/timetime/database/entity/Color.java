@@ -10,10 +10,9 @@ import androidx.room.PrimaryKey;
 public class Color {
     // default colors from light red to deep orange
     @PrimaryKey()
-    private String mColor;
-    @ColumnInfo(name = "color")
     @NonNull
-    protected String color;
+    @ColumnInfo(name = "color")
+    private String mColor;
     public static void defaultColors() {
         final String[] mDefaultColors = {
                 "ff5252", "ff1744", "d50000"   // light reds
@@ -43,8 +42,8 @@ public class Color {
         return mColor;
     }
 
-    public void setColor(String mColor) {
-        this.mColor = mColor;
+    public void setColor(String Color) {
+        this.mColor = Color;
     }
 }
 
