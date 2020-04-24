@@ -17,6 +17,7 @@ public abstract class AppDatabase extends RoomDatabase {
     // access our respective DAO objects
     public abstract ColorDao colorDao();
     public abstract IconDao iconDao();
+    public abstract
 
     // Instance of our database
     private static volatile AppDatabase INSTANCE;
