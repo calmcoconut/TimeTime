@@ -19,6 +19,15 @@ public interface TimeTrackerDao {
     @Query("DELETE FROM timeTracker_table")
     void deleteAll();
 
+    @Query("SELECT COUNT(id) FROM timeTracker_table")
+    int metaEntryCount();
+
+    @Query("SELECT MIN(timestamp_created) FROM timeTracker_table")
+    Long metaOldestEntry();
+
+    @Query("SELECT MAX(timestamp_created) FROM timeTracker_table")
+    Long metaNewestEntry();
+
     @Query("SELECT * FROM timeTracker_table")
     LiveData<List<TimeTracker>> getAllTimeTracker();
 }

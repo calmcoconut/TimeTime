@@ -4,8 +4,7 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import com.example.timetime.database.dao.ColorDao;
-import com.example.timetime.database.dao.IconDao;
+import com.example.timetime.database.dao.*;
 import com.example.timetime.database.entity.Color;
 import com.example.timetime.database.entity.Icon;
 
@@ -17,7 +16,9 @@ public abstract class AppDatabase extends RoomDatabase {
     // access our respective DAO objects
     public abstract ColorDao colorDao();
     public abstract IconDao iconDao();
-    public abstract
+    public abstract CategoryDao categoryDao();
+    public abstract ActivityDao activityDao();
+    public abstract TimeTrackerDao timeTrackerDao();
 
     // Instance of our database
     private static volatile AppDatabase INSTANCE;
@@ -25,6 +26,8 @@ public abstract class AppDatabase extends RoomDatabase {
     private static final int NUMBER_OF_THREADS = 4;
     // executor to handle background, async tasks
     static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
+
+    // onOpen database call back
 
     // singleton class to initiate the db when called
     static AppDatabase getDatabase (final Context context) {
