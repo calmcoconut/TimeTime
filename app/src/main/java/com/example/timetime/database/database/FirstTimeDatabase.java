@@ -2,6 +2,8 @@ package com.example.timetime.database.database;
 
 import com.example.timetime.database.entity.*;
 
+import java.util.ArrayList;
+
 public class FirstTimeDatabase {
 
     private static final Color[] mColors = new Color[43];
@@ -10,6 +12,7 @@ public class FirstTimeDatabase {
     private static Activity[] mActivities = new Activity[8];
     private static TimeTracker mTimeTracker;
 
+    private ArrayList<Integer> iconArray = new ArrayList<Integer>();
     private static final String[] mDefaultColors = {
               "ff5252", "ff1744", "d50000"   // light reds
             , "FF4081", "F50057", "C51162"  // reds
