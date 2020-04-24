@@ -18,4 +18,27 @@
     <item>FFAB40</item><item>FF9100</item><item>FF6D00</item>  // light oranges
     <item>FF6E40</item><item>FF3D00</item><item>DD2C00</item>  // deep oranges
 </string-array>
+
+    <string-array name="default_category_array">
+        <item>Health</item>
+        <item>Work</item>
+        <item>Transportation</item>
+        <item>Learning</item>
+        <item>Entertainment</item>
+        <item>Family</item>
+        <item>Hobby</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="default_activity_array">
+        <item>Sleep</item>
+        <item>Work</item>
+        <item>Transportation</item>
+        <item>Working out</item>
+        <item>Having fun</item>
+        <item>Family</item>
+        <item>Hobby</item>
+        <item>Studying</item>
+    </string-array>
+
 </resources>
