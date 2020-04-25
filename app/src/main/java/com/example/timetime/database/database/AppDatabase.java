@@ -12,7 +12,7 @@ import com.example.timetime.database.entity.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Activity.class, Category.class, Color.class, Icon.class, TimeTracker.class}
+@Database(entities = {Activity.class, Category.class, Color.class, Icon.class, TimeLog.class}
         ,version = 1,exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     // access our respective DAO objects
@@ -20,7 +20,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract IconDao iconDao();
     public abstract CategoryDao categoryDao();
     public abstract ActivityDao activityDao();
-    public abstract TimeTrackerDao timeTrackerDao();
+    public abstract TimeLogDao timeLogDao();
 
     // Instance of our database
     private static volatile AppDatabase INSTANCE;

@@ -5,8 +5,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "timeTracker_table")
-public class TimeTracker {
+@Entity(tableName = "timeLog_table")
+public class TimeLog {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name="id")
     @NonNull
@@ -33,9 +33,9 @@ public class TimeTracker {
     private String mCategory;
 
 
-    public TimeTracker(@NonNull Long id, @NonNull Long timestamp_created
-            ,@NonNull Long timestamp_modified, @NonNull String timestamp_human
-            ,@NonNull String activity, @NonNull String category) {
+    public TimeLog(@NonNull Long id, @NonNull Long timestamp_created
+            , @NonNull Long timestamp_modified, @NonNull String timestamp_human
+            , @NonNull String activity, @NonNull String category) {
         this.mId = id;
         this.mTimestamp_created = timestamp_created;
         this.mTimestamp_modified = timestamp_modified;

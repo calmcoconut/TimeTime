@@ -15,10 +15,10 @@ public class ViewModel extends AndroidViewModel {
 
     // cached data
     private LiveData<List<Activity>> mAllActivities;
-    private LiveData<List<Category>> mAllCatefories;
+    private LiveData<List<Category>> mAllCategories;
     private LiveData<List<Color>> mAllColors;
     private LiveData<List<Icon>> mAllIcons;
-    private LiveData<List<TimeTracker>> mAllTimeTrackers;
+    private LiveData<List<TimeLog>> mAllTimeLogs;
 
     public ViewModel(@NonNull Application application) {
         super(application);

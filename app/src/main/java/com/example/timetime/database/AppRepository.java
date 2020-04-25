@@ -14,14 +14,14 @@ public class AppRepository {
     private CategoryDao mCategoryDao;
     private ColorDao mColorDao;
     private IconDao mIconDao;
-    private TimeTrackerDao mTimeTrackerDao;
+    private TimeLogDao mTimeTrackerDao;
 
     // all cached data declarations
     private LiveData<List<Activity>> mAllActivities;
     private LiveData<List<Category>> mAllCategories;
     private LiveData<List<Color>> mAllColors;
     private LiveData<List<Icon>> mAllIcons;
-    private LiveData<List<TimeTracker>> mAllTimeTracker;
+    private LiveData<List<TimeLog>> mAllTimeTracker;
 
     AppRepository (Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
@@ -30,7 +30,7 @@ public class AppRepository {
         mCategoryDao = db.categoryDao();
         mColorDao = db.colorDao();
         mIconDao = db.iconDao();
-        mTimeTrackerDao = db.timeTrackerDao();
+        mTimeTrackerDao = db.timeLogDao();
         // DATA
         mAllActivities = mActivityDao.getAllActivity();
         mAllCategories = mCategoryDao.getAllCategories();
@@ -56,7 +56,7 @@ public class AppRepository {
         return mAllIcons;
     }
 
-    public LiveData<List<TimeTracker>> getAllTimeTracker() {
+    public LiveData<List<TimeLog>> getAllTimeTracker() {
         return mAllTimeTracker;
     }
 
@@ -97,7 +97,7 @@ public class AppRepository {
         });
     }
 
-    void insertTimeTracker (final TimeTracker timeTracker) {
+    void insertTimeTracker (final TimeLog timeTracker) {
         AppDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
