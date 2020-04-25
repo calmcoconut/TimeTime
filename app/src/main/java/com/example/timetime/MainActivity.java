@@ -2,7 +2,7 @@ package com.example.timetime;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.timetime.database.database.FirstTimeDatabase;
+import com.example.timetime.database.database.FirstDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -11,6 +11,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FirstTimeDatabase test = new FirstTimeDatabase();
+        FirstDatabase test = new FirstDatabase();
     }
 }

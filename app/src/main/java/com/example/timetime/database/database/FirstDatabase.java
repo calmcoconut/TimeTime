@@ -3,21 +3,18 @@ package com.example.timetime.database.database;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import com.example.timetime.R;
-import com.example.timetime.database.entity.Activity;
-import com.example.timetime.database.entity.Category;
-import com.example.timetime.database.entity.Color;
-import com.example.timetime.database.entity.Icon;
+import com.example.timetime.database.entity.*;
 
 import java.lang.reflect.Field;
 
-public class FirstTimeDatabase {
+public class FirstDatabase {
 
     private final Icon[] mIconArray;
     private final Color[] mColorArray;
     private final Category[] mCategoryArray;
     private final Activity[] mActivityArray;
 
-    public FirstTimeDatabase () {
+    public FirstDatabase() {
         this.mIconArray = createDefaultIconArray();
         this.mColorArray = createDefaultColorArray();
         this.mCategoryArray = createDefaultCategoryArray(mColorArray);
@@ -99,5 +96,7 @@ public class FirstTimeDatabase {
         }
         return activityArray;
     }
-
+    private TimeLog createDefaultTimeLog () {
+        
+    }
 }
