@@ -27,10 +27,9 @@ public class TimeLog {
     private String mCategory;
 
 
-    public TimeLog(@NonNull Long id, @NonNull Long timestamp_created
+    public TimeLog(@NonNull Long timestamp_created
             , @NonNull Long timestamp_modified
             , String activity, String category) {
-        this.mId = id;
         this.mTimestamp_created = timestamp_created;
         this.mTimestamp_modified = timestamp_modified;
         this.mActivity = activity;
