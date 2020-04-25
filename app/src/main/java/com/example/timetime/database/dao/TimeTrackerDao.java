@@ -1,14 +1,12 @@
 package com.example.timetime.database.dao;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
-import androidx.room.Query;
-import androidx.room.Update;
+import androidx.room.*;
 import com.example.timetime.database.entity.TimeTracker;
 
 import java.util.List;
 
+@Dao
 public interface TimeTrackerDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert (TimeTracker timeTracker);

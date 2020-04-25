@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<category-array name="default_colors_array">
+<string-array name="default_colors_array">
     <item>ff5252</item><item>ff1744</item><item>d50000</item>   // light reds
     <item>FF4081</item><item>F50057</item><item>C51162</item>  // reds
     <item>E040FB</item><item>D500F9</item><item>AA00FF</item>  // pinks
@@ -17,9 +17,9 @@
     <item>FFD740</item><item>FFC400</item><item>FFAB00</item>  // mellow oranges
     <item>FFAB40</item><item>FF9100</item><item>FF6D00</item>  // light oranges
     <item>FF6E40</item><item>FF3D00</item><item>DD2C00</item>  // deep oranges
-</category-array>
+</string-array>
 
-    <category-array name="default_category_array">
+    <string-array name="default_category_array">
         <item>Health</item>
         <item>Work</item>
         <item>Transportation</item>
@@ -28,9 +28,9 @@
         <item>Family</item>
         <item>Hobby</item>
         <item>Other</item>
-    </category-array>
+    </string-array>
 
-    <category-array name="default_activity_array">
+    <string-array name="default_activity_array">
         <item>Sleep</item>
         <item>Work</item>
         <item>Transportation</item>
@@ -39,6 +39,6 @@
         <item>Family</item>
         <item>Hobby</item>
         <item>Studying</item>
-    </category-array>
+    </string-array>
 
 </resources>

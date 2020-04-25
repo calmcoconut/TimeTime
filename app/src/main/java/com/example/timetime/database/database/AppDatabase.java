@@ -7,13 +7,13 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.example.timetime.database.dao.*;
-import com.example.timetime.database.entity.Color;
-import com.example.timetime.database.entity.Icon;
+import com.example.timetime.database.entity.*;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Color.class, Icon.class}, version = 1, exportSchema = false)
+@Database(entities = {Activity.class, Category.class, Color.class, Icon.class, TimeTracker.class}, version = 1,
+        exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     // access our respective DAO objects
     public abstract ColorDao colorDao();

@@ -1,13 +1,16 @@
 package com.example.timetime.database.database;
 
+import android.util.Log;
+import com.example.timetime.R;
 import com.example.timetime.database.entity.*;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class FirstTimeDatabase {
 
     private static final Color[] mColors = new Color[43];
-    private static Icon[] mIcons = new Icon[];
+    private static Icon[] mIcons;
     private static Category[] mCategories = new Category[8];
     private static Activity[] mActivities = new Activity[8];
     private static TimeTracker mTimeTracker;
@@ -42,7 +45,10 @@ public class FirstTimeDatabase {
     };
 
     public FirstTimeDatabase () {
-
+        Field[] fields= R.raw.class.getFields();
+        for(int count=0; count < fields.length; count++){
+            Log.i("Raw Asset: ", fields[count].getName());
+        }
     }
 
 }

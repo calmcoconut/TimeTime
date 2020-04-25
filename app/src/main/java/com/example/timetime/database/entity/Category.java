@@ -14,9 +14,9 @@ public class Category {
     private String mCategory;
     @ColumnInfo(name = "color")
     @NonNull
-    private Color mColor;
+    private String mColor;
 
-    public Category (@NotNull String category, @NotNull Color color) {
+    public Category (@NotNull String category, @NotNull String color) {
         this.mCategory = category;
         this.mColor=color;
     }
@@ -30,11 +30,11 @@ public class Category {
         this.mCategory = Category;
     }
 
-    public Color getColor() {
+    public String getColor() {
         return mColor;
     }
 
-    public void setColor(Color Color) {
+    public void setColor(String Color) {
         this.mColor = Color;
     }
 }

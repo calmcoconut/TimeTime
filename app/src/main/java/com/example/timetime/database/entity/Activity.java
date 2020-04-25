@@ -15,18 +15,18 @@ public class Activity {
 
     @ColumnInfo(name="category")
     @NonNull
-    private Category mCategory;
+    private String mCategory;
 
     @ColumnInfo(name = "icon")
     @NonNull
-    private Icon mIcon;
+    private String mIcon;
 
     @ColumnInfo(name = "color")
     @NonNull
-    private Color mColor;
+    private String mColor;
 
-    public Activity (@NotNull String activity, @NotNull Category category,
-                     @NotNull Icon icon, @NotNull Color color) {
+    public Activity (@NotNull String activity, @NotNull String category,
+                     @NotNull String icon, @NotNull String color) {
         this.mActivity = activity;
         this.mCategory = category;
         this.mIcon = icon;
@@ -43,29 +43,29 @@ public class Activity {
     }
 
     @NonNull
-    public Category getCategory() {
+    public String getCategory() {
         return mCategory;
     }
 
-    public void setCategory(@NonNull Category category) {
+    public void setCategory(@NonNull String category) {
         this.mCategory = category;
     }
 
     @NonNull
-    public Icon getIcon() {
+    public String getIcon() {
         return mIcon;
     }
 
-    public void setIcon(@NonNull Icon icon) {
+    public void setIcon(@NonNull String icon) {
         this.mIcon = icon;
     }
 
     @NonNull
-    public Color getColor() {
+    public String getColor() {
         return mColor;
     }
 
-    public void setColor(@NonNull Color color) {
+    public void setColor(@NonNull String color) {
         this.mColor = color;
     }
 }

@@ -26,22 +26,22 @@ public class TimeTracker {
 
     @ColumnInfo(name = "activity")
     @NonNull
-    private Activity mActivity;
+    private String mActivity;
 
     @ColumnInfo(name = "category")
     @NonNull
-    private Category mCategory;
+    private String mCategory;
 
 
-    public TimeTracker(@NonNull Long Id, @NonNull Long Timestamp_created
-            ,@NonNull Long Timestamp_modified, @NonNull String Timestamp_human
-            ,@NonNull Activity Activity, @NonNull Category Category) {
-        this.mId = Id;
-        this.mTimestamp_created = Timestamp_created;
-        this.mTimestamp_modified = Timestamp_modified;
-        this.mTimestamp_human = Timestamp_human;
-        this.mActivity = Activity;
-        this.mCategory = Category;
+    public TimeTracker(@NonNull Long id, @NonNull Long timestamp_created
+            ,@NonNull Long timestamp_modified, @NonNull String timestamp_human
+            ,@NonNull String activity, @NonNull String category) {
+        this.mId = id;
+        this.mTimestamp_created = timestamp_created;
+        this.mTimestamp_modified = timestamp_modified;
+        this.mTimestamp_human = timestamp_human;
+        this.mActivity = activity;
+        this.mCategory = category;
     }
 
     @NonNull
@@ -58,8 +58,8 @@ public class TimeTracker {
         return mTimestamp_created;
     }
 
-    public void setTimestamp_created(@NonNull Long Timestamp_created) {
-        this.mTimestamp_created = Timestamp_created;
+    public void setTimestamp_created(@NonNull Long timestamp_created) {
+        this.mTimestamp_created = timestamp_created;
     }
 
     @NonNull
@@ -67,8 +67,8 @@ public class TimeTracker {
         return mTimestamp_modified;
     }
 
-    public void setTimestamp_modified(@NonNull Long Timestamp_modified) {
-        this.mTimestamp_modified = Timestamp_modified;
+    public void setTimestamp_modified(@NonNull Long timestamp_modified) {
+        this.mTimestamp_modified = timestamp_modified;
     }
 
     @NonNull
@@ -76,25 +76,25 @@ public class TimeTracker {
         return mTimestamp_human;
     }
 
-    public void setTimestamp_human(@NonNull String Timestamp_human) {
-        this.mTimestamp_human = Timestamp_human;
+    public void setTimestamp_human(@NonNull String timestamp_human) {
+        this.mTimestamp_human = timestamp_human;
     }
 
     @NonNull
-    public Activity getActivity() {
+    public String getActivity() {
         return mActivity;
     }
 
-    public void setActivity(@NonNull Activity Activity) {
-        this.mActivity = Activity;
+    public void setActivity(@NonNull String activity) {
+        this.mActivity = activity;
     }
 
     @NonNull
-    public Category getCategory() {
+    public String getCategory() {
         return mCategory;
     }
 
-    public void setCategory(@NonNull Category Category) {
-        this.mCategory = Category;
+    public void setCategory(@NonNull String category) {
+        this.mCategory = category;
     }
 }
