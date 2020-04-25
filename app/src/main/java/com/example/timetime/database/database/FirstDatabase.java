@@ -3,10 +3,8 @@ package com.example.timetime.database.database;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import com.example.timetime.R;
-import com.example.timetime.database.entity.Activity;
-import com.example.timetime.database.entity.Category;
-import com.example.timetime.database.entity.Color;
-import com.example.timetime.database.entity.Icon;
+import com.example.timetime.database.TimeLogic;
+import com.example.timetime.database.entity.*;
 
 import java.lang.reflect.Field;
 
@@ -16,12 +14,14 @@ public class FirstDatabase {
     private final Color[] mColorArray;
     private final Category[] mCategoryArray;
     private final Activity[] mActivityArray;
+    private final TimeLog mTimeLog;
 
     public FirstDatabase() {
         this.mIconArray = createDefaultIconArray();
         this.mColorArray = createDefaultColorArray();
         this.mCategoryArray = createDefaultCategoryArray(mColorArray);
         this.mActivityArray = createDefaultActivityArray(mColorArray,mIconArray,mCategoryArray);
+        this.mTimeLog = createDefaultTimeLog();
     }
 
     // object arrays for populating the database
@@ -98,5 +98,10 @@ public class FirstDatabase {
             colorIdex += 3;
         }
         return activityArray;
+    }
+    private TimeLog createDefaultTimeLog () {
+        TimeLogic timeLogic = new TimeLogic();
+        Long timeStamp = timeLogic.getDateTimeForDatabaseStorage();
+        return new TimeLog(timeStamp,timeStamp);
     }
 }
