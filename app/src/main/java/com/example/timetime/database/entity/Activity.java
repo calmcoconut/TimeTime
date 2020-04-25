@@ -19,14 +19,14 @@ public class Activity {
 
     @ColumnInfo(name = "icon")
     @NonNull
-    private String mIcon;
+    private int mIcon;
 
     @ColumnInfo(name = "color")
     @NonNull
     private String mColor;
 
     public Activity (@NotNull String activity, @NotNull String category,
-                     @NotNull String icon, @NotNull String color) {
+                     @NotNull int icon, @NotNull String color) {
         this.mActivity = activity;
         this.mCategory = category;
         this.mIcon = icon;
@@ -52,11 +52,11 @@ public class Activity {
     }
 
     @NonNull
-    public String getIcon() {
+    public int getIcon() {
         return mIcon;
     }
 
-    public void setIcon(@NonNull String icon) {
+    public void setIcon(@NonNull int icon) {
         this.mIcon = icon;
     }
 

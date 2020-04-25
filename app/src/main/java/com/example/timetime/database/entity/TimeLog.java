@@ -20,26 +20,19 @@ public class TimeLog {
     @NonNull
     private Long mTimestamp_modified;
 
-    @ColumnInfo(name = "timestamp_human")
-    @NonNull
-    private String mTimestamp_human;
-
     @ColumnInfo(name = "activity")
-    @NonNull
     private String mActivity;
 
     @ColumnInfo(name = "category")
-    @NonNull
     private String mCategory;
 
 
     public TimeLog(@NonNull Long id, @NonNull Long timestamp_created
-            , @NonNull Long timestamp_modified, @NonNull String timestamp_human
-            , @NonNull String activity, @NonNull String category) {
+            , @NonNull Long timestamp_modified
+            , String activity, String category) {
         this.mId = id;
         this.mTimestamp_created = timestamp_created;
         this.mTimestamp_modified = timestamp_modified;
-        this.mTimestamp_human = timestamp_human;
         this.mActivity = activity;
         this.mCategory = category;
     }
@@ -69,15 +62,6 @@ public class TimeLog {
 
     public void setTimestamp_modified(@NonNull Long timestamp_modified) {
         this.mTimestamp_modified = timestamp_modified;
-    }
-
-    @NonNull
-    public String getTimestamp_human() {
-        return mTimestamp_human;
-    }
-
-    public void setTimestamp_human(@NonNull String timestamp_human) {
-        this.mTimestamp_human = timestamp_human;
     }
 
     @NonNull
