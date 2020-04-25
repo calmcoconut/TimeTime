@@ -36,7 +36,7 @@ public class AppRepository {
         mAllCategories = mCategoryDao.getAllCategories();
         mAllColors = mColorDao.getAllColors();
         mAllIcons = mIconDao.getAllIcons();
-        mAllTimeTracker = mTimeTrackerDao.getAllTimeTracker();
+        mAllTimeTracker = mTimeTrackerDao.getAllTimeLogs();
     }
 
     // getters

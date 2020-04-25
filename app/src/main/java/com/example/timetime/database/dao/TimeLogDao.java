@@ -27,5 +27,5 @@ public interface TimeLogDao {
     Long metaNewestEntry();
 
     @Query("SELECT * FROM timeLog_table")
-    LiveData<List<TimeLog>> getAllTimeTracker();
+    LiveData<List<TimeLog>> getAllTimeLogs();
 }
