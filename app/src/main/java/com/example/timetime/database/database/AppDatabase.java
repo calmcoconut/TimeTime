@@ -13,13 +13,17 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Database(entities = {Activity.class, Category.class, Color.class, Icon.class, TimeLog.class}
-        ,version = 1,exportSchema = false)
+        , version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     // access our respective DAO objects
     public abstract ColorDao colorDao();
+
     public abstract IconDao iconDao();
+
     public abstract CategoryDao categoryDao();
+
     public abstract ActivityDao activityDao();
+
     public abstract TimeLogDao timeLogDao();
 
     // Instance of our database
@@ -29,7 +33,7 @@ public abstract class AppDatabase extends RoomDatabase {
     // executor to handle background, async tasks
     public static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
-    // onOpen database call back
+    // onOpen database call back for testing
     private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
 
         // override onOpen for testing purposes
@@ -40,22 +44,68 @@ public abstract class AppDatabase extends RoomDatabase {
             databaseWriteExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
+                    resetAllDaos(true);
                 }
             });
         }
     };
 
+    public static void resetAllDaos(Boolean loadDefaultDatabase) {
+        UtilityClass.deleteAllDatabaseRows();
+        if (loadDefaultDatabase) {
+            UtilityClass.loadDefaultDatabase();
+        }
+    }
+
     // singleton class to initiate the db when called
     public static AppDatabase getDatabase(final Context context) {
-        if (INSTANCE==null) {
+        if (INSTANCE == null) {
             synchronized (AppDatabase.class) {
-                if (INSTANCE==null) {
+                if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class, "app_database")
+                            .addCallback(sRoomDatabaseCallback)
                             .build();
                 }
             }
         }
         return INSTANCE;
+    }
+
+    private static class UtilityClass {
+
+        public static void deleteAllDatabaseRows() {
+            ColorDao colorDao = INSTANCE.colorDao();
+            colorDao.deleteAll();
+            IconDao iconDao = INSTANCE.iconDao();
+            iconDao.deleteAll();
+            CategoryDao categoryDao = INSTANCE.categoryDao();
+            categoryDao.deleteAll();
+            ActivityDao activityDao = INSTANCE.activityDao();
+            activityDao.deleteAll();
+            TimeLogDao timeLogDao = INSTANCE.timeLogDao();
+            timeLogDao.deleteAll();
+        }
+        public static void loadDefaultDatabase() {
+            ColorDao colorDao = INSTANCE.colorDao();
+            IconDao iconDao = INSTANCE.iconDao();
+            CategoryDao categoryDao = INSTANCE.categoryDao();
+            ActivityDao activityDao = INSTANCE.activityDao();
+            TimeLogDao timeLogDao = INSTANCE.timeLogDao();
+            FirstDatabase firstDatabase = new FirstDatabase();
+            for (Color color : firstDatabase.getColorArray()) {
+                colorDao.insert(color);
+            }
+            for (Icon icon : firstDatabase.getIconArray()) {
+                iconDao.insert(icon);
+            }
+            for (Category category : firstDatabase.getCategoryArray()) {
+                categoryDao.insert(category);
+            }
+            for (Activity activity : firstDatabase.getActivityArray()) {
+                activityDao.insert(activity);
+            }
+            timeLogDao.insert(firstDatabase.getTimeLog());
+        }
     }
 }

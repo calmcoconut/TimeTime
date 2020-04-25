@@ -102,6 +102,26 @@ public class FirstDatabase {
     private TimeLog createDefaultTimeLog () {
         TimeLogic timeLogic = new TimeLogic();
         Long timeStamp = timeLogic.getDateTimeForDatabaseStorage();
-        return new TimeLog(timeStamp,timeStamp);
+        return new TimeLog(timeStamp,timeStamp,"myFirstActivity","myFirstCategory");
+    }
+
+    public TimeLog getTimeLog() {
+        return mTimeLog;
+    }
+
+    public Activity[] getActivityArray() {
+        return mActivityArray;
+    }
+
+    public Category[] getCategoryArray() {
+        return mCategoryArray;
+    }
+
+    public Color[] getColorArray() {
+        return mColorArray;
+    }
+
+    public Icon[] getIconArray() {
+        return mIconArray;
     }
 }

@@ -36,11 +36,6 @@ public class TimeLog {
         this.mCategory = category;
     }
 
-    public TimeLog (@NonNull Long timestamp_created, @NonNull Long timestamp_modified) {
-        this.mTimestamp_created = timestamp_created;
-        this.mTimestamp_modified = timestamp_modified;
-    }
-
     @NonNull
     public Long getId() {
         return mId;
