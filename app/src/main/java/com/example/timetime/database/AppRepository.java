@@ -14,7 +14,7 @@ public class AppRepository {
     private CategoryDao mCategoryDao;
     private ColorDao mColorDao;
     private IconDao mIconDao;
-    private TimeLogDao mTimeTrackerDao;
+    private TimeLogDao mTimeLogDao;
 
     // all cached data declarations
     private LiveData<List<Activity>> mAllActivities;
@@ -23,20 +23,20 @@ public class AppRepository {
     private LiveData<List<Icon>> mAllIcons;
     private LiveData<List<TimeLog>> mAllTimeTracker;
 
-    AppRepository (Application application) {
+    public AppRepository (Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         //DAOs
         mActivityDao = db.activityDao();
         mCategoryDao = db.categoryDao();
         mColorDao = db.colorDao();
         mIconDao = db.iconDao();
-        mTimeTrackerDao = db.timeLogDao();
+        mTimeLogDao = db.timeLogDao();
         // DATA
         mAllActivities = mActivityDao.getAllActivity();
         mAllCategories = mCategoryDao.getAllCategories();
         mAllColors = mColorDao.getAllColors();
         mAllIcons = mIconDao.getAllIcons();
-        mAllTimeTracker = mTimeTrackerDao.getAllTimeLogs();
+        mAllTimeTracker = mTimeLogDao.getAllTimeLogs();
     }
 
     // getters
@@ -56,12 +56,12 @@ public class AppRepository {
         return mAllIcons;
     }
 
-    public LiveData<List<TimeLog>> getAllTimeTracker() {
+    public LiveData<List<TimeLog>> getAllTimeLogs() {
         return mAllTimeTracker;
     }
 
     // insert into database methods
-    void insertActivity(final Activity activity) {
+    public void insertActivity(final Activity activity) {
         AppDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
@@ -70,7 +70,7 @@ public class AppRepository {
         });
     }
 
-    void insertCategory(final Category category) {
+    public void insertCategory(final Category category) {
         AppDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
@@ -79,7 +79,7 @@ public class AppRepository {
         });
     }
 
-    void insertColor (final Color color) {
+    public void insertColor (final Color color) {
         AppDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
@@ -88,7 +88,7 @@ public class AppRepository {
         });
     }
 
-    void insertIcon (final Icon icon) {
+    public void insertIcon (final Icon icon) {
         AppDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
@@ -97,11 +97,11 @@ public class AppRepository {
         });
     }
 
-    void insertTimeTracker (final TimeLog timeTracker) {
+    public void insertTimeLog(final TimeLog timeLog) {
         AppDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                mTimeTrackerDao.insert(timeTracker);
+                mTimeLogDao.insert(timeLog);
             }
         });
     }
