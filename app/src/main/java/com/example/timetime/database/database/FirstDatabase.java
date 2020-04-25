@@ -3,7 +3,10 @@ package com.example.timetime.database.database;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import com.example.timetime.R;
-import com.example.timetime.database.entity.*;
+import com.example.timetime.database.entity.Activity;
+import com.example.timetime.database.entity.Category;
+import com.example.timetime.database.entity.Color;
+import com.example.timetime.database.entity.Icon;
 
 import java.lang.reflect.Field;
 
@@ -95,8 +98,5 @@ public class FirstDatabase {
             colorIdex += 3;
         }
         return activityArray;
-    }
-    private TimeLog createDefaultTimeLog () {
-        
     }
 }
