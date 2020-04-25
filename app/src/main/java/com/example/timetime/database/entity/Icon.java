@@ -11,18 +11,18 @@ public class Icon {
     @PrimaryKey
     @ColumnInfo(name = "icon")
     @NonNull
-    private String mIcon;
+    private int mIcon;
 
-    public Icon (@NonNull String icon) {
+    public Icon (@NonNull int icon) {
         this.mIcon=icon;
     }
 
     @NonNull
-    public String getIcon() {
+    public int getIcon() {
         return this.mIcon;
     }
 
-    public void setIcon(@NonNull String Icon) {
+    public void setIcon(@NonNull int Icon) {
         this.mIcon = Icon;
     }
 }

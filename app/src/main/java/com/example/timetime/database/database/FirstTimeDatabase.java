@@ -2,20 +2,11 @@ package com.example.timetime.database.database;
 
 import android.util.Log;
 import com.example.timetime.R;
-import com.example.timetime.database.entity.*;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 
 public class FirstTimeDatabase {
 
-    private static final Color[] mColors = new Color[43];
-    private static Icon[] mIcons;
-    private static Category[] mCategories = new Category[8];
-    private static Activity[] mActivities = new Activity[8];
-    private static TimeTracker mTimeTracker;
-
-    private ArrayList<Integer> iconArray = new ArrayList<Integer>();
     private static final String[] mDefaultColors = {
               "ff5252", "ff1744", "d50000"   // light reds
             , "FF4081", "F50057", "C51162"  // reds
@@ -45,9 +36,21 @@ public class FirstTimeDatabase {
     };
 
     public FirstTimeDatabase () {
+        iconSetUp();
+    }
+
+    protected void iconSetUp () {
         Field[] fields= R.raw.class.getFields();
-        for(int count=0; count < fields.length; count++){
+        int[] iconPathArray = new int[fields.length];
+        for (int count=0; count < fields.length; count++){
             Log.i("Raw Asset: ", fields[count].getName());
+            int resourceID= 0;
+            try {
+                resourceID = fields[count].getInt(fields[count]);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            iconPathArray[count] = resourceID;
         }
     }
 

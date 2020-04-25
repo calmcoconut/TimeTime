@@ -12,8 +12,8 @@ import com.example.timetime.database.entity.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Activity.class, Category.class, Color.class, Icon.class, TimeTracker.class}, version = 1,
-        exportSchema = false)
+@Database(entities = {Activity.class, Category.class, Color.class, Icon.class, TimeTracker.class}
+        ,version = 1,exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     // access our respective DAO objects
     public abstract ColorDao colorDao();
