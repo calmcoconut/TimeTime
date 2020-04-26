@@ -47,6 +47,14 @@ public class TimeLogic {
         Integer result = r.intValue();
         return result;
     }
+
+    public Integer minutesBetweenTwoTimeStamps (Long databaseValueOlder, Long databaseValueNewer) {
+        final Instant databaseInstantOld = convertLongToInstant(databaseValueOlder);
+        final Instant databaseInstantNew = convertLongToInstant(databaseValueNewer);
+        Long r = ChronoUnit.MINUTES.between(databaseInstantOld,databaseInstantNew);
+        Integer result = r.intValue();
+        return result;
+    }
 //    public Long getTime();
 //    public String getTimeHuman();
 }
