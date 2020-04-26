@@ -43,3 +43,22 @@ public class TimeLogic {
 //    public Long getTime();
 //    public String getTimeHuman();
 }
+
+
+//    ZonedDateTime zonedDateTime = ZonedDateTime.now();
+//    String timeNow = zonedDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")).toString();
+//
+//    Instant fromZDT = zonedDateTime.toInstant().truncatedTo(ChronoUnit.MINUTES);  //.truncatedTo(ChronoUnit.MINUTES);
+//    String timeFromInstant = fromZDT.atZone(ZoneId.of("Asia/Tokyo")).format(DateTimeFormatter.ofPattern("yyyy-MM" +
+//            "-dd HH:mm")).toString();
+//
+//    Long longFromInstant = (Long) fromZDT.getEpochSecond();
+//    Instant instantFromLong = Instant.ofEpochSecond(longFromInstant);
+//    String timeFromInstant2 = instantFromLong.atZone(ZoneId.of("America/Chicago")).format(DateTimeFormatter.ofPattern(
+//            "yyyy-MM" +
+//                    "-dd HH:mm:ss:nn")).toString();
+//
+//        System.out.println("TESTING DATE AND TIME current date and time " + timeNow);
+//                System.out.println("TESTING DATE AND TIME current date and time " + timeFromInstant);
+//                System.out.println("TESTING DATE AND TIME current date and time " + longFromInstant);
+//                System.out.println("TESTING DATE AND TIME current date and time final " + timeFromInstant2);
