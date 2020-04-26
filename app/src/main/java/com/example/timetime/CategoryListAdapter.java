@@ -18,7 +18,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
         private CategoryViewHolder(View itemView) {
             super(itemView);
-            categoryItemView = itemView.findViewById(R.id.textViewRecycler);
+            categoryItemView = itemView.findViewById(R.id.time_card_recycler_title);
         }
     }
     private final LayoutInflater mInflator;

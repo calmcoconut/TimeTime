@@ -1,12 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical"
-    android:layout_width="wrap_content" android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textViewRecycler"
-        android:layout_width="match_parent"
+
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/timeCard_recycler"
+    android:layout_margin="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/lora"
-        android:text="preview" />
+        android:orientation="vertical"
+        android:padding="16dp"
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/time_card_recycler_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lora"
+            android:text="activity here" />
+
+        <TextView
+            android:id="@+id/time_card_recycler_time_span"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="time spent here"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="?android:attr/textColorSecondary" />
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

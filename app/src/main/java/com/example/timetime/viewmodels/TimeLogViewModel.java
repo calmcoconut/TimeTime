@@ -1,4 +1,4 @@
-package com.example.timetime.viewModels;
+package com.example.timetime.viewmodels;
 
 import android.app.Application;
 import androidx.annotation.NonNull;

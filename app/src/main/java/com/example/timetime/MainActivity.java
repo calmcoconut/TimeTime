@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.timetime.database.entity.Category;
-import com.example.timetime.viewModels.CategoryViewModel;
+import com.example.timetime.viewmodels.CategoryViewModel;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
