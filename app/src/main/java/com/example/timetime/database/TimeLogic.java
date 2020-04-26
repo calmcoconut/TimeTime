@@ -40,6 +40,13 @@ public class TimeLogic {
         return Instant.ofEpochSecond(longInstant);
     }
 
+    public Integer minutesSinceLastTimeStamp (Long databaseValue) {
+        final Instant databaseInstant = convertLongToInstant(databaseValue);
+        final Instant nowInstant = Instant.now().truncatedTo(ChronoUnit.MINUTES);
+        Long r = ChronoUnit.MINUTES.between(databaseInstant,nowInstant);
+        Integer result = r.intValue();
+        return result;
+    }
 //    public Long getTime();
 //    public String getTimeHuman();
 }
