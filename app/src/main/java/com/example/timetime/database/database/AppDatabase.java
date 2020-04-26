@@ -1,6 +1,7 @@
 package com.example.timetime.database.database;
 
 import android.content.Context;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -35,27 +36,17 @@ public abstract class AppDatabase extends RoomDatabase {
 
     // onOpen database call back for testing
     private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
-
         // override onOpen for testing purposes
         // TODO remove testing before release
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
-            databaseWriteExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    resetAllDaos(true);
-                }
+            databaseWriteExecutor.execute(() -> {
+                UtilityClass.deleteAllDatabaseRows();
+                UtilityClass.loadDefaultDatabase();
             });
         }
     };
-
-    public static void resetAllDaos(Boolean loadDefaultDatabase) {
-        UtilityClass.deleteAllDatabaseRows();
-        if (loadDefaultDatabase) {
-            UtilityClass.loadDefaultDatabase();
-        }
-    }
 
     // singleton class to initiate the db when called
     public static AppDatabase getDatabase(final Context context) {
@@ -95,6 +86,7 @@ public abstract class AppDatabase extends RoomDatabase {
             FirstDatabase firstDatabase = new FirstDatabase();
             for (Color color : firstDatabase.getColorArray()) {
                 colorDao.insert(color);
+                Log.d("TESTING DATABASE ", "ADDED DATABASE");
             }
             for (Icon icon : firstDatabase.getIconArray()) {
                 iconDao.insert(icon);
