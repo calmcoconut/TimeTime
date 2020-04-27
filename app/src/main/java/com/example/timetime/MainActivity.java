@@ -2,15 +2,7 @@ package com.example.timetime;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.example.timetime.database.entity.Category;
 import com.example.timetime.viewmodels.CategoryViewModel;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private CategoryViewModel mCategoryViewModel;
@@ -20,6 +12,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
+        /*
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         final CategoryListAdapter adapter = new CategoryListAdapter(this);
         recyclerView.setAdapter(adapter);
@@ -32,5 +27,6 @@ public class MainActivity extends AppCompatActivity {
                 adapter.setCategories(categories);
             }
         });
+         */
     }
 }
