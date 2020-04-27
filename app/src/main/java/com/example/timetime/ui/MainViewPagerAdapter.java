@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.example.timetime.R;
+import com.example.timetime.ui.activitysummary.ActivityFragment;
+import com.example.timetime.ui.categorysummary.CategoryFragment;
 import com.example.timetime.ui.homesummary.HomeFragment;
 
 import java.util.ArrayList;
@@ -32,18 +34,16 @@ public class MainViewPagerAdapter extends FragmentStatePagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        return HomeFragment.newInstance();
-//        switch (position) {
-//            case position == 0:
-//                return new HomeFragment();
-////            case position == 1:
-////                CategorySummaryFragment();
-////                break;
-////            case position == 2:
-////                ActivitySummaryFragment();
-////                break;
-//            default:
-//                break;
+        switch (position) {
+            case 0:
+                return HomeFragment.newInstance();
+            case 1:
+                return CategoryFragment.newInstance();
+            case 2:
+                return ActivityFragment.newInstance();
+            default:
+                return HomeFragment.newInstance();
+        }
     }
 
     @Nullable
