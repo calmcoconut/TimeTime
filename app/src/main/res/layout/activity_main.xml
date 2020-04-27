@@ -25,6 +25,14 @@
 
             <!-- collapsing items for appbar -->
 
+            <ImageView
+                android:id="@+id/home_image"
+                android:layout_width="wrap_content"
+                android:layout_height="125dp"
+                android:src="@drawable/image_late_night"
+                android:scaleType="centerCrop"/>
+                
+
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
         <com.google.android.material.tabs.TabLayout
