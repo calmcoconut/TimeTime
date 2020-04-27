@@ -1,4 +1,4 @@
-package com.example.timetime;
+package com.example.timetime.ui.homesummary;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.timetime.R;
 import com.example.timetime.database.entity.Category;
 
 import java.util.List;
