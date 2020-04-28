@@ -14,21 +14,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.timetime.R;
 import com.example.timetime.database.entity.TimeLog;
 import com.example.timetime.viewmodels.TimeLogViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
 public class HomeFragment extends Fragment {
 
     private TimeLogViewModel mTimeLogViewModel;
+    private FloatingActionButton fab;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         final View rootView = inflater.inflate(R.layout.recycler_view, container, false);
-//        TextView textView = rootView.findViewById(R.id.time_card_recycler_title);
-//        textView.setText("THIS IS HOME FRAGMENT");
         startRecyclerForTimeLogs(rootView);
+
         return rootView;
     }
 

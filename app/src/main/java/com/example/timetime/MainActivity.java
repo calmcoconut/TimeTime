@@ -1,11 +1,15 @@
 package com.example.timetime;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 import com.example.timetime.ui.MainViewPagerAdapter;
+import com.example.timetime.ui.homesummary.TimeLogActivity;
 import com.example.timetime.viewmodels.CategoryViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
@@ -15,10 +19,13 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private TabLayout tabLayout;
 
+    FloatingActionButton fab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         viewPager = findViewById(R.id.view_pager);
         tabLayout = findViewById(R.id.tab_layout);
 
@@ -28,21 +35,13 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager.setAdapter(adapter);
 
-
-
-        /*
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        final CategoryListAdapter adapter = new CategoryListAdapter(this);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        mCategoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
-        mCategoryViewModel.getAllCategories().observe(this, new Observer<List<Category>>() {
+        fab = findViewById(R.id.main_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onChanged(@Nullable final List<Category> categories) {
-                adapter.setCategories(categories);
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, TimeLogActivity.class);
+                startActivity(intent);
             }
         });
-         */
     }
 }

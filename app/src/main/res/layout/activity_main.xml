@@ -31,8 +31,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="125dp"
                 android:src="@drawable/image_late_night"
-                android:scaleType="centerCrop"/>
-                
+                android:scaleType="centerCrop" />
+
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -46,9 +46,21 @@
             app:tabTextColor="@color/colorUIVariant"
             app:tabSelectedTextColor="@android:color/white"
             app:tabIndicatorColor="@android:color/white"
-            app:tabMode="scrollable"
-            />
+            app:tabMode="scrollable" />
 
     </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/main_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        android:layout_gravity="bottom|right"
+        android:backgroundTint="@color/colorPrimary"
+        android:src="@drawable/ic_add_black_24dp"
+        android:elevation="8dp"
+        app:tint="@color/white"
+        app:fabSize="normal"
+        android:visibility="visible" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
