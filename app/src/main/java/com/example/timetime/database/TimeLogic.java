@@ -13,6 +13,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class TimeLogic {
+    public static final int MINUTES_DAY = 1440;
+    public static final int MINUTES_HOUR = 60;
 
 
     public Long getDateTimeForDatabaseStorage () {
@@ -55,6 +57,25 @@ public class TimeLogic {
         Long r = ChronoUnit.MINUTES.between(databaseInstantOld,databaseInstantNew);
         Integer result = r.intValue();
         return result;
+    }
+
+    public String formatedTimeBetweenTwoTimeSpans (Long databaseValueOlder, Long databaseValueNewer) {
+        String days = "";
+        String hours = "";
+        String minutes = "";
+        Integer totalMinutes = minutesBetweenTwoTimeStamps(databaseValueOlder,databaseValueNewer);
+        if ((totalMinutes / 1440) > 0) {
+            days = String.valueOf(totalMinutes/MINUTES_DAY) + "D ";
+            totalMinutes = totalMinutes % MINUTES_DAY;
+        }
+        if ((totalMinutes / MINUTES_HOUR) > 0) {
+            hours = String.valueOf(totalMinutes/MINUTES_HOUR) + "h ";
+            totalMinutes = totalMinutes % MINUTES_HOUR;
+        }
+        if (totalMinutes > 0) {
+            minutes = String.valueOf(totalMinutes) + "min";
+        }
+        return days + hours + minutes;
     }
 
     public ZoneId getZoneId () {

@@ -61,10 +61,13 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
         final Long timestampModified = timeLog.getTimestamp_modified();
         final TimeLogic timeLogic = TimeLogic.newInstance();
         final String timeSpan = timeLogic.getLocalTimeFromDatabase(timeStampCreated) + " - " +
-        timeLogic.getLocalTimeFromDatabase(timestampModified);
+            timeLogic.getLocalTimeFromDatabase(timestampModified);
+
+        String timeSpentValue = timeLogic.formatedTimeBetweenTwoTimeSpans(timeStampCreated,timestampModified);
 
         holder.timeLogCardTitle.setText(activityString);
         holder.timeLogCardTimeSpan.setText(timeSpan);
+        holder.timeLogCardTimeSpent.setText(timeSpentValue);
     }
 
     void setTimeLogs(List<TimeLog> timeLogs) {
