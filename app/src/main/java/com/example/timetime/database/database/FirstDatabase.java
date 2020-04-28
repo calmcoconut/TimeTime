@@ -10,6 +10,9 @@ import java.lang.reflect.Field;
 
 public class FirstDatabase {
 
+    private final static Long DAY_SECONDS = 86400L;
+    private final static Long HOUR_SECONDS = 3600L;
+    private final static Long MINUTE_SECONDS = 60L;
     private final Icon[] mIconArray;
     private final Color[] mColorArray;
     private final Category[] mCategoryArray;
@@ -21,7 +24,8 @@ public class FirstDatabase {
         this.mColorArray = createDefaultColorArray();
         this.mCategoryArray = createDefaultCategoryArray(mColorArray);
         this.mActivityArray = createDefaultActivityArray(mColorArray,mIconArray,mCategoryArray);
-        this.mTimeLog = createDefaultTimeLog();
+        // TODO REMOVE TEST
+        this.mTimeLog = createTestingTimeLog() ;
     }
 
     // object arrays for populating the database
@@ -100,9 +104,19 @@ public class FirstDatabase {
         return activityArray;
     }
     private TimeLog createDefaultTimeLog () {
-        TimeLogic timeLogic = new TimeLogic();
+        TimeLogic timeLogic = TimeLogic.newInstance();
         Long timeStamp = timeLogic.getDateTimeForDatabaseStorage();
         return new TimeLog(timeStamp,timeStamp,"myFirstActivity","myFirstCategory");
+    }
+
+    private TimeLog createTestingTimeLog () {
+        TimeLogic timeLogic = TimeLogic.newInstance();
+        Long timeStamp = timeLogic.getDateTimeForDatabaseStorage(); // now
+
+        Long previousTimeStamp = timeStamp - 90060L; // one day, one hour, one minute ago
+        timeStamp = timeStamp - 3600 - HOUR_SECONDS - (HOUR_SECONDS/2); // make now() - 01:30
+
+        return new TimeLog(previousTimeStamp,timeStamp,"TESTING","other");
     }
 
     public TimeLog getTimeLog() {

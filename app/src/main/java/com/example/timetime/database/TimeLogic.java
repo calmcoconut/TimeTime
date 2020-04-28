@@ -55,8 +55,10 @@ public class TimeLogic {
         Integer result = r.intValue();
         return result;
     }
-//    public Long getTime();
-//    public String getTimeHuman();
+
+    public static TimeLogic newInstance () {
+        return new TimeLogic();
+    }
 }
 
 

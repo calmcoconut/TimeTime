@@ -25,6 +25,7 @@
 
             <!-- collapsing items for appbar -->
 
+
             <ImageView
                 android:id="@+id/home_image"
                 android:layout_width="wrap_content"

@@ -34,7 +34,7 @@ public class HomeFragment extends Fragment {
 
     private void startRecyclerForTimeLogs(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_root);
-        final CategoryListAdapter adapter = new CategoryListAdapter(getContext());
+        final TimeLogListAdapter adapter = new TimeLogListAdapter(getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

@@ -1,4 +1,4 @@
-package com.example.timetime.ui.homesummary;
+package com.example.timetime.ui.activitysummary;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,12 +12,12 @@ import com.example.timetime.database.entity.Category;
 
 import java.util.List;
 
-public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.CategoryViewHolder> {
+public class ActivityListAdapter extends RecyclerView.Adapter<ActivityListAdapter.ActivityViewHolder> {
 
-    class CategoryViewHolder extends RecyclerView.ViewHolder {
+    class ActivityViewHolder extends RecyclerView.ViewHolder {
         private final TextView categoryItemView;
 
-        private CategoryViewHolder(View itemView) {
+        private ActivityViewHolder(View itemView) {
             super(itemView);
             categoryItemView = itemView.findViewById(R.id.time_card_recycler_title);
         }
@@ -25,19 +25,19 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     private final LayoutInflater mInflator;
     private List<Category> mCategories ; // cached copy of categories
 
-    CategoryListAdapter (Context context) {
+    ActivityListAdapter(Context context) {
         mInflator = LayoutInflater.from(context);
     }
 
     @NonNull
     @Override
-    public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ActivityViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = mInflator.inflate(R.layout.recyclerview_item,parent,false);
-        return new CategoryViewHolder(itemView);
+        return new ActivityViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ActivityViewHolder holder, int position) {
         if (mCategories != null) {
             Category current = mCategories.get(position);
             holder.categoryItemView.setText(current.getCategory());
