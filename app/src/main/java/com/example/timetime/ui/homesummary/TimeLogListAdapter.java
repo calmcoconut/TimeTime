@@ -15,11 +15,11 @@ import java.util.List;
 public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.TimeLogViewHolder> {
 
     class TimeLogViewHolder extends RecyclerView.ViewHolder {
-        private final TextView categoryItemView;
+        private final TextView timeLogViewItem;
 
         private TimeLogViewHolder(View itemView) {
             super(itemView);
-            categoryItemView = itemView.findViewById(R.id.time_card_recycler_title);
+            timeLogViewItem = itemView.findViewById(R.id.time_card_recycler_title);
         }
     }
     private final LayoutInflater mInflator;
@@ -40,10 +40,10 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
     public void onBindViewHolder(@NonNull TimeLogViewHolder holder, int position) {
         if (mCategories != null) {
             Category current = mCategories.get(position);
-            holder.categoryItemView.setText(current.getCategory());
+            holder.timeLogViewItem.setText(current.getCategory());
         }
         else {
-            holder.categoryItemView.setText("There is an error or no items");
+            holder.timeLogViewItem.setText("There is an error or no items");
         }
     }
 
