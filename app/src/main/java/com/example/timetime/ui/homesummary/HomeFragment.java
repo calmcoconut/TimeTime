@@ -12,14 +12,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.timetime.R;
-import com.example.timetime.database.entity.Category;
-import com.example.timetime.viewmodels.CategoryViewModel;
+import com.example.timetime.database.entity.TimeLog;
+import com.example.timetime.viewmodels.TimeLogViewModel;
 
 import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-    private CategoryViewModel mCategoryViewModel;
+    private TimeLogViewModel mTimeLogViewModel;
 
     @Nullable
     @Override
@@ -38,12 +38,12 @@ public class HomeFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mCategoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
-        mCategoryViewModel.getAllCategories().observe(getViewLifecycleOwner(),
-                new Observer<List<Category>>() {
+        mTimeLogViewModel = new ViewModelProvider(this).get(TimeLogViewModel.class);
+        mTimeLogViewModel.getAllTimeLogs().observe(getViewLifecycleOwner(),
+                new Observer<List<TimeLog>>() {
                     @Override
-                    public void onChanged(@Nullable final List<Category> categories) {
-                        adapter.setCategories(categories);
+                    public void onChanged(@Nullable final List<TimeLog> timeLogs) {
+                        adapter.setTimeLogs(timeLogs);
                     }
                 });
     }

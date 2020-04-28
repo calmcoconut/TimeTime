@@ -8,22 +8,29 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.timetime.R;
-import com.example.timetime.database.entity.Category;
+import com.example.timetime.database.TimeLogic;
+import com.example.timetime.database.entity.TimeLog;
 
 import java.util.List;
 
 public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.TimeLogViewHolder> {
 
     class TimeLogViewHolder extends RecyclerView.ViewHolder {
-        private final TextView timeLogViewItem;
+
+        private final TextView timeLogCardTitle;
+        private final TextView timeLogCardTimeSpent;
+        private final TextView timeLogCardTimeSpan;
 
         private TimeLogViewHolder(View itemView) {
             super(itemView);
-            timeLogViewItem = itemView.findViewById(R.id.time_card_recycler_title);
+            timeLogCardTitle = itemView.findViewById(R.id.time_card_log_title);
+            timeLogCardTimeSpent = itemView.findViewById(R.id.time_card_log_time_spent);
+            timeLogCardTimeSpan = itemView.findViewById(R.id.time_card_log_time_span);
         }
     }
+
     private final LayoutInflater mInflator;
-    private List<Category> mCategories ; // cached copy of categories
+    private List<TimeLog> mTimeLog; // cached copy of categories
 
     TimeLogListAdapter(Context context) {
         mInflator = LayoutInflater.from(context);
@@ -32,30 +39,43 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
     @NonNull
     @Override
     public TimeLogViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = mInflator.inflate(R.layout.recyclerview_item,parent,false);
+        View itemView = mInflator.inflate(R.layout.time_log_item,parent,false);
         return new TimeLogViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull TimeLogViewHolder holder, int position) {
-        if (mCategories != null) {
-            Category current = mCategories.get(position);
-            holder.timeLogViewItem.setText(current.getCategory());
+        if (mTimeLog != null) {
+            TimeLog current = mTimeLog.get(position);
+//            holder.timeLogCardTitle.setText(current.getActivity());
+            setTimeLogCardToCurrent(holder,current);
         }
         else {
-            holder.timeLogViewItem.setText("There is an error or no items");
+            holder.timeLogCardTitle.setText("There is an error or no items");
         }
     }
 
-    void setCategories(List<Category> categories) {
-        mCategories = categories;
+    private void setTimeLogCardToCurrent (TimeLogViewHolder holder, TimeLog timeLog) {
+        final String activityString = timeLog.getActivity();
+        final Long timeStampCreated = timeLog.getTimestamp_created();
+        final Long timestampModified = timeLog.getTimestamp_modified();
+        final TimeLogic timeLogic = TimeLogic.newInstance();
+        final String timeSpan = timeLogic.getLocalTimeFromDatabase(timeStampCreated) + " - " +
+        timeLogic.getLocalTimeFromDatabase(timestampModified);
+
+        holder.timeLogCardTitle.setText(activityString);
+        holder.timeLogCardTimeSpan.setText(timeSpan);
+    }
+
+    void setTimeLogs(List<TimeLog> timeLogs) {
+        mTimeLog = timeLogs;
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        if (mCategories != null){
-            return mCategories.size();
+        if (mTimeLog != null){
+            return mTimeLog.size();
         }
         else return 0;
     }

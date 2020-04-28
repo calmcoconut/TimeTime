@@ -9,6 +9,7 @@ package com.example.timetime.database;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class TimeLogic {
@@ -54,6 +55,16 @@ public class TimeLogic {
         Long r = ChronoUnit.MINUTES.between(databaseInstantOld,databaseInstantNew);
         Integer result = r.intValue();
         return result;
+    }
+
+    public ZoneId getZoneId () {
+        return ZoneId.systemDefault();
+    }
+
+    public String getLocalTimeFromDatabase (Long dataBaseValue) {
+        Instant instant = convertLongToInstant(dataBaseValue);
+        ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(instant,getZoneId());
+        return (String) zonedDateTime.format(DateTimeFormatter.ofPattern("HH:mm a"));
     }
 
     public static TimeLogic newInstance () {
