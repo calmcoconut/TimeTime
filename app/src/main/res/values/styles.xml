@@ -35,4 +35,15 @@
         <item name="colorOnError">@color/white</item>
 
     </style>
+    <style name="activity_log_button">
+        <item name="android:layout_width">104dp</item>
+        <item name="android:layout_height">104dp</item>
+        <item name="android:elevation">0dp</item>
+        <item name="cornerRadius">8dp</item>
+        <item name="icon">@drawable/ic_add_black_24dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">0dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:backgroundTint">@color/colorVariant</item>
+    </style>
 </resources>
