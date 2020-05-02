@@ -2,6 +2,7 @@ package com.example.timetime.database.database;
 
 import android.util.Log;
 import androidx.annotation.NonNull;
+import com.example.timetime.R;
 import com.example.timetime.database.TimeLogic;
 import com.example.timetime.database.entity.*;
 
@@ -29,7 +30,7 @@ public class FirstDatabase {
 
     // object arrays for populating the database
     private Icon[] createDefaultIconArray () {
-        Field[] iconDrawables = com.example.timetime.R.raw.class.getFields();
+        Field[] iconDrawables = R.drawable.class.getFields();
         Icon[] iconArrayIntAddresses = new Icon[iconDrawables.length];
 
         for (int count=0; count < iconDrawables.length; count++){

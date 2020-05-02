@@ -115,12 +115,12 @@ public class TimeLogActivity extends AppCompatActivity {
                 materialButton.setLayoutParams(params);
                 materialButton.setVisibility(View.VISIBLE);
                 materialButton.setBackgroundColor(Color.parseColor(("#"+activity.getColor())));
-//                Drawable icon = mGridContext.getResources().getDrawable(activity.getIcon());
-                Drawable icon = getDrawable(R.drawable.ic_adb_black_24dp);
+                Drawable icon = getDrawable(R.drawable.icon_camera);
                 materialButton.setCompoundDrawablesRelativeWithIntrinsicBounds(null, icon,null,
                         null);
-                materialButton.setTag(activity);
+                icon.setTint(Color.WHITE);
 
+                materialButton.setTag(activity);
                 return materialButton;
             }
         });
