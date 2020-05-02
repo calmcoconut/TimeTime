@@ -45,7 +45,6 @@ public class TimeLogActivity extends AppCompatActivity {
         timeLogic = TimeLogic.newInstance();
         mActivityViewModel = new ViewModelProvider(this).get(ActivityViewModel.class);
         mActivityViewModel.getLastSinceModified().observe(this, new Observer<Long>() {
-            // TODO FIGURE OUT WHY IS THIS RETURNING NULL???
             @Override
             public void onChanged(@Nullable final Long latestModifiedTime) {
                 if (latestModifiedTime == null) {
@@ -84,7 +83,6 @@ public class TimeLogActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Activity> activities) {
                 mActivities = activities;
-                int x = 0;
                 if (mActivities == null) {
                     setUpActivityButtons();
                 }
@@ -92,22 +90,17 @@ public class TimeLogActivity extends AppCompatActivity {
                     int id = 1;
                     for (Activity activity : activities) {
                         Log.d("current activity button", activity.getActivity() + activity.getIcon());
-                        MaterialButton materialButton = setUpMaterialActivityButton(id, activity,x);
+                        MaterialButton materialButton = setUpMaterialActivityButton(id, activity);
                         mGridLayout.addView(materialButton);
-                        x++;
-
                         id++;
                     }
                 }
             }
 
-            private MaterialButton setUpMaterialActivityButton (int id, Activity activity, int x) {
+            private MaterialButton setUpMaterialActivityButton (int id, Activity activity) {
                 MaterialButton dummyButton = findViewById(R.id.activity_time_log_button_1);
                 ViewGroup.LayoutParams params = dummyButton.getLayoutParams();
-//                MaterialButton materialButton =
-//                        (MaterialButton) getLayoutInflater().inflate(R.layout.material_activity_button,null);
-//
-//                materialButton.setLayoutParams(MaterialButton.layo);
+
                 MaterialButton materialButton = new MaterialButton(new ContextThemeWrapper(mGridContext,
                         R.style.activity_log_button),
                         null,
@@ -118,6 +111,7 @@ public class TimeLogActivity extends AppCompatActivity {
                 materialButton.setVisibility(View.VISIBLE);
                 materialButton.setBackgroundColor(Color.parseColor(("#"+activity.getColor())));
 
+                // TODO check icons for compatibility
                 Drawable icon = getDrawable(activity.getIcon());
                 materialButton.setCompoundDrawablesRelativeWithIntrinsicBounds(null, icon,null,
                         null);
