@@ -7,6 +7,8 @@ import com.example.timetime.database.TimeLogic;
 import com.example.timetime.database.entity.*;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FirstDatabase {
 
@@ -30,16 +32,23 @@ public class FirstDatabase {
 
     // object arrays for populating the database
     private Icon[] createDefaultIconArray () {
-        Field[] iconDrawables = R.drawable.class.getFields();
-        Icon[] iconArrayIntAddresses = new Icon[iconDrawables.length];
+        List<Field> iconDrawables = new ArrayList<>();
+        Field[] iconHolder = R.drawable.class.getFields();
+        for (int i=0; i < iconHolder.length;i++) {
+            Field field = iconHolder[i];
+            if (field.getName().startsWith("icon")) {
+                iconDrawables.add(field);
+            }
+        }
+        Icon[] iconArrayIntAddresses = new Icon[iconDrawables.size()];
 
-        for (int count=0; count < iconDrawables.length; count++){
-            Log.i("Raw Asset: ", iconDrawables[count].getName());
+        for (int count=0; count < iconDrawables.size(); count++){
+            Log.i("Raw Asset: ", iconDrawables.get(count).getName());
             int resourceID;
             try {
-                resourceID = iconDrawables[count].getInt(null);
+                resourceID = iconDrawables.get(count).getInt(null);
                 Icon icon = new Icon(resourceID);
-                Log.d("Raw asset ", String.valueOf(resourceID));
+                Log.d("Raw asset ", iconDrawables.get(count).getName().toString() + String.valueOf(resourceID));
                 iconArrayIntAddresses[count] = icon;
             }
             catch (IllegalAccessException e) { // this may cause problems
@@ -99,7 +108,7 @@ public class FirstDatabase {
         int iconIndex = 0;
         for (int count=0; count<defaultActivities.length; count++) {
             activityArray[count] = new Activity(defaultActivities[count],categoryArray[count].getCategory()
-                    ,iconArray[iconIndex].getIcon(),colorArray[colorIdex].getColor());
+                    ,iconArray[count].getIcon(),colorArray[count].getColor());
             iconIndex += 1;
             colorIdex += 3;
         }

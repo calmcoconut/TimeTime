@@ -84,22 +84,24 @@ public class TimeLogActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Activity> activities) {
                 mActivities = activities;
+                int x = 0;
                 if (mActivities == null) {
                     setUpActivityButtons();
                 }
                 else {
                     int id = 1;
                     for (Activity activity : activities) {
-                        Log.d("current activity button", activity.getActivity());
-                        MaterialButton materialButton = setUpMaterialActivityButton(id, activity);
-                          mGridLayout.addView(materialButton);
+                        Log.d("current activity button", activity.getActivity() + activity.getIcon());
+                        MaterialButton materialButton = setUpMaterialActivityButton(id, activity,x);
+                        mGridLayout.addView(materialButton);
+                        x++;
 
                         id++;
                     }
                 }
             }
 
-            private MaterialButton setUpMaterialActivityButton (int id, Activity activity) {
+            private MaterialButton setUpMaterialActivityButton (int id, Activity activity, int x) {
                 MaterialButton dummyButton = findViewById(R.id.activity_time_log_button_1);
                 ViewGroup.LayoutParams params = dummyButton.getLayoutParams();
 //                MaterialButton materialButton =
@@ -115,7 +117,8 @@ public class TimeLogActivity extends AppCompatActivity {
                 materialButton.setLayoutParams(params);
                 materialButton.setVisibility(View.VISIBLE);
                 materialButton.setBackgroundColor(Color.parseColor(("#"+activity.getColor())));
-                Drawable icon = getDrawable(R.drawable.icon_camera);
+
+                Drawable icon = getDrawable(activity.getIcon());
                 materialButton.setCompoundDrawablesRelativeWithIntrinsicBounds(null, icon,null,
                         null);
                 icon.setTint(Color.WHITE);
