@@ -9,6 +9,7 @@ import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
+import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -21,6 +22,7 @@ import com.example.timetime.database.entity.Activity;
 import com.example.timetime.viewmodels.ActivityViewModel;
 import com.google.android.material.button.MaterialButton;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,12 +35,14 @@ public class TimeLogActivity extends AppCompatActivity {
     private LiveData<Long> mLatestModifiedActivity;
     private TimeLogic timeLogic;
     private String mToolBarTime;
+    private List<MaterialButton> materialActivityButtons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_log);
 
+        materialActivityButtons = new ArrayList<>();
         mGridLayout = findViewById(R.id.activity_time_log_gridView);
         mGridContext = mGridLayout.getContext();
 
@@ -92,6 +96,7 @@ public class TimeLogActivity extends AppCompatActivity {
                         Log.d("current activity button", activity.getActivity() + activity.getIcon());
                         MaterialButton materialButton = setUpMaterialActivityButton(id, activity);
                         mGridLayout.addView(materialButton);
+                        materialActivityButtons.add(materialButton);
                         id++;
                     }
                 }
@@ -118,6 +123,16 @@ public class TimeLogActivity extends AppCompatActivity {
                 icon.setTint(Color.WHITE);
 
                 materialButton.setTag(activity);
+
+                materialButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(mGridContext,"this is test, button count: " + materialActivityButtons.size(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
                 return materialButton;
             }
         });
