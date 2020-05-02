@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,6 +113,8 @@ public class TimeLogActivity extends AppCompatActivity {
                         R.style.activity_log_button);
                 materialButton.setId(View.generateViewId());
                 materialButton.setText(activity.getActivity());
+                materialButton.setAutoSizeTextTypeUniformWithConfiguration(1,12,1,TypedValue.COMPLEX_UNIT_DIP);
+
                 materialButton.setLayoutParams(params);
                 materialButton.setVisibility(View.VISIBLE);
                 materialButton.setBackgroundColor(Color.parseColor(("#"+activity.getColor())));
