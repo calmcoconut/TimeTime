@@ -42,7 +42,7 @@
         <item name="cornerRadius">8dp</item>
         <item name="iconGravity">start</item>
         <item name="android:layout_margin">8dp</item>
-        <item name="android:backgroundTint">@color/colorVariant</item>
+
         <item name="android:textSize">8sp</item>
         <item name="layout_constraintEnd_toEndOf">parent</item>
         <item name="layout_constraintEnd_toStartOf">parent</item>

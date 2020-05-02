@@ -2,7 +2,6 @@ package com.example.timetime.database.database;
 
 import android.util.Log;
 import androidx.annotation.NonNull;
-import com.example.timetime.R;
 import com.example.timetime.database.TimeLogic;
 import com.example.timetime.database.entity.*;
 
@@ -30,21 +29,23 @@ public class FirstDatabase {
 
     // object arrays for populating the database
     private Icon[] createDefaultIconArray () {
-        Field[] fields= R.raw.class.getFields();
-        Icon[] iconArray = new Icon[fields.length];
-        for (int count=0; count < fields.length; count++){
-            Log.i("Raw Asset: ", fields[count].getName());
+        Field[] iconDrawables = com.example.timetime.R.raw.class.getFields();
+        Icon[] iconArrayIntAddresses = new Icon[iconDrawables.length];
+
+        for (int count=0; count < iconDrawables.length; count++){
+            Log.i("Raw Asset: ", iconDrawables[count].getName());
             int resourceID;
             try {
-                resourceID = fields[count].getInt(fields[count]);
+                resourceID = iconDrawables[count].getInt(null);
                 Icon icon = new Icon(resourceID);
-                iconArray[count] = icon;
+                Log.d("Raw asset ", String.valueOf(resourceID));
+                iconArrayIntAddresses[count] = icon;
             }
             catch (IllegalAccessException e) { // this may cause problems
                 e.printStackTrace();
             }
         }
-        return iconArray;
+        return iconArrayIntAddresses;
     }
     private Color[] createDefaultColorArray () {
         final String[] defaultColors = {

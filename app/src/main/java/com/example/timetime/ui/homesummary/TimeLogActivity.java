@@ -1,6 +1,8 @@
 package com.example.timetime.ui.homesummary;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -112,6 +114,12 @@ public class TimeLogActivity extends AppCompatActivity {
                 materialButton.setText(activity.getActivity());
                 materialButton.setLayoutParams(params);
                 materialButton.setVisibility(View.VISIBLE);
+                materialButton.setBackgroundColor(Color.parseColor(("#"+activity.getColor())));
+//                Drawable icon = mGridContext.getResources().getDrawable(activity.getIcon());
+                Drawable icon = getDrawable(R.drawable.ic_adb_black_24dp);
+                materialButton.setCompoundDrawablesRelativeWithIntrinsicBounds(null, icon,null,
+                        null);
+                materialButton.setTag(activity);
 
                 return materialButton;
             }
