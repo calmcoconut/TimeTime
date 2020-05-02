@@ -13,7 +13,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
-    private CategoryViewModel mCategoryViewModel;
+    private CategoryViewModel mCategoryViewModel; // used to make sure data updates when db changes
     private MainViewPagerAdapter adapter;
 
     private ViewPager viewPager;

@@ -15,17 +15,23 @@ public class ActivityViewModel extends AndroidViewModel {
 
     // cached data
     private LiveData<List<Activity>> mAllActivities;
+    private LiveData<Long> mLatestTimeStamp;
 
     public ActivityViewModel(@NonNull Application application) {
         super(application);
         mAppRepository = new AppRepository(application);
         mAllActivities = mAppRepository.getAllActivities();
+        mLatestTimeStamp = mAppRepository.getMostRecentModified();
     }
     public LiveData<List<Activity>> getAllActivities() {
         return mAllActivities;
+    }
+    public LiveData<Long> getLastSinceModified() {
+        return mLatestTimeStamp;
     }
 
     public void insert(Activity activity) {
         mAppRepository.insertActivity(activity);
     }
+
 }

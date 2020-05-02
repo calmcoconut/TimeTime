@@ -6,6 +6,8 @@ package com.example.timetime.database;
 * Make as thread safe as possible
  */
 
+import androidx.annotation.NonNull;
+
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -27,7 +29,7 @@ public class TimeLogic {
         return ZonedDateTime.ofInstant(timeNow, ZoneId.systemDefault());
     }
 
-    public Instant getCurrentInstant () {
+    public Instant getCurrentInstant() {
         // Truncated to Minutes
         return Instant.now().truncatedTo(ChronoUnit.MINUTES);
     }
@@ -59,11 +61,30 @@ public class TimeLogic {
         return result;
     }
 
-    public String formatedTimeBetweenTwoTimeSpans (Long databaseValueOlder, Long databaseValueNewer) {
+    public String formattedTimeBetweenTwoTimeSpans(Long databaseValueOlder, Long databaseValueNewer) {
         String days = "";
         String hours = "";
         String minutes = "";
         Integer totalMinutes = minutesBetweenTwoTimeStamps(databaseValueOlder,databaseValueNewer);
+        if ((totalMinutes / 1440) > 0) {
+            days = String.valueOf(totalMinutes/MINUTES_DAY) + "D ";
+            totalMinutes = totalMinutes % MINUTES_DAY;
+        }
+        if ((totalMinutes / MINUTES_HOUR) > 0) {
+            hours = String.valueOf(totalMinutes/MINUTES_HOUR) + "h ";
+            totalMinutes = totalMinutes % MINUTES_HOUR;
+        }
+        if (totalMinutes > 0) {
+            minutes = String.valueOf(totalMinutes) + "min";
+        }
+        return days + hours + minutes;
+    }
+
+    public String formattedTimeBetweenDbValueAndNow(@NonNull Long databaseValue) {
+        String days = "";
+        String hours = "";
+        String minutes = "";
+        Integer totalMinutes = minutesBetweenTwoTimeStamps(databaseValue,convertInstantToLong(getCurrentInstant()));
         if ((totalMinutes / 1440) > 0) {
             days = String.valueOf(totalMinutes/MINUTES_DAY) + "D ";
             totalMinutes = totalMinutes % MINUTES_DAY;
@@ -92,22 +113,3 @@ public class TimeLogic {
         return new TimeLogic();
     }
 }
-
-
-//    ZonedDateTime zonedDateTime = ZonedDateTime.now();
-//    String timeNow = zonedDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")).toString();
-//
-//    Instant fromZDT = zonedDateTime.toInstant().truncatedTo(ChronoUnit.MINUTES);  //.truncatedTo(ChronoUnit.MINUTES);
-//    String timeFromInstant = fromZDT.atZone(ZoneId.of("Asia/Tokyo")).format(DateTimeFormatter.ofPattern("yyyy-MM" +
-//            "-dd HH:mm")).toString();
-//
-//    Long longFromInstant = (Long) fromZDT.getEpochSecond();
-//    Instant instantFromLong = Instant.ofEpochSecond(longFromInstant);
-//    String timeFromInstant2 = instantFromLong.atZone(ZoneId.of("America/Chicago")).format(DateTimeFormatter.ofPattern(
-//            "yyyy-MM" +
-//                    "-dd HH:mm:ss:nn")).toString();
-//
-//        System.out.println("TESTING DATE AND TIME current date and time " + timeNow);
-//                System.out.println("TESTING DATE AND TIME current date and time " + timeFromInstant);
-//                System.out.println("TESTING DATE AND TIME current date and time " + longFromInstant);
-//                System.out.println("TESTING DATE AND TIME current date and time final " + timeFromInstant2);

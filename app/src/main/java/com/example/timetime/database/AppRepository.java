@@ -22,6 +22,7 @@ public class AppRepository {
     private LiveData<List<Color>> mAllColors;
     private LiveData<List<Icon>> mAllIcons;
     private LiveData<List<TimeLog>> mAllTimeTracker;
+    private LiveData<Long> mMostRecentModified;
 
     public AppRepository (Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
@@ -37,6 +38,7 @@ public class AppRepository {
         mAllColors = mColorDao.getAllColors();
         mAllIcons = mIconDao.getAllIcons();
         mAllTimeTracker = mTimeLogDao.getAllTimeLogs();
+        mMostRecentModified = mTimeLogDao.metaNewestEntry();
     }
 
     // getters
@@ -58,6 +60,10 @@ public class AppRepository {
 
     public LiveData<List<TimeLog>> getAllTimeLogs() {
         return mAllTimeTracker;
+    }
+
+    public LiveData<Long> getMostRecentModified() {
+        return mMostRecentModified;
     }
 
     // insert into database methods

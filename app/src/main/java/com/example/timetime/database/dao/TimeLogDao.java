@@ -21,10 +21,10 @@ public interface TimeLogDao {
     int metaEntryCount();
 
     @Query("SELECT MIN(timestamp_created) FROM timeLog_table")
-    Long metaOldestEntry();
+    LiveData<Long> metaOldestEntry();
 
-    @Query("SELECT MAX(timestamp_created) FROM timeLog_table")
-    Long metaNewestEntry();
+    @Query("SELECT MAX(timestamp_modified) as newest FROM timeLog_table")
+    LiveData<Long> metaNewestEntry();
 
     @Query("SELECT * FROM timeLog_table")
     LiveData<List<TimeLog>> getAllTimeLogs();
