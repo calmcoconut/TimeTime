@@ -24,7 +24,7 @@
         android:paddingBottom="24dp"
         android:orientation="vertical">
 
-
+<!--
         <TextClock
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
             android:layout_gravity="center"
             android:format12Hour="EEEE, dd MMM yyyy" />
 
-        <!--comm-->
+        -comm-->
 
     </LinearLayout>
 
@@ -54,7 +54,7 @@
             android:minWidth="320dp"
             android:layout_height="match_parent"
             android:columnCount="3"
-            android:rowCount="4"
+            android:rowCount="10"
             android:alignmentMode="alignBounds"
             android:columnOrderPreserved="false"
             android:layout_gravity="center_horizontal"
@@ -62,10 +62,14 @@
             app:layout_constraintTop_toBottomOf="@id/linear_layout_parent"
             app:layout_constraintBottom_toBottomOf="parent">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/activity_time_log_button_1"
-                style="@style/activity_log_button" />
+
+
 
         </GridLayout>
     </ScrollView>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/activity_time_log_button_1"
+        style="@style/activity_log_button"
+        android:visibility="gone"
+        />
 </LinearLayout>

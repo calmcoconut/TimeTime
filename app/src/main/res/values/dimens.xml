@@ -4,4 +4,7 @@
     <dimen name="elevation_default_top_app_bar">4dp</dimen>
     <dimen name="card_root_margin">8dp</dimen>
 
+    <dimen name="activity_button_square_dimens">104dp</dimen>
+    <dimen name="activity_button_elevation">0dp</dimen>
+
 </resources>

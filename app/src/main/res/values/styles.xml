@@ -35,15 +35,23 @@
         <item name="colorOnError">@color/white</item>
 
     </style>
-    <style name="activity_log_button">
+    <style name="activity_log_button" parent="Widget.MaterialComponents.Button">
         <item name="android:layout_width">104dp</item>
         <item name="android:layout_height">104dp</item>
         <item name="android:elevation">0dp</item>
         <item name="cornerRadius">8dp</item>
-        <item name="icon">@drawable/ic_add_black_24dp</item>
-        <item name="iconGravity">textStart</item>
-        <item name="iconPadding">0dp</item>
+        <item name="iconGravity">start</item>
         <item name="android:layout_margin">8dp</item>
         <item name="android:backgroundTint">@color/colorVariant</item>
+        <item name="android:textSize">8sp</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="layout_constraintEnd_toStartOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="android:drawableTop">@drawable/ic_add_black_24dp</item>
+        <item name="android:drawableTint">@color/white</item>
+        <item name="android:paddingTop">26dp</item>
+        <item name="android:text">TEST</item>
+        <item name="android:gravity">center|top</item>
+        <item name="android:textAlignment">gravity</item>
     </style>
 </resources>
