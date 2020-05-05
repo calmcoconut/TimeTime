@@ -1,16 +1,9 @@
 package com.example.timetime.ui.homesummary;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.ContextThemeWrapper;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.GridLayout;
-import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -57,17 +50,16 @@ public class TimeLogActivity extends AppCompatActivity {
                 if (latestModifiedTime == null) {
                     mToolBarTime = "not working";
                 } else {
-                    Log.d("LATEST TIMESTAMP",timeLogic.formattedTimeBetweenDbValueAndNow(latestModifiedTime));
+                    Log.d("LATEST TIMESTAMP", timeLogic.formattedTimeBetweenDbValueAndNow(latestModifiedTime));
                     mToolBarTime = timeLogic.formattedTimeBetweenDbValueAndNow(latestModifiedTime);
                     setUpToolBar(false);
                 }
             }
-            });
+        });
 
         setUpToolBar(true);
         setUpActivityButtons();
     }
-
 
 
     private void setUpToolBar(boolean initialSetUp) {
@@ -79,8 +71,7 @@ public class TimeLogActivity extends AppCompatActivity {
         }
         if (mToolBarTime == null) {
             setTitle(mToolBarTime);
-        }
-        else {
+        } else {
             setTitle("Last Log: " + mToolBarTime.toString().toUpperCase());
         }
     }
@@ -93,65 +84,17 @@ public class TimeLogActivity extends AppCompatActivity {
                 mActivities = activities;
                 if (mActivities == null) {
                     setUpActivityButtons();
-                }
-                else {
-                    int id = 1;
+                } else {
                     for (Activity activity : activities) {
                         Log.d("current activity button", activity.getActivity() + activity.getIcon());
 //                        MaterialButton materialButton = setUpMaterialActivityButton(id, activity);
-                        MaterialButton materialButton = new ActivityMaterialButton(activity,TEMPLATE_BUTTON,
+                        MaterialButton materialButton = new ActivityMaterialButton(activity, TEMPLATE_BUTTON,
                                 mGridContext).getActivityMaterialButton();
                         mGridLayout.addView(materialButton);
                         materialActivityButtons.add(materialButton);
-                        id++;
                     }
                 }
             }
-
-            private MaterialButton setUpMaterialActivityButton (int id, Activity activity) {
-                MaterialButton dummyButton = findViewById(R.id.activity_time_log_button_1);
-                ViewGroup.LayoutParams params = dummyButton.getLayoutParams();
-
-                MaterialButton materialButton = new MaterialButton(new ContextThemeWrapper(mGridContext,
-                        R.style.activity_log_button),
-                        null,
-                        R.style.activity_log_button);
-
-                materialButton.setId(View.generateViewId());
-                materialButton.setText(activity.getActivity());
-                materialButton.setAutoSizeTextTypeUniformWithConfiguration(1,12,1,TypedValue.COMPLEX_UNIT_DIP);
-
-                materialButton.setLayoutParams(params);
-                materialButton.setVisibility(View.VISIBLE);
-                materialButton.setBackgroundColor(Color.parseColor(("#"+activity.getColor())));
-                Drawable icon = getDrawable(activity.getIcon());
-                materialButton.setCompoundDrawablesRelativeWithIntrinsicBounds(null, icon,null,
-                        null);
-                icon.setTint(Color.WHITE);
-
-                materialButton.setTag(activity);
-
-                materialButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        activityButtonTapSubmitTimeLog(v);
-                    }
-                });
-                return materialButton;
-            }
         });
     }
-
-    public void activityButtonTapSubmitTimeLog (View view) {
-        Activity activityObject = (Activity) view.getTag();
-        if (view.getTag() == null) {
-            Toast.makeText(mGridContext,"There has been an error.",
-                    Toast.LENGTH_SHORT).show();
-        }
-        else {
-            Toast.makeText(mGridContext,"this is test, button count: " + activityObject.getActivity(),
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
-
 }
