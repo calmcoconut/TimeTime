@@ -24,7 +24,7 @@
         android:paddingBottom="24dp"
         android:orientation="vertical">
 
-<!--
+
         <TextClock
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
             android:layout_gravity="center"
             android:format12Hour="EEEE, dd MMM yyyy" />
 
-        -comm-->
+        <!--comm-->
 
     </LinearLayout>
 

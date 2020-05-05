@@ -28,12 +28,13 @@ import java.util.List;
 import java.util.Objects;
 
 public class TimeLogActivity extends AppCompatActivity {
+    private MaterialButton TEMPLATE_BUTTON;
     Toolbar toolbar;
     private GridLayout mGridLayout;
     private Context mGridContext;
     private ActivityViewModel mActivityViewModel;
     private List<Activity> mActivities;
-    private LiveData<Long> mLatestModifiedActivity;
+    private LiveData<Long> currentTime;
     private TimeLogic timeLogic;
     private String mToolBarTime;
     private List<MaterialButton> materialActivityButtons;
@@ -46,6 +47,7 @@ public class TimeLogActivity extends AppCompatActivity {
         materialActivityButtons = new ArrayList<>();
         mGridLayout = findViewById(R.id.activity_time_log_gridView);
         mGridContext = mGridLayout.getContext();
+        TEMPLATE_BUTTON = findViewById(R.id.activity_time_log_button_1);
 
         timeLogic = TimeLogic.newInstance();
         mActivityViewModel = new ViewModelProvider(this).get(ActivityViewModel.class);
@@ -61,6 +63,7 @@ public class TimeLogActivity extends AppCompatActivity {
                 }
             }
             });
+
         setUpToolBar(true);
         setUpActivityButtons();
     }
@@ -95,7 +98,9 @@ public class TimeLogActivity extends AppCompatActivity {
                     int id = 1;
                     for (Activity activity : activities) {
                         Log.d("current activity button", activity.getActivity() + activity.getIcon());
-                        MaterialButton materialButton = setUpMaterialActivityButton(id, activity);
+//                        MaterialButton materialButton = setUpMaterialActivityButton(id, activity);
+                        MaterialButton materialButton = new ActivityMaterialButton(activity,TEMPLATE_BUTTON,
+                                mGridContext).getActivityMaterialButton();
                         mGridLayout.addView(materialButton);
                         materialActivityButtons.add(materialButton);
                         id++;
@@ -111,6 +116,7 @@ public class TimeLogActivity extends AppCompatActivity {
                         R.style.activity_log_button),
                         null,
                         R.style.activity_log_button);
+
                 materialButton.setId(View.generateViewId());
                 materialButton.setText(activity.getActivity());
                 materialButton.setAutoSizeTextTypeUniformWithConfiguration(1,12,1,TypedValue.COMPLEX_UNIT_DIP);
@@ -118,8 +124,6 @@ public class TimeLogActivity extends AppCompatActivity {
                 materialButton.setLayoutParams(params);
                 materialButton.setVisibility(View.VISIBLE);
                 materialButton.setBackgroundColor(Color.parseColor(("#"+activity.getColor())));
-
-                // TODO check icons for compatibility
                 Drawable icon = getDrawable(activity.getIcon());
                 materialButton.setCompoundDrawablesRelativeWithIntrinsicBounds(null, icon,null,
                         null);
@@ -130,15 +134,24 @@ public class TimeLogActivity extends AppCompatActivity {
                 materialButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(mGridContext,"this is test, button count: " + materialActivityButtons.size(),
-                                Toast.LENGTH_SHORT).show();
+                        activityButtonTapSubmitTimeLog(v);
                     }
                 });
-
-
                 return materialButton;
             }
         });
+    }
+
+    public void activityButtonTapSubmitTimeLog (View view) {
+        Activity activityObject = (Activity) view.getTag();
+        if (view.getTag() == null) {
+            Toast.makeText(mGridContext,"There has been an error.",
+                    Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(mGridContext,"this is test, button count: " + activityObject.getActivity(),
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

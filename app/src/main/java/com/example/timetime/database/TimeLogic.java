@@ -109,7 +109,9 @@ public class TimeLogic {
         return (String) zonedDateTime.format(DateTimeFormatter.ofPattern("HH:mm a"));
     }
 
+
     public static TimeLogic newInstance () {
         return new TimeLogic();
     }
+
 }
