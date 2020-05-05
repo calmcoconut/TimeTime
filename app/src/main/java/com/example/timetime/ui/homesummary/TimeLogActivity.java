@@ -89,7 +89,7 @@ public class TimeLogActivity extends AppCompatActivity {
                         Log.d("current activity button", activity.getActivity() + activity.getIcon());
 //                        MaterialButton materialButton = setUpMaterialActivityButton(id, activity);
                         MaterialButton materialButton = new ActivityMaterialButton(activity, TEMPLATE_BUTTON,
-                                mGridContext).getActivityMaterialButton();
+                                mGridContext, mActivityViewModel, mToolBarTime).getActivityMaterialButton();
                         mGridLayout.addView(materialButton);
                         materialActivityButtons.add(materialButton);
                     }

@@ -96,6 +96,9 @@ public class TimeLogic {
         if (totalMinutes > 0) {
             minutes = String.valueOf(totalMinutes) + "min";
         }
+        else if (totalMinutes == 0) {
+            minutes = "0MIN";
+        }
         return days + hours + minutes;
     }
 

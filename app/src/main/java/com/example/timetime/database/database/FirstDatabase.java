@@ -104,13 +104,13 @@ public class FirstDatabase {
         };
         Activity[] activityArray = new Activity[defaultActivities.length];
 
-        int colorIdex = 0;
+        int colorIndex = 0;
         int iconIndex = 0;
         for (int count=0; count<defaultActivities.length; count++) {
             activityArray[count] = new Activity(defaultActivities[count],categoryArray[count].getCategory()
                     ,iconArray[count].getIcon(),colorArray[count].getColor());
             iconIndex += 1;
-            colorIdex += 3;
+            colorIndex += 3;
         }
         return activityArray;
     }

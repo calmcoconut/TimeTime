@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import com.example.timetime.database.AppRepository;
 import com.example.timetime.database.entity.Activity;
+import com.example.timetime.database.entity.TimeLog;
 
 import java.util.List;
 
@@ -32,6 +33,10 @@ public class ActivityViewModel extends AndroidViewModel {
 
     public void insert(Activity activity) {
         mAppRepository.insertActivity(activity);
+    }
+
+    public void insertTimeLog(TimeLog timeLog) {
+        mAppRepository.insertTimeLog(timeLog);
     }
 
 }
