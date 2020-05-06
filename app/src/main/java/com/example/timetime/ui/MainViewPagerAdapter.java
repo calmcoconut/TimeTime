@@ -38,9 +38,9 @@ public class MainViewPagerAdapter extends FragmentStatePagerAdapter {
             case 0:
                 return HomeFragment.newInstance();
             case 1:
-                return CategoryFragment.newInstance();
-            case 2:
                 return ActivityFragment.newInstance();
+            case 2:
+                return CategoryFragment.newInstance();
             default:
                 return HomeFragment.newInstance();
         }

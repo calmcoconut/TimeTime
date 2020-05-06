@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment {
         return new HomeFragment();
     }
 
-    // empty constructor
+    // empty constructor needed for fragment
     public HomeFragment() {
     }
 }

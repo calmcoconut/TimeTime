@@ -17,15 +17,20 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
 
     class TimeLogViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView timeLogCardTitle;
-        private final TextView timeLogCardTimeSpent;
-        private final TextView timeLogCardTimeSpan;
+        private final TextView mTimeLogCardTitle;
+        private final TextView mTimeLogCardTimeSpent;
+        private final TextView mTimeLogCardTimeSpan;
+        private final TextView mTimeLogCardDateHeading;
+        private final View mTimeLogDivider;
 
         private TimeLogViewHolder(View itemView) {
             super(itemView);
-            timeLogCardTitle = itemView.findViewById(R.id.time_card_log_title);
-            timeLogCardTimeSpent = itemView.findViewById(R.id.time_card_log_time_spent);
-            timeLogCardTimeSpan = itemView.findViewById(R.id.time_card_log_time_span);
+
+            mTimeLogCardTitle = itemView.findViewById(R.id.time_card_log_title);
+            mTimeLogCardTimeSpent = itemView.findViewById(R.id.time_card_log_time_spent);
+            mTimeLogCardTimeSpan = itemView.findViewById(R.id.time_card_log_time_span);
+            mTimeLogCardDateHeading = itemView.findViewById(R.id.time_log_day_heading);
+            mTimeLogDivider = itemView.findViewById(R.id.time_log_divider);
         }
     }
 
@@ -39,7 +44,7 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
     @NonNull
     @Override
     public TimeLogViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = mInflator.inflate(R.layout.time_log_item,parent,false);
+        View itemView = mInflator.inflate(R.layout.time_log_item, parent, false);
         return new TimeLogViewHolder(itemView);
     }
 
@@ -48,26 +53,25 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
         if (mTimeLog != null) {
             TimeLog current = mTimeLog.get(position);
 //            holder.timeLogCardTitle.setText(current.getActivity());
-            setTimeLogCardToCurrent(holder,current);
-        }
-        else {
-            holder.timeLogCardTitle.setText("There is an error or no items");
+            setTimeLogCardToCurrent(holder, current);
+        } else {
+            holder.mTimeLogCardTitle.setText("There is an error or no items");
         }
     }
 
-    private void setTimeLogCardToCurrent (TimeLogViewHolder holder, TimeLog timeLog) {
+    private void setTimeLogCardToCurrent(TimeLogViewHolder holder, TimeLog timeLog) {
         final String activityString = timeLog.getActivity();
         final Long timeStampCreated = timeLog.getTimestamp_created();
         final Long timestampModified = timeLog.getTimestamp_modified();
         final TimeLogic timeLogic = TimeLogic.newInstance();
         final String timeSpan = timeLogic.getLocalTimeFromDatabase(timeStampCreated) + " - " +
-            timeLogic.getLocalTimeFromDatabase(timestampModified);
+                timeLogic.getLocalTimeFromDatabase(timestampModified);
 
-        String timeSpentValue = timeLogic.formattedTimeBetweenTwoTimeSpans(timeStampCreated,timestampModified);
+        String timeSpentValue = timeLogic.formattedTimeBetweenTwoTimeSpans(timeStampCreated, timestampModified);
 
-        holder.timeLogCardTitle.setText(activityString);
-        holder.timeLogCardTimeSpan.setText(timeSpan);
-        holder.timeLogCardTimeSpent.setText(timeSpentValue);
+        holder.mTimeLogCardTitle.setText(activityString);
+        holder.mTimeLogCardTimeSpan.setText(timeSpan);
+        holder.mTimeLogCardTimeSpent.setText(timeSpentValue);
     }
 
     void setTimeLogs(List<TimeLog> timeLogs) {
@@ -77,9 +81,8 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
 
     @Override
     public int getItemCount() {
-        if (mTimeLog != null){
+        if (mTimeLog != null) {
             return mTimeLog.size();
-        }
-        else return 0;
+        } else return 0;
     }
 }
