@@ -8,7 +8,10 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import com.example.timetime.MainActivity;
 import com.example.timetime.R;
 import com.example.timetime.database.TimeLogic;
@@ -38,47 +41,6 @@ public class ActivityMaterialButton {
         this.mToolBarTime = toolBarTime;
         setUpMaterialActivityButtonBasicAttributes();
         setUpMaterialActivityButtonIcon();
-        setUpActivityButtonOnClick();
-    }
-
-    private void setUpActivityButtonOnClick() {
-        this.mMaterialButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activityButtonTapSubmitTimeLog(v);
-            }
-        });
-    }
-
-    private void activityButtonTapSubmitTimeLog(View view) {
-        Activity activityObject = (Activity) view.getTag();
-        if (view.getTag() == null) {
-            Toast.makeText(this.mContext, "There has been an error.",
-                    Toast.LENGTH_SHORT).show();
-        }
-        else if (this.mToolBarTime.equals("0MIN")) {
-            launchHomeView();
-        }
-        else {
-            TimeLog timeLog = createNewTimeLog(activityObject);
-            insertTimeLogIntoDataBase(timeLog);
-            launchHomeView();
-        }
-    }
-
-    private void launchHomeView() {
-        Intent intent = new Intent(mContext, MainActivity.class);
-        mContext.startActivity(intent);
-    }
-
-    private void insertTimeLogIntoDataBase(TimeLog timeLog) {
-        mActivityViewModel.insertTimeLog(timeLog);
-    }
-
-    private TimeLog createNewTimeLog(Activity activity) {
-        TimeLogic timeLogic = TimeLogic.newInstance();
-        Long createTimeStamp = timeLogic.getDateTimeForDatabaseStorage();
-        return new TimeLog(createTimeStamp, createTimeStamp, activity.getActivity(), activity.getActivity());
     }
 
     // TODO check icons for compatibility
@@ -102,4 +64,60 @@ public class ActivityMaterialButton {
     public MaterialButton getActivityMaterialButton() {
         return mMaterialButton;
     }
+
+    public static class SetUpActivityButtonOnClicks {
+
+        public void activityButtonOnClickSubmitTimeLog(MaterialButton materialButton, LifecycleOwner owner,
+                                                       ActivityViewModel viewModel, Context context) {
+            materialButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    activityButtonTapSubmitTimeLog(v, owner, viewModel, context);
+                }
+            });
+        }
+
+        private void activityButtonTapSubmitTimeLog(View view, LifecycleOwner owner, ActivityViewModel viewModel, Context context) {
+            Activity activityObject = (Activity) view.getTag();
+            if (view.getTag() == null) {
+            } else {
+                TimeLog timeLog = createNewTimeLog(owner, viewModel, activityObject);
+                if (timeLog.getTimestamp_created().equals(timeLog.getTimestamp_modified())) {
+                    Toast.makeText(context,"Wait a minute!",Toast.LENGTH_SHORT).show();
+                    launchHomeView(owner, context);
+                } else {
+                    insertTimeLogIntoDataBase(viewModel, timeLog);
+                    launchHomeView(owner, context);
+                }
+            }
+        }
+
+        private TimeLog createNewTimeLog(LifecycleOwner owner, ActivityViewModel viewModel, Activity activity) {
+            TimeLogic timeLogic = TimeLogic.newInstance();
+            Long modifiedTimeStamp = timeLogic.getDateTimeForDatabaseStorage();
+
+            final Long[] createdTimeStamp = new Long[1];
+            viewModel.getLastSinceModified().observe(owner, new Observer<Long>() {
+                @Override
+                public void onChanged(@Nullable final Long latestModifiedTime) {
+                    if (latestModifiedTime == null) {
+                    } else {
+                        createdTimeStamp[0] = latestModifiedTime;
+                    }
+                }
+            });
+
+            return new TimeLog(createdTimeStamp[0], modifiedTimeStamp, activity.getActivity(), activity.getActivity());
+        }
+
+        private void launchHomeView(LifecycleOwner owner, Context context) {
+            Intent intent = new Intent(context, MainActivity.class);
+            context.startActivity(intent);
+        }
+
+        private void insertTimeLogIntoDataBase(ActivityViewModel viewModel, TimeLog timeLog) {
+            viewModel.insertTimeLog(timeLog);
+        }
+    }
+
 }

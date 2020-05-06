@@ -44,6 +44,7 @@ public class TimeLogActivity extends AppCompatActivity {
 
         timeLogic = TimeLogic.newInstance();
         mActivityViewModel = new ViewModelProvider(this).get(ActivityViewModel.class);
+
         mActivityViewModel.getLastSinceModified().observe(this, new Observer<Long>() {
             @Override
             public void onChanged(@Nullable final Long latestModifiedTime) {
@@ -60,7 +61,6 @@ public class TimeLogActivity extends AppCompatActivity {
         setUpToolBar(true);
         setUpActivityButtons();
     }
-
 
     private void setUpToolBar(boolean initialSetUp) {
         if (initialSetUp) {
@@ -87,9 +87,15 @@ public class TimeLogActivity extends AppCompatActivity {
                 } else {
                     for (Activity activity : activities) {
                         Log.d("current activity button", activity.getActivity() + activity.getIcon());
-//                        MaterialButton materialButton = setUpMaterialActivityButton(id, activity);
                         MaterialButton materialButton = new ActivityMaterialButton(activity, TEMPLATE_BUTTON,
                                 mGridContext, mActivityViewModel, mToolBarTime).getActivityMaterialButton();
+
+                        ActivityMaterialButton.SetUpActivityButtonOnClicks setUpActivityButtonOnClicks =
+                                new ActivityMaterialButton.SetUpActivityButtonOnClicks();
+                        setUpActivityButtonOnClicks.activityButtonOnClickSubmitTimeLog(materialButton,
+                                TimeLogActivity.this,
+                                mActivityViewModel, mGridContext);
+
                         mGridLayout.addView(materialButton);
                         materialActivityButtons.add(materialButton);
                     }

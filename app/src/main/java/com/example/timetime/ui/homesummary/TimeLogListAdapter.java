@@ -60,10 +60,12 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
     }
 
     private void setTimeLogCardToCurrent(TimeLogViewHolder holder, TimeLog timeLog) {
+        final TimeLogic timeLogic = TimeLogic.newInstance();
+
         final String activityString = timeLog.getActivity();
         final Long timeStampCreated = timeLog.getTimestamp_created();
         final Long timestampModified = timeLog.getTimestamp_modified();
-        final TimeLogic timeLogic = TimeLogic.newInstance();
+
         final String timeSpan = timeLogic.getLocalTimeFromDatabase(timeStampCreated) + " - " +
                 timeLogic.getLocalTimeFromDatabase(timestampModified);
 
