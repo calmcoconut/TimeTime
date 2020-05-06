@@ -30,6 +30,9 @@ public class ActivityViewModel extends AndroidViewModel {
     public LiveData<Long> getLastSinceModified() {
         return mLatestTimeStamp;
     }
+    public Activity getActivityByName (String activityName) {
+        return mAppRepository.getActivityByName(activityName);
+    }
 
     public void insert(Activity activity) {
         mAppRepository.insertActivity(activity);

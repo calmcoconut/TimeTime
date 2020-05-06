@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,16 +22,37 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
         private final TextView mTimeLogCardTimeSpent;
         private final TextView mTimeLogCardTimeSpan;
         private final TextView mTimeLogCardDateHeading;
+        private final ImageView mTimeLogCardThumbnail;
         private final View mTimeLogDivider;
 
         private TimeLogViewHolder(View itemView) {
             super(itemView);
-
             mTimeLogCardTitle = itemView.findViewById(R.id.time_card_log_title);
             mTimeLogCardTimeSpent = itemView.findViewById(R.id.time_card_log_time_spent);
             mTimeLogCardTimeSpan = itemView.findViewById(R.id.time_card_log_time_span);
             mTimeLogCardDateHeading = itemView.findViewById(R.id.time_log_day_heading);
             mTimeLogDivider = itemView.findViewById(R.id.time_log_divider);
+            mTimeLogCardThumbnail = itemView.findViewById(R.id.time_card_thumbnail);
+        }
+        // getters
+        public TextView getmTimeLogCardTitle() {
+            return mTimeLogCardTitle;
+        }
+
+        public TextView getmTimeLogCardTimeSpent() {
+            return mTimeLogCardTimeSpent;
+        }
+
+        public TextView getmTimeLogCardTimeSpan() {
+            return mTimeLogCardTimeSpan;
+        }
+
+        public TextView getmTimeLogCardDateHeading() {
+            return mTimeLogCardDateHeading;
+        }
+
+        public View getmTimeLogDivider() {
+            return mTimeLogDivider;
         }
     }
 
@@ -61,19 +83,8 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
 
     private void setTimeLogCardToCurrent(TimeLogViewHolder holder, TimeLog timeLog) {
         final TimeLogic timeLogic = TimeLogic.newInstance();
-
-        final String activityString = timeLog.getActivity();
-        final Long timeStampCreated = timeLog.getTimestamp_created();
-        final Long timestampModified = timeLog.getTimestamp_modified();
-
-        final String timeSpan = timeLogic.getLocalTimeFromDatabase(timeStampCreated) + " - " +
-                timeLogic.getLocalTimeFromDatabase(timestampModified);
-
-        String timeSpentValue = timeLogic.formattedTimeBetweenTwoTimeSpans(timeStampCreated, timestampModified);
-
-        holder.mTimeLogCardTitle.setText(activityString);
-        holder.mTimeLogCardTimeSpan.setText(timeSpan);
-        holder.mTimeLogCardTimeSpent.setText(timeSpentValue);
+        TimeLogCard timeLogCard = new TimeLogCard();
+        timeLogCard.setUpTimeCard(holder,timeLogic,timeLog);
     }
 
     void setTimeLogs(List<TimeLog> timeLogs) {

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.timetime.R;
 import com.example.timetime.database.entity.TimeLog;
+import com.example.timetime.viewmodels.ActivityViewModel;
 import com.example.timetime.viewmodels.TimeLogViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -21,7 +22,9 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     private TimeLogViewModel mTimeLogViewModel;
+    private ActivityViewModel mActivityViewModel;
     private FloatingActionButton fab;
+
 
     @Nullable
     @Override
@@ -29,12 +32,13 @@ public class HomeFragment extends Fragment {
 
         final View rootView = inflater.inflate(R.layout.recycler_view, container, false);
         startRecyclerForTimeLogs(rootView);
-
         return rootView;
     }
 
     private void startRecyclerForTimeLogs(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_root);
+
+        mActivityViewModel = new ViewModelProvider(this).get(ActivityViewModel.class);
         final TimeLogListAdapter adapter = new TimeLogListAdapter(getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

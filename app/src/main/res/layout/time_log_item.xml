@@ -42,7 +42,9 @@
                     android:id="@+id/time_log_card_thumbnail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/image_night"
+                    android:background="@color/colorPrimary"
+                    android:src="@drawable/ic_add_black_24dp"
+                    android:padding="8dp"
                     android:scaleType="centerCrop"
                     tools:ignore="ContentDescription" />
             </androidx.cardview.widget.CardView>

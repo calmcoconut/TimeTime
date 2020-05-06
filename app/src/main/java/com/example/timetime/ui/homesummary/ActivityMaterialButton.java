@@ -1,5 +1,4 @@
 package com.example.timetime.ui.homesummary;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;

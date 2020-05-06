@@ -66,6 +66,16 @@ public class AppRepository {
         return mMostRecentModified;
     }
 
+    public Activity getActivityByName(String activityName) {
+        Activity activity = mActivityDao.getActivityByName(activityName);
+        if (activity == null) {
+            return new Activity("error","error",0,"000000");
+        }
+        else {
+            return activity;
+        }
+    }
+
     // insert into database methods
     public void insertActivity(final Activity activity) {
         AppDatabase.databaseWriteExecutor.execute(new Runnable() {
