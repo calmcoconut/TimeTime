@@ -24,7 +24,7 @@ public class AppRepository {
     private LiveData<List<TimeLog>> mAllTimeTracker;
     private LiveData<Long> mMostRecentModified;
 
-    public AppRepository (Application application) {
+    public AppRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         //DAOs
         mActivityDao = db.activityDao();
@@ -66,14 +66,8 @@ public class AppRepository {
         return mMostRecentModified;
     }
 
-    public Activity getActivityByName(String activityName) {
-        Activity activity = mActivityDao.getActivityByName(activityName);
-        if (activity == null) {
-            return new Activity("error","error",0,"000000");
-        }
-        else {
-            return activity;
-        }
+    public LiveData<Activity> findActivityByName(String activityName) {
+        return mActivityDao.findActivityByName(activityName);
     }
 
     // insert into database methods
@@ -95,7 +89,7 @@ public class AppRepository {
         });
     }
 
-    public void insertColor (final Color color) {
+    public void insertColor(final Color color) {
         AppDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
@@ -104,7 +98,7 @@ public class AppRepository {
         });
     }
 
-    public void insertIcon (final Icon icon) {
+    public void insertIcon(final Icon icon) {
         AppDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {

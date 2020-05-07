@@ -17,9 +17,9 @@ public interface ActivityDao {
     @Query("DELETE FROM activity_table")
     void deleteAll();
 
-    @Query("SELECT * FROM activity_table WHERE activity = :activityName LIMIT 1")
-    Activity getActivityByName(String activityName);
-
     @Query("SELECT * FROM activity_table")
     LiveData<List<Activity>> getAllActivity();
+
+    @Query("SELECT *  FROM activity_table WHERE activity = :activityName")
+    LiveData<Activity> findActivityByName(String activityName);
 }

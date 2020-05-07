@@ -24,20 +24,18 @@ public class ActivityViewModel extends AndroidViewModel {
         mAllActivities = mAppRepository.getAllActivities();
         mLatestTimeStamp = mAppRepository.getMostRecentModified();
     }
+    // Getters
     public LiveData<List<Activity>> getAllActivities() {
         return mAllActivities;
     }
     public LiveData<Long> getLastSinceModified() {
         return mLatestTimeStamp;
     }
-    public Activity getActivityByName (String activityName) {
-        return mAppRepository.getActivityByName(activityName);
-    }
 
+    // Inserters
     public void insert(Activity activity) {
         mAppRepository.insertActivity(activity);
     }
-
     public void insertTimeLog(TimeLog timeLog) {
         mAppRepository.insertTimeLog(timeLog);
     }

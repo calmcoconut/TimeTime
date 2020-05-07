@@ -18,13 +18,9 @@ import java.util.concurrent.Executors;
 public abstract class AppDatabase extends RoomDatabase {
     // access our respective DAO objects
     public abstract ColorDao colorDao();
-
     public abstract IconDao iconDao();
-
     public abstract CategoryDao categoryDao();
-
     public abstract ActivityDao activityDao();
-
     public abstract TimeLogDao timeLogDao();
 
     // Instance of our database
