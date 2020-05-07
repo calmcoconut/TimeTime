@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import com.example.timetime.database.AppRepository;
-import com.example.timetime.database.entity.Activity;
 import com.example.timetime.database.entity.TimeLog;
 
 import java.util.List;
@@ -24,10 +23,6 @@ public class TimeLogViewModel extends AndroidViewModel {
     }
     public LiveData<List<TimeLog>> getAllTimeLogs() {
         return mAllTimeLogs;
-    }
-
-    public LiveData<Activity> getActivityByName(String activityName) {
-        return mAppRepository.findActivityByName(activityName);
     }
 
     public void insert(TimeLog timeLog) {

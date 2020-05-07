@@ -27,7 +27,7 @@ public class FirstDatabase {
         this.mCategoryArray = createDefaultCategoryArray(mColorArray);
         this.mActivityArray = createDefaultActivityArray(mColorArray,mIconArray,mCategoryArray);
         // TODO REMOVE TEST
-        this.mTimeLog = createTestingTimeLog() ;
+        this.mTimeLog = createTestingTimeLog(mIconArray) ;
     }
 
     // object arrays for populating the database
@@ -114,20 +114,21 @@ public class FirstDatabase {
         }
         return activityArray;
     }
+
     private TimeLog createDefaultTimeLog () {
         TimeLogic timeLogic = TimeLogic.newInstance();
         Long timeStamp = timeLogic.getDateTimeForDatabaseStorage();
-        return new TimeLog(timeStamp,timeStamp,"myFirstActivity","myFirstCategory");
+        return new TimeLog(timeStamp,timeStamp,"myFirstActivity","ff5252",1,"klsdf" );
     }
 
-    private TimeLog createTestingTimeLog () {
+    private TimeLog createTestingTimeLog(Icon[] mIconArray) {
         TimeLogic timeLogic = TimeLogic.newInstance();
         Long timeStamp = timeLogic.getDateTimeForDatabaseStorage(); // now
 
         Long previousTimeStamp = timeStamp - 90060L; // one day, one hour, one minute ago
         timeStamp = timeStamp - 3600 - HOUR_SECONDS - (HOUR_SECONDS/2); // make now() - 01:30
 
-        return new TimeLog(previousTimeStamp,timeStamp,"TESTING","other");
+        return new TimeLog(previousTimeStamp,timeStamp,"Sleep","ff5252", mIconArray[0].getIcon(),"Health");
     }
 
     public TimeLog getTimeLog() {

@@ -21,18 +21,29 @@ public class TimeLog {
     private Long mTimestamp_modified;
 
     @ColumnInfo(name = "activity")
+    @NonNull
     private String mActivity;
 
-    @ColumnInfo(name = "category")
-    private String mCategory;
+    @ColumnInfo(name = "activity_color")
+    @NonNull
+    private String mActivityColor;
 
+    @ColumnInfo(name = "activity_icon")
+    @NonNull
+    private int mActivityIcon;
+
+    @ColumnInfo(name = "category")
+    @NonNull
+    private String mCategory;
 
     public TimeLog(@NonNull Long timestamp_created
             , @NonNull Long timestamp_modified
-            , String activity, String category) {
+            , String activity, String mActivityColor, int mActivityIcon, String category) {
         this.mTimestamp_created = timestamp_created;
         this.mTimestamp_modified = timestamp_modified;
         this.mActivity = activity;
+        this.mActivityColor = mActivityColor;
+        this.mActivityIcon = mActivityIcon;
         this.mCategory = category;
     }
 
@@ -79,5 +90,21 @@ public class TimeLog {
 
     public void setCategory(@NonNull String category) {
         this.mCategory = category;
+    }
+
+    public String getActivityColor() {
+        return mActivityColor;
+    }
+
+    public void setActivityColor(@NonNull String mActivityColor) {
+        this.mActivityColor = mActivityColor;
+    }
+
+    public int getActivityIcon() {
+        return mActivityIcon;
+    }
+
+    public void setActivityIcon(@NonNull int mActivityIcon) {
+        this.mActivityIcon = mActivityIcon;
     }
 }

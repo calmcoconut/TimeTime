@@ -12,7 +12,16 @@ public interface TimeLogDao {
     void insert (TimeLog timeTracker);
 
     @Update
-     void update (TimeLog timeTracker);
+    void update (TimeLog timeTracker);
+
+//    @Query("UPDATE timeLog_table SET activity_color = :newColor WHERE activity = :activityName")
+//    void updateActivityColor(String activityName, String newColor);
+//
+//    @Query("UPDATE timeLog_table SET activity_icon = :newIcon WHERE activity = :activityName")
+//    void updateActivityColor(String activityName, int newIcon);
+//
+//    @Query("UPDATE timeLog_table SET category = :newCategory WHERE activity = :activityName")
+//    void updateActivityCategory(String activityName, String newCategory);
 
     @Query("DELETE FROM timeLog_table")
     void deleteAll();

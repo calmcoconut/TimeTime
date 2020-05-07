@@ -32,7 +32,7 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
             mTimeLogCardTimeSpan = itemView.findViewById(R.id.time_card_log_time_span);
             mTimeLogCardDateHeading = itemView.findViewById(R.id.time_log_day_heading);
             mTimeLogDivider = itemView.findViewById(R.id.time_log_divider);
-            mTimeLogCardThumbnail = itemView.findViewById(R.id.time_card_thumbnail);
+            mTimeLogCardThumbnail = itemView.findViewById(R.id.time_log_card_thumbnail);
         }
         // getters
         public TextView getmTimeLogCardTitle() {
@@ -54,12 +54,18 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
         public View getmTimeLogDivider() {
             return mTimeLogDivider;
         }
+
+        public ImageView getmTimeLogCardThumbnail() {
+            return mTimeLogCardThumbnail;
+        }
     }
 
     private final LayoutInflater mInflator;
+    private Context mContext;
     private List<TimeLog> mTimeLog; // cached copy of categories
 
     TimeLogListAdapter(Context context) {
+        mContext = context;
         mInflator = LayoutInflater.from(context);
     }
 
@@ -83,7 +89,7 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
     private void setTimeLogCardToCurrent(TimeLogViewHolder holder, TimeLog timeLog) {
         final TimeLogic timeLogic = TimeLogic.newInstance();
         TimeLogCard timeLogCard = new TimeLogCard();
-        timeLogCard.setUpTimeCard(holder,timeLogic,timeLog);
+        timeLogCard.setUpTimeCard(holder,timeLogic,timeLog,mContext);
     }
 
     void setTimeLogs(List<TimeLog> timeLogs) {

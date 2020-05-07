@@ -106,7 +106,8 @@ public class ActivityMaterialButton {
                 }
             });
 
-            return new TimeLog(createdTimeStamp[0], modifiedTimeStamp, activity.getActivity(), activity.getActivity());
+            return new TimeLog(createdTimeStamp[0], modifiedTimeStamp, activity.getActivity(), activity.getColor(),
+                    activity.getIcon(),activity.getCategory());
         }
 
         private void launchHomeView(LifecycleOwner owner, Context context) {

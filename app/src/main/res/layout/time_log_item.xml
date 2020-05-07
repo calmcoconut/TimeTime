@@ -36,7 +36,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 app:cardElevation="4dp"
-                app:cardCornerRadius="30dp">
+                app:cardCornerRadius="25dp">
 
                 <ImageView
                     android:id="@+id/time_log_card_thumbnail"
@@ -44,7 +44,7 @@
                     android:layout_height="match_parent"
                     android:background="@color/colorPrimary"
                     android:src="@drawable/ic_add_black_24dp"
-                    android:padding="8dp"
+                    android:padding="12dp"
                     android:scaleType="centerCrop"
                     tools:ignore="ContentDescription" />
             </androidx.cardview.widget.CardView>
@@ -65,7 +65,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:layout_weight="3"
-                        android:text="ACTIVITY NAME" />
+                        android:text="ACTIVITY NAME"
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/time_card_log_time_spent"
