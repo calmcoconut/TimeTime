@@ -26,6 +26,6 @@ public interface TimeLogDao {
     @Query("SELECT MAX(timestamp_modified) as newest FROM timeLog_table")
     LiveData<Long> metaNewestEntry();
 
-    @Query("SELECT * FROM timeLog_table")
+    @Query("SELECT * FROM timeLog_table ORDER BY timestamp_modified DESC")
     LiveData<List<TimeLog>> getAllTimeLogs();
 }

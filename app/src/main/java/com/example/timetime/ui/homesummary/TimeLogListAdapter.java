@@ -74,7 +74,6 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
     public void onBindViewHolder(@NonNull TimeLogViewHolder holder, int position) {
         if (mTimeLog != null) {
             TimeLog current = mTimeLog.get(position);
-//            holder.timeLogCardTitle.setText(current.getActivity());
             setTimeLogCardToCurrent(holder, current);
         } else {
             holder.mTimeLogCardTitle.setText("There is an error or no items");

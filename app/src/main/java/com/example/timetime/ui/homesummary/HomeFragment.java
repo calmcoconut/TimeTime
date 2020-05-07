@@ -49,6 +49,7 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onChanged(@Nullable final List<TimeLog> timeLogs) {
                         adapter.setTimeLogs(timeLogs);
+
                     }
                 });
     }
