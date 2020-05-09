@@ -80,16 +80,21 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
     public void onBindViewHolder(@NonNull TimeLogViewHolder holder, int position) {
         if (mTimeLog != null) {
             TimeLog current = mTimeLog.get(position);
-            setTimeLogCardToCurrent(holder, current);
+            setTimeLogCardToCurrent(holder, current, position);
         } else {
             holder.mTimeLogCardTitle.setText("There is an error or no items");
         }
     }
 
-    private void setTimeLogCardToCurrent(TimeLogViewHolder holder, TimeLog timeLog) {
+    private void setTimeLogCardToCurrent(TimeLogViewHolder holder, TimeLog timeLog, int position) {
         final TimeLogic timeLogic = TimeLogic.newInstance();
         TimeLogCard timeLogCard = new TimeLogCard();
-        timeLogCard.setUpTimeCard(holder,timeLogic,timeLog,mContext);
+        if (getItemCount() > 1){
+            timeLogCard.setUpTimeCard(holder,timeLogic,timeLog,mContext, position, mTimeLog.get(1));
+        }
+        else {
+            timeLogCard.setUpTimeCard(holder,timeLogic,timeLog,mContext, position, timeLog);
+        }
     }
 
     void setTimeLogs(List<TimeLog> timeLogs) {

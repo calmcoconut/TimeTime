@@ -112,6 +112,12 @@ public class TimeLogic {
         return (String) zonedDateTime.format(DateTimeFormatter.ofPattern("HH:mm a"));
     }
 
+    public String getLocalDateFromDatabase (Long dataBaseValue) {
+        Instant instant = convertLongToInstant(dataBaseValue);
+        ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(instant,getZoneId());
+        return (String) zonedDateTime.format(DateTimeFormatter.ofPattern("dd"));
+    }
+
 
     public static TimeLogic newInstance () {
         return new TimeLogic();
