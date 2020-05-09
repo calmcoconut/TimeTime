@@ -1,19 +1,11 @@
-package com.example.timetime.ui.activitysummary;
+package com.example.timetime.ui;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.GridLayout;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.*;
 import com.example.timetime.R;
 import com.example.timetime.database.TimeLogic;
 import com.example.timetime.database.entity.Activity;
@@ -24,45 +16,36 @@ import com.google.android.material.button.MaterialButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivityFragment extends Fragment {
+public abstract class BaseActivityButtons {
     private MaterialButton TEMPLATE_BUTTON;
     Toolbar toolbar;
-    private GridLayout mGridLayout;
-    private Context mGridContext;
-    private ActivityViewModel mActivityViewModel;
+    private final GridLayout mGridLayout;
+    private final Context mGridContext;
+    private final ActivityViewModel mActivityViewModel;
+    private final TimeLogic timeLogic;
+    private final List<MaterialButton> materialActivityButtons;
     private List<Activity> mActivities;
     private LiveData<Long> currentTime;
-    private TimeLogic timeLogic;
     private String mToolBarTime;
-    private List<MaterialButton> materialActivityButtons;
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        final View rootView = inflater.inflate(R.layout.activity_time_log, container, false);
-
+    public BaseActivityButtons(View view, ViewModelStoreOwner viewModelStoreOwner) {
         materialActivityButtons = new ArrayList<>();
-        mGridLayout = rootView.findViewById(R.id.activity_time_log_gridView);
+        mGridLayout = view.findViewById(R.id.activity_time_log_gridView);
         mGridContext = mGridLayout.getContext();
-        TEMPLATE_BUTTON = rootView.findViewById(R.id.activity_time_log_button_1);
+        TEMPLATE_BUTTON = view.findViewById(R.id.activity_time_log_button_1);
 
         timeLogic = TimeLogic.newInstance();
-        mActivityViewModel = new ViewModelProvider(this).get(ActivityViewModel.class);
-
-        setUpActivityButtons();
-
-        return rootView;
+        mActivityViewModel = new ViewModelProvider(viewModelStoreOwner).get(ActivityViewModel.class);
     }
 
-    private void setUpActivityButtons() {
+    public void setUpActivityButtons(LifecycleOwner lifecycleOwner) {
         // TODO assure that minimum number of activities in the database is 1 or THIS WILL LOOP FOREVER.
-        mActivityViewModel.getAllActivities().observe(getViewLifecycleOwner(), new Observer<List<Activity>>() {
+        mActivityViewModel.getAllActivities().observe(lifecycleOwner, new Observer<List<Activity>>() {
             @Override
             public void onChanged(List<Activity> activities) {
                 mActivities = activities;
                 if (mActivities == null) {
-                    setUpActivityButtons();
+                    setUpActivityButtons(lifecycleOwner);
                 } else {
                     for (Activity activity : activities) {
                         Log.d("current activity button", activity.getActivity() + activity.getIcon());
@@ -72,7 +55,7 @@ public class ActivityFragment extends Fragment {
                         ActivityMaterialButton.SetUpActivityButtonOnClicks setUpActivityButtonOnClicks =
                                 new ActivityMaterialButton.SetUpActivityButtonOnClicks();
                         setUpActivityButtonOnClicks.activityButtonOnClickSubmitTimeLog(materialButton,
-                                ActivityFragment.this,
+                                lifecycleOwner,
                                 mActivityViewModel, mGridContext);
 
                         mGridLayout.addView(materialButton);
@@ -81,13 +64,5 @@ public class ActivityFragment extends Fragment {
                 }
             }
         });
-    }
-
-    // factory method for returning an instance of the class
-    public static ActivityFragment newInstance() {
-        return new ActivityFragment();
-    }
-    // empty constructor
-    public ActivityFragment() {
     }
 }
