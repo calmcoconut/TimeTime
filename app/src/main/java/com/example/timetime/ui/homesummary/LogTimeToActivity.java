@@ -65,7 +65,6 @@ public class LogTimeToActivity extends AppCompatActivity {
 
     private void setUpToolBar(boolean initialSetUp) {
         if (initialSetUp) {
-            TimeLogic timeLogic = TimeLogic.newInstance();
             toolbar = findViewById(R.id.activity_time_log_toolbar);
             setSupportActionBar(toolbar);
             Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
