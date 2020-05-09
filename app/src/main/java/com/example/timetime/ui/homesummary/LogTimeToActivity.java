@@ -7,7 +7,6 @@ import android.widget.GridLayout;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.timetime.R;
@@ -28,18 +27,14 @@ public class LogTimeToActivity extends AppCompatActivity {
     private Context mGridContext;
     private ActivityViewModel mActivityViewModel;
     private List<Activity> mActivities;
-    private LiveData<Long> currentTime;
     private TimeLogic timeLogic;
     private String mToolBarTime;
-    private List<MaterialButton> materialActivityButtons;
-    private BaseActivityButtons baseActivityButtons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_log);
 
-        materialActivityButtons = new ArrayList<>();
         mGridLayout = findViewById(R.id.activity_time_log_gridView);
         mGridContext = mGridLayout.getContext();
         TEMPLATE_BUTTON = findViewById(R.id.activity_time_log_button_1);
@@ -47,12 +42,7 @@ public class LogTimeToActivity extends AppCompatActivity {
         mActivityViewModel = new ViewModelProvider(this).get(ActivityViewModel.class);
         toolbar = findViewById(R.id.activity_time_log_toolbar);
         mActivities = new ArrayList<Activity>();
-        baseActivityButtons = new BaseActivityButtons();
-        baseActivityButtons.setUpToolBar(this,mActivityViewModel,this,this,toolbar);
-        baseActivityButtons.setUpActivityButtons(LogTimeToActivity.this, mActivityViewModel, mActivities,
-                mGridContext,
-                mGridLayout,
-                TEMPLATE_BUTTON);
+        BaseActivityButtons baseActivityButtons = new BaseActivityButtons();
 
         mActivityViewModel.getLastSinceModified().observe(this, new Observer<Long>() {
             @Override
@@ -66,9 +56,11 @@ public class LogTimeToActivity extends AppCompatActivity {
                 }
             }
         });
-
-//        setUpToolBar(true);
-//        setUpActivityButtons();
+        setUpToolBar(true);
+        baseActivityButtons.setUpActivityButtons(LogTimeToActivity.this, mActivityViewModel, mActivities,
+                mGridContext,
+                mGridLayout,
+                TEMPLATE_BUTTON, false);
     }
 
     private void setUpToolBar(boolean initialSetUp) {
@@ -83,33 +75,5 @@ public class LogTimeToActivity extends AppCompatActivity {
         } else {
             setTitle("Last Log: " + mToolBarTime.toString().toUpperCase());
         }
-    }
-
-    private void setUpActivityButtons() {
-        // TODO assure that minimum number of activities in the database is 1 or THIS WILL LOOP FOREVER.
-        mActivityViewModel.getAllActivities().observe(this, new Observer<List<Activity>>() {
-            @Override
-            public void onChanged(List<Activity> activities) {
-                mActivities = activities;
-                if (mActivities == null) {
-                    setUpActivityButtons();
-                } else {
-                    for (Activity activity : activities) {
-                        Log.d("current activity button", activity.getActivity() + activity.getIcon());
-                        MaterialButton materialButton = new ActivityMaterialButton(activity, TEMPLATE_BUTTON,
-                                mGridContext, mActivityViewModel, mToolBarTime).getActivityMaterialButton();
-
-                        ActivityMaterialButton.SetUpActivityButtonOnClicks setUpActivityButtonOnClicks =
-                                new ActivityMaterialButton.SetUpActivityButtonOnClicks();
-                        setUpActivityButtonOnClicks.activityButtonOnClickSubmitTimeLog(materialButton,
-                                LogTimeToActivity.this,
-                                mActivityViewModel, mGridContext);
-
-                        mGridLayout.addView(materialButton);
-                        materialActivityButtons.add(materialButton);
-                    }
-                }
-            }
-        });
     }
 }

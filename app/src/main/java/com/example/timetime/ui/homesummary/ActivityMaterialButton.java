@@ -1,4 +1,5 @@
 package com.example.timetime.ui.homesummary;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -27,7 +28,7 @@ public class ActivityMaterialButton {
     private Context mContext;
 
     public ActivityMaterialButton(Activity mActivity, MaterialButton template_button, Context mContext,
-                                  ActivityViewModel activityViewModel, String toolBarTime) {
+                                  ActivityViewModel activityViewModel) {
         this.mActivityViewModel = activityViewModel;
         ViewGroup.LayoutParams params = template_button.getLayoutParams();
         this.mMaterialButton = new MaterialButton(new ContextThemeWrapper(mContext,
@@ -37,7 +38,6 @@ public class ActivityMaterialButton {
         this.mActivity = mActivity;
         this.mMaterialButton.setLayoutParams(params);
         this.mContext = mContext;
-        this.mToolBarTime = toolBarTime;
         setUpMaterialActivityButtonBasicAttributes();
         setUpMaterialActivityButtonIcon();
     }
@@ -64,10 +64,10 @@ public class ActivityMaterialButton {
         return mMaterialButton;
     }
 
-    public static class SetUpActivityButtonOnClicks {
+    public static class ActivityButtonTimeLogOnClicks {
 
-        public void activityButtonOnClickSubmitTimeLog(MaterialButton materialButton, LifecycleOwner owner,
-                                                       ActivityViewModel viewModel, Context context) {
+        public void onClickSubmitTimeLog(MaterialButton materialButton, LifecycleOwner owner,
+                                         ActivityViewModel viewModel, Context context) {
             materialButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -82,7 +82,7 @@ public class ActivityMaterialButton {
             } else {
                 TimeLog timeLog = createNewTimeLog(owner, viewModel, activityObject);
                 if (timeLog.getTimestamp_created().equals(timeLog.getTimestamp_modified())) {
-                    Toast.makeText(context,"Wait a minute!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Wait a minute!", Toast.LENGTH_SHORT).show();
                     launchHomeView(owner, context);
                 } else {
                     insertTimeLogIntoDataBase(viewModel, timeLog);
@@ -107,7 +107,7 @@ public class ActivityMaterialButton {
             });
 
             return new TimeLog(createdTimeStamp[0], modifiedTimeStamp, activity.getActivity(), activity.getColor(),
-                    activity.getIcon(),activity.getCategory());
+                    activity.getIcon(), activity.getCategory());
         }
 
         private void launchHomeView(LifecycleOwner owner, Context context) {
@@ -120,4 +120,8 @@ public class ActivityMaterialButton {
         }
     }
 
+    // TODO make on clicks
+    public static class ActivityButtonActivityPageOnClicks {
+
+    }
 }
