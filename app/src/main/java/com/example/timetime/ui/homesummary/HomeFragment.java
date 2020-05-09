@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.timetime.R;
 import com.example.timetime.database.entity.TimeLog;
-import com.example.timetime.viewmodels.ActivityViewModel;
 import com.example.timetime.viewmodels.TimeLogViewModel;
 
 import java.util.List;
@@ -35,7 +34,6 @@ public class HomeFragment extends Fragment {
     private void startRecyclerForTimeLogs(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_root);
 
-        mActivityViewModel = new ViewModelProvider(this).get(ActivityViewModel.class);
         final TimeLogListAdapter adapter = new TimeLogListAdapter(getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
