@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.timetime.R;
 import com.example.timetime.database.TimeLogic;
 import com.example.timetime.database.entity.Activity;
+import com.example.timetime.ui.BaseActivityButtons;
 import com.example.timetime.ui.homesummary.ActivityMaterialButton;
 import com.example.timetime.viewmodels.ActivityViewModel;
 import com.google.android.material.button.MaterialButton;
@@ -35,6 +36,7 @@ public class ActivityFragment extends Fragment {
     private TimeLogic timeLogic;
     private String mToolBarTime;
     private List<MaterialButton> materialActivityButtons;
+    private BaseActivityButtons baseActivityButtons;
 
     @Nullable
     @Override
@@ -49,9 +51,10 @@ public class ActivityFragment extends Fragment {
 
         timeLogic = TimeLogic.newInstance();
         mActivityViewModel = new ViewModelProvider(this).get(ActivityViewModel.class);
-
-        setUpActivityButtons();
-
+        mActivities = new ArrayList<Activity>();
+        baseActivityButtons = new BaseActivityButtons();
+        baseActivityButtons.setUpActivityButtons(getViewLifecycleOwner(),mActivityViewModel,mActivities,mGridContext,mGridLayout,
+                TEMPLATE_BUTTON);
         return rootView;
     }
 
