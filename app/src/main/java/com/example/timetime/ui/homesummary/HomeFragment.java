@@ -15,15 +15,12 @@ import com.example.timetime.R;
 import com.example.timetime.database.entity.TimeLog;
 import com.example.timetime.viewmodels.ActivityViewModel;
 import com.example.timetime.viewmodels.TimeLogViewModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
 public class HomeFragment extends Fragment {
 
     private TimeLogViewModel mTimeLogViewModel;
-    private ActivityViewModel mActivityViewModel;
-    private FloatingActionButton fab;
 
 
     @Nullable
