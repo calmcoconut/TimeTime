@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 import com.example.timetime.ui.MainViewPagerAdapter;
-import com.example.timetime.ui.homesummary.TimeLogActivity;
+import com.example.timetime.ui.homesummary.LogTimeToActivity;
 import com.example.timetime.viewmodels.CategoryViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, TimeLogActivity.class);
+                Intent intent = new Intent(MainActivity.this, LogTimeToActivity.class);
                 startActivity(intent);
             }
         });

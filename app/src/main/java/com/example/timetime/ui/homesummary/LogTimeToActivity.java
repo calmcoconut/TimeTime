@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class TimeLogActivity extends AppCompatActivity {
+public class LogTimeToActivity extends AppCompatActivity {
     private MaterialButton TEMPLATE_BUTTON;
     Toolbar toolbar;
     private GridLayout mGridLayout;
@@ -93,7 +93,7 @@ public class TimeLogActivity extends AppCompatActivity {
                         ActivityMaterialButton.SetUpActivityButtonOnClicks setUpActivityButtonOnClicks =
                                 new ActivityMaterialButton.SetUpActivityButtonOnClicks();
                         setUpActivityButtonOnClicks.activityButtonOnClickSubmitTimeLog(materialButton,
-                                TimeLogActivity.this,
+                                LogTimeToActivity.this,
                                 mActivityViewModel, mGridContext);
 
                         mGridLayout.addView(materialButton);

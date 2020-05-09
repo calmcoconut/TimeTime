@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/MaterialAppTheme">
 
-        <activity android:name=".ui.homesummary.TimeLogActivity"
+        <activity android:name=".ui.homesummary.LogTimeToActivity"
             android:parentActivityName=".MainActivity">
         </activity>
 
