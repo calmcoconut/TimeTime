@@ -125,7 +125,7 @@ public class FirstDatabase {
         TimeLogic timeLogic = TimeLogic.newInstance();
         Long timeStamp = timeLogic.getDateTimeForDatabaseStorage(); // now
 
-        Long previousTimeStamp = timeStamp - 90060L; // one day, one hour, one minute ago
+        Long previousTimeStamp = timeStamp - 90060L *3; // one day, one hour, one minute ago
         timeStamp = timeStamp - 3600 - HOUR_SECONDS - (HOUR_SECONDS/2); // make now() - 01:30
 
         return new TimeLog(previousTimeStamp,timeStamp,"Sleep","ff5252", mIconArray[0].getIcon(),"Health");

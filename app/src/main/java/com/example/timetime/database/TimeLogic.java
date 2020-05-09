@@ -24,7 +24,7 @@ public class TimeLogic {
         return convertInstantToLong(timeNow);
     }
 
-    public ZonedDateTime getDateTimeFromDatabaseLong (Long databaseLong) {
+    public ZonedDateTime getZonedDateTimeFromDatabaseLong(Long databaseLong) {
         Instant timeNow = convertLongToInstant(databaseLong);
         return ZonedDateTime.ofInstant(timeNow, ZoneId.systemDefault());
     }
@@ -33,6 +33,7 @@ public class TimeLogic {
         // Truncated to Minutes
         return Instant.now().truncatedTo(ChronoUnit.MINUTES);
     }
+
     public ZonedDateTime getCurrentZonedDateTime () {
         return ZonedDateTime.now().truncatedTo(ChronoUnit.MINUTES);
     }
@@ -45,7 +46,7 @@ public class TimeLogic {
         return Instant.ofEpochSecond(longInstant);
     }
 
-    public Integer minutesSinceLastTimeStamp (Long databaseValue) {
+    public Integer getMinutesBetweenNowAndLastDatabaseTime(Long databaseValue) {
         final Instant databaseInstant = convertLongToInstant(databaseValue);
         final Instant nowInstant = Instant.now().truncatedTo(ChronoUnit.MINUTES);
         Long r = ChronoUnit.MINUTES.between(databaseInstant,nowInstant);
@@ -53,7 +54,7 @@ public class TimeLogic {
         return result;
     }
 
-    public Integer minutesBetweenTwoTimeStamps (Long databaseValueOlder, Long databaseValueNewer) {
+    public Integer getMinutesBetweenTwoTimeStamps(Long databaseValueOlder, Long databaseValueNewer) {
         final Instant databaseInstantOld = convertLongToInstant(databaseValueOlder);
         final Instant databaseInstantNew = convertLongToInstant(databaseValueNewer);
         Long r = ChronoUnit.MINUTES.between(databaseInstantOld,databaseInstantNew);
@@ -61,11 +62,11 @@ public class TimeLogic {
         return result;
     }
 
-    public String formattedTimeBetweenTwoTimeSpans(Long databaseValueOlder, Long databaseValueNewer) {
+    public String getHumanformattedTimeBetweenTwoTimeSpans(Long databaseValueOlder, Long databaseValueNewer) {
         String days = "";
         String hours = "";
         String minutes = "";
-        Integer totalMinutes = minutesBetweenTwoTimeStamps(databaseValueOlder,databaseValueNewer);
+        Integer totalMinutes = getMinutesBetweenTwoTimeStamps(databaseValueOlder,databaseValueNewer);
         if ((totalMinutes / 1440) > 0) {
             days = String.valueOf(totalMinutes/MINUTES_DAY) + "D ";
             totalMinutes = totalMinutes % MINUTES_DAY;
@@ -80,11 +81,11 @@ public class TimeLogic {
         return days + hours + minutes;
     }
 
-    public String formattedTimeBetweenDbValueAndNow(@NonNull Long databaseValue) {
+    public String getHumanFormattedTimeBetweenDbValueAndNow(@NonNull Long databaseValue) {
         String days = "";
         String hours = "";
         String minutes = "";
-        Integer totalMinutes = minutesBetweenTwoTimeStamps(databaseValue,convertInstantToLong(getCurrentInstant()));
+        Integer totalMinutes = getMinutesBetweenTwoTimeStamps(databaseValue,convertInstantToLong(getCurrentInstant()));
         if ((totalMinutes / 1440) > 0) {
             days = String.valueOf(totalMinutes/MINUTES_DAY) + "D ";
             totalMinutes = totalMinutes % MINUTES_DAY;
@@ -111,13 +112,6 @@ public class TimeLogic {
         ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(instant,getZoneId());
         return (String) zonedDateTime.format(DateTimeFormatter.ofPattern("HH:mm a"));
     }
-
-    public String getLocalDateFromDatabase (Long dataBaseValue) {
-        Instant instant = convertLongToInstant(dataBaseValue);
-        ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(instant,getZoneId());
-        return (String) zonedDateTime.format(DateTimeFormatter.ofPattern("dd"));
-    }
-
 
     public static TimeLogic newInstance () {
         return new TimeLogic();

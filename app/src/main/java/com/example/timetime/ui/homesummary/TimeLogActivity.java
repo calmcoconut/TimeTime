@@ -51,8 +51,8 @@ public class TimeLogActivity extends AppCompatActivity {
                 if (latestModifiedTime == null) {
                     mToolBarTime = "not working";
                 } else {
-                    Log.d("LATEST TIMESTAMP", timeLogic.formattedTimeBetweenDbValueAndNow(latestModifiedTime));
-                    mToolBarTime = timeLogic.formattedTimeBetweenDbValueAndNow(latestModifiedTime);
+                    Log.d("LATEST TIMESTAMP", timeLogic.getHumanFormattedTimeBetweenDbValueAndNow(latestModifiedTime));
+                    mToolBarTime = timeLogic.getHumanFormattedTimeBetweenDbValueAndNow(latestModifiedTime);
                     setUpToolBar(false);
                 }
             }
