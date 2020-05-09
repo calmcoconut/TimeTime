@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.timetime.R;
 import com.example.timetime.database.TimeLogic;
 import com.example.timetime.database.entity.Activity;
+import com.example.timetime.ui.BaseActivityButtons;
 import com.example.timetime.viewmodels.ActivityViewModel;
 import com.google.android.material.button.MaterialButton;
 
@@ -31,6 +32,7 @@ public class LogTimeToActivity extends AppCompatActivity {
     private TimeLogic timeLogic;
     private String mToolBarTime;
     private List<MaterialButton> materialActivityButtons;
+    private BaseActivityButtons baseActivityButtons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +43,16 @@ public class LogTimeToActivity extends AppCompatActivity {
         mGridLayout = findViewById(R.id.activity_time_log_gridView);
         mGridContext = mGridLayout.getContext();
         TEMPLATE_BUTTON = findViewById(R.id.activity_time_log_button_1);
-
         timeLogic = TimeLogic.newInstance();
         mActivityViewModel = new ViewModelProvider(this).get(ActivityViewModel.class);
+        toolbar = findViewById(R.id.activity_time_log_toolbar);
+        mActivities = new ArrayList<Activity>();
+        baseActivityButtons = new BaseActivityButtons();
+        baseActivityButtons.setUpToolBar(this,mActivityViewModel,this,this,toolbar);
+        baseActivityButtons.setUpActivityButtons(LogTimeToActivity.this, mActivityViewModel, mActivities,
+                mGridContext,
+                mGridLayout,
+                TEMPLATE_BUTTON);
 
         mActivityViewModel.getLastSinceModified().observe(this, new Observer<Long>() {
             @Override
@@ -59,7 +68,7 @@ public class LogTimeToActivity extends AppCompatActivity {
         });
 
         setUpToolBar(true);
-        setUpActivityButtons();
+//        setUpActivityButtons();
     }
 
     private void setUpToolBar(boolean initialSetUp) {
