@@ -73,6 +73,7 @@ public class BaseActivityButtons {
             public void onChanged(@Nullable final Long latestModifiedTime) {
                 if (latestModifiedTime == null) {
                     mToolBarTime = "not working";
+                    setUpLastModifiedObserver(lifecycleOwner,activityViewModel);
                 } else {
                     mToolBarTime = timeLogic.getHumanFormattedTimeBetweenDbValueAndNow(latestModifiedTime);
                 }

@@ -67,7 +67,7 @@ public class LogTimeToActivity extends AppCompatActivity {
             }
         });
 
-        setUpToolBar(true);
+//        setUpToolBar(true);
 //        setUpActivityButtons();
     }
 
