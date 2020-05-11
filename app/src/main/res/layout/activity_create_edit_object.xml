@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.activitysummary.CreateActivityActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/create_edit_object_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:backgroundTint="@color/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:titleTextColor="@color/white" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/create_edit_Heading_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/create_edit_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Activity Name"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@id/create_edit_Heading_name"
+            android:autofillHints="no" />
+
+        <TextView
+            android:id="@+id/create_edit_Heading_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Color"
+            app:layout_constraintTop_toBottomOf="@id/create_edit_name" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/create_edit_color_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/create_edit_Heading_color"
+            app:layout_constraintLeft_toLeftOf="@id/create_edit_Heading_color" />
+
+        <TextView
+            android:id="@+id/create_edit_Heading_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Icon"
+            app:layout_constraintTop_toBottomOf="@id/create_edit_name"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/create_edit_icon_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/create_edit_Heading_icon"
+            app:layout_constraintLeft_toLeftOf="@id/create_edit_Heading_icon" />
+
+        <TextView
+            android:id="@+id/create_edit_Heading_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Category"
+            app:layout_constraintTop_toBottomOf="@id/create_edit_color_fab" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:autoSizeMaxTextSize="20sp"
+            android:autoSizeMinTextSize="4sp"
+            android:autoSizeStepGranularity="2sp"
+            android:autoSizeTextType="uniform"
+            android:text="test"
+            app:layout_constraintTop_toBottomOf="@id/create_edit_Heading_category"
+            app:layout_constraintLeft_toLeftOf="@id/create_edit_Heading_category" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
