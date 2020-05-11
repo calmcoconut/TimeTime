@@ -11,6 +11,7 @@ import com.example.timetime.ui.homesummary.LogTimeToActivity;
 import com.example.timetime.viewmodels.CategoryViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import org.jetbrains.annotations.NotNull;
 
 public class MainActivity extends AppCompatActivity {
     private CategoryViewModel mCategoryViewModel; // used to make sure data updates when db changes
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
     private TabLayout tabLayout;
+    private int tabNumber;
 
     FloatingActionButton fab;
 
@@ -29,13 +31,21 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.view_pager);
         tabLayout = findViewById(R.id.tab_layout);
 
+        fab = findViewById(R.id.main_fab);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
+            public void onTabSelected(@NotNull TabLayout.Tab tab) {
+                super.onTabSelected(tab);
+                int position = tab.getPosition();
+                makeToast(position);
+            }
+        });
         FragmentManager fragmentManager = getSupportFragmentManager();
         adapter = new MainViewPagerAdapter(this,fragmentManager);
-
         viewPager.setAdapter(adapter);
+    }
 
-        fab = findViewById(R.id.main_fab);
+    private void setDefaultFabAction() {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,5 +53,17 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void makeToast(int pos) {
+        switch (pos) {
+            case 1:
+                break;
+            case 2:
+                break;
+            default:
+                setDefaultFabAction();
+                break;
+        }
     }
 }
