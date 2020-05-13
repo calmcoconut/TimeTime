@@ -10,6 +10,8 @@ import com.example.timetime.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Objects;
+
 public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private EditText editTextNameOfItem;
@@ -23,7 +25,6 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_edit_object);
-        assignAllViews();
     }
 
     abstract void setUpToolBar();
@@ -32,9 +33,11 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
 
     public void assignAllViews() {
         toolbar = findViewById(R.id.create_edit_object_toolbar);
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         editTextNameOfItem = findViewById(R.id.create_edit_name);
         colorFab = findViewById(R.id.create_edit_color_fab);
-        iconFab = findViewById(R.id.create_edit_Heading_icon);
+        iconLabel = findViewById(R.id.create_edit_Heading_icon);
         iconFab = findViewById(R.id.create_edit_icon_fab);
         categoryLabel = findViewById(R.id.create_edit_Heading_category);
         categoryButton = findViewById(R.id.create_edit_category_button);
@@ -44,8 +47,8 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
         colorFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createFragment();
-                launchFragment();
+//                createFragment();
+//                launchFragment();
             }
         });
     }

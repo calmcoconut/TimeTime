@@ -9,12 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MaterialAppTheme">
-        <activity android:name=".ui.activitysummary.CreateActivityActivity" android:parentActivityName=".MainActivity">
+        <activity
+            android:name=".ui.activitysummary.CreateActivityActivity" android:parentActivityName=".MainActivity">
         </activity>
         <activity
             android:name=".ui.homesummary.LogTimeToActivity"
             android:parentActivityName=".MainActivity"></activity>
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
