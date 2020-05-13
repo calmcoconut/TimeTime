@@ -10,6 +10,7 @@ public class CreateActivityActivity extends BaseCreateCategoryOrActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_edit_object);
         assignAllViews();
+        setUpColorFab(this);
     }
 
     @Override

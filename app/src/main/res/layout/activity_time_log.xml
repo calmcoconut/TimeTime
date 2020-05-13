@@ -14,8 +14,7 @@
         android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
         android:backgroundTint="@color/colorPrimary"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:titleTextColor="@color/white"
-        />
+        app:titleTextColor="@color/white" />
 
     <LinearLayout
         android:id="@+id/linear_layout_parent"
@@ -62,14 +61,11 @@
             app:layout_constraintTop_toBottomOf="@id/linear_layout_parent"
             app:layout_constraintBottom_toBottomOf="parent">
 
-
-
-
         </GridLayout>
     </ScrollView>
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/activity_time_log_button_1"
         style="@style/activity_log_button"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 </LinearLayout>
