@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void setLaunchCreateActivityFab() {
+    private void setLaunchCreateCategoryAndActFab() {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     private void makeToast(int pos) {
         switch (pos) {
             case 1:
-                setLaunchCreateActivityFab();
+                setLaunchCreateCategoryAndActFab();
                 break;
             case 2:
                 break;
