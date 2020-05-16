@@ -13,7 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.timetime.R;
-import com.example.timetime.ui.buttons.LogTimeToActivityButton;
+import com.example.timetime.ui.buttons.EditActivityButton;
 import com.example.timetime.viewmodels.ActivityViewModel;
 import com.google.android.material.button.MaterialButton;
 
@@ -23,7 +23,7 @@ public class ActivityFragment extends Fragment {
     private GridLayout mGridLayout;
     private Context mGridContext;
     private ActivityViewModel mActivityViewModel;
-    private LogTimeToActivityButton baseActivityButtons;
+    private EditActivityButton baseActivityButtons;
 
     @Nullable
     @Override
@@ -36,7 +36,7 @@ public class ActivityFragment extends Fragment {
         TEMPLATE_BUTTON = rootView.findViewById(R.id.activity_button_template);
 
         mActivityViewModel = new ViewModelProvider(this).get(ActivityViewModel.class);
-        baseActivityButtons = new LogTimeToActivityButton();
+        baseActivityButtons = new EditActivityButton();
         baseActivityButtons.setUpActivityButtons(getViewLifecycleOwner(),mActivityViewModel,mGridContext,mGridLayout,
                 TEMPLATE_BUTTON);
 

@@ -12,7 +12,7 @@ import com.example.timetime.database.entity.TimeLog;
 import com.example.timetime.viewmodels.ActivityViewModel;
 import com.google.android.material.button.MaterialButton;
 
-public class LogTimeToActivityButton extends NewBaseActivityButton {
+public class LogTimeToActivityButton extends BaseActivityButton {
 
     @Override
     public void setMaterialButtonOnClick(MaterialButton materialButton) {

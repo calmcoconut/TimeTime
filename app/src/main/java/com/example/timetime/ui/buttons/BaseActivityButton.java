@@ -17,7 +17,7 @@ import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
 
-public abstract class NewBaseActivityButton {
+public abstract class BaseActivityButton {
     private ActivityViewModel activityViewModel;
     private LifecycleOwner owner;
     private Context context;
