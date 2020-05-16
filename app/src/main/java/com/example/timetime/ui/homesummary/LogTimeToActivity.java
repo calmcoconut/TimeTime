@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.timetime.R;
 import com.example.timetime.database.TimeLogic;
 import com.example.timetime.database.entity.Activity;
-import com.example.timetime.ui.BaseActivityButtons;
+import com.example.timetime.ui.buttons.BaseActivityButtons;
 import com.example.timetime.viewmodels.ActivityViewModel;
 import com.google.android.material.button.MaterialButton;
 

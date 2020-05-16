@@ -1,11 +1,10 @@
-package com.example.timetime.ui;
+package com.example.timetime.ui.buttons;
 
 import android.content.Context;
 import android.widget.GridLayout;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import com.example.timetime.database.entity.Activity;
-import com.example.timetime.ui.homesummary.ActivityMaterialButton;
 import com.example.timetime.viewmodels.ActivityViewModel;
 import com.google.android.material.button.MaterialButton;
 
