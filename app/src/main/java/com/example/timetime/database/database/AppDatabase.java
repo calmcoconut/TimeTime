@@ -1,7 +1,6 @@
 package com.example.timetime.database.database;
 
 import android.content.Context;
-import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -82,7 +81,6 @@ public abstract class AppDatabase extends RoomDatabase {
             FirstDatabase firstDatabase = new FirstDatabase();
             for (Color color : firstDatabase.getColorArray()) {
                 colorDao.insert(color);
-                Log.d("TESTING DATABASE ", "ADDED DATABASE");
             }
             for (Icon icon : firstDatabase.getIconArray()) {
                 iconDao.insert(icon);

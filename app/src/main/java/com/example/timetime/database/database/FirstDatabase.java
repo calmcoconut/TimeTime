@@ -48,7 +48,6 @@ public class FirstDatabase {
             try {
                 resourceID = iconDrawables.get(count).getInt(null);
                 Icon icon = new Icon(resourceID);
-                Log.d("Raw asset ", iconDrawables.get(count).getName().toString() + String.valueOf(resourceID));
                 iconArrayIntAddresses[count] = icon;
             }
             catch (IllegalAccessException e) { // this may cause problems

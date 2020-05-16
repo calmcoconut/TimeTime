@@ -2,7 +2,6 @@ package com.example.timetime.ui.homesummary;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.GridLayout;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,7 +49,6 @@ public class LogTimeToActivity extends AppCompatActivity {
                 if (latestModifiedTime == null) {
                     mToolBarTime = "not working";
                 } else {
-                    Log.d("LATEST TIMESTAMP", timeLogic.getHumanFormattedTimeBetweenDbValueAndNow(latestModifiedTime));
                     mToolBarTime = timeLogic.getHumanFormattedTimeBetweenDbValueAndNow(latestModifiedTime);
                     setUpToolBar(false);
                 }

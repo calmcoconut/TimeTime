@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import com.example.timetime.database.AppRepository;
 import com.example.timetime.database.entity.Activity;
 import com.example.timetime.database.entity.Color;
+import com.example.timetime.database.entity.Icon;
 import com.example.timetime.database.entity.TimeLog;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class ActivityViewModel extends AndroidViewModel {
     private LiveData<List<Activity>> mAllActivities;
     private LiveData<Long> mLatestTimeStamp;
     private LiveData<List<Color>> mColors;
+    private LiveData<List<Icon>> mIcons;
 
     public ActivityViewModel(@NonNull Application application) {
         super(application);
@@ -26,6 +28,7 @@ public class ActivityViewModel extends AndroidViewModel {
         mAllActivities = mAppRepository.getAllActivities();
         mLatestTimeStamp = mAppRepository.getMostRecentModified();
         mColors = mAppRepository.getAllColors();
+        mIcons = mAppRepository.getAllIcons();
     }
     // Getters
     public LiveData<List<Activity>> getAllActivities() {
@@ -36,6 +39,9 @@ public class ActivityViewModel extends AndroidViewModel {
     }
     public LiveData<List<Color>> getAllColors() {
         return mColors;
+    }
+    public LiveData<List<Icon>> getAllIcons() {
+        return mIcons;
     }
 
     // Inserters

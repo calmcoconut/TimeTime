@@ -2,6 +2,7 @@ package com.example.timetime.ui.activitysummary;
 
 import android.os.Bundle;
 import com.example.timetime.R;
+import com.example.timetime.ui.BaseCreateCategoryOrActivity;
 
 public class CreateActivityActivity extends BaseCreateCategoryOrActivity {
 
@@ -11,20 +12,18 @@ public class CreateActivityActivity extends BaseCreateCategoryOrActivity {
         setContentView(R.layout.activity_create_edit_object);
         assignAllViews();
         setUpColorFab(this);
+        setUpIconFab(this);
     }
 
     @Override
-    void setUpToolBar() {
-
+    public void setToolBar() {
     }
 
     @Override
-    void setEditTextHint() {
-
+    public void setEditTextHint() {
     }
 
     @Override
-    void hideIrrelevantViews() {
-
+    public void setIrrelevantViews() {
     }
 }
