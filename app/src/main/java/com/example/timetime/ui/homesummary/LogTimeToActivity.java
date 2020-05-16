@@ -10,13 +10,10 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.timetime.R;
 import com.example.timetime.database.TimeLogic;
-import com.example.timetime.database.entity.Activity;
 import com.example.timetime.ui.buttons.LogTimeToActivityButton;
 import com.example.timetime.viewmodels.ActivityViewModel;
 import com.google.android.material.button.MaterialButton;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class LogTimeToActivity extends AppCompatActivity {
@@ -25,7 +22,6 @@ public class LogTimeToActivity extends AppCompatActivity {
     private GridLayout mGridLayout;
     private Context mGridContext;
     private ActivityViewModel mActivityViewModel;
-    private List<Activity> mActivities;
     private TimeLogic timeLogic;
     private String mToolBarTime;
 
@@ -40,7 +36,6 @@ public class LogTimeToActivity extends AppCompatActivity {
         timeLogic = TimeLogic.newInstance();
         mActivityViewModel = new ViewModelProvider(this).get(ActivityViewModel.class);
         toolbar = findViewById(R.id.activity_time_log_toolbar);
-        mActivities = new ArrayList<Activity>();
         LogTimeToActivityButton baseActivityButtons = new LogTimeToActivityButton();
 
         mActivityViewModel.getLastSinceModified().observe(this, new Observer<Long>() {
@@ -70,7 +65,7 @@ public class LogTimeToActivity extends AppCompatActivity {
         if (mToolBarTime == null) {
             setTitle(mToolBarTime);
         } else {
-            setTitle("Last Log: " + mToolBarTime.toString().toUpperCase());
+            setTitle("Last Log: " + mToolBarTime.toUpperCase());
         }
     }
 }
