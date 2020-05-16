@@ -97,9 +97,10 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/create_edit_category_button"
-            android:layout_width="150dp"
-            android:layout_height="40dp"
-            android:autoSizeMaxTextSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="125dp"
+            android:autoSizeMaxTextSize="14sp"
             android:autoSizeMinTextSize="4sp"
             android:autoSizeStepGranularity="2sp"
             android:autoSizeTextType="uniform"
@@ -112,6 +113,7 @@
             android:id="@+id/create_edit_submit_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minWidth="150dp"
             android:autoSizeTextType="uniform"
             android:text="testSubmit"
             android:backgroundTint="@color/colorSecondary"

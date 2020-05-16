@@ -1,6 +1,7 @@
 package com.example.timetime.ui;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
@@ -95,6 +96,12 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
         gridView.setNumColumns(5);
         gridView.setHorizontalSpacing(1);
         builder.setView(gridView)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
                 .show();
     }
 
