@@ -58,6 +58,7 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
         mActivityViewModel = new ViewModelProvider(this).get(ActivityViewModel.class);
         getAllColorsForAdapter();
         getAllIconsForAdapter();
+        setUpCategoryButton();
         setUpColorFab(this);
     }
 
@@ -77,6 +78,19 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
                 createDialog(context, false, true);
             }
         });
+    }
+
+    private void setUpCategoryButton() {
+        categoryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchCategoryActivity();
+            }
+        });
+    }
+
+    private void launchCategoryActivity() {
+       // TODO launch category fragment for intent data
     }
 
     private void createDialog(Context context, boolean isColorDialog, boolean isIconDialog) {
