@@ -47,7 +47,7 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
 
     public void assignAllViews() {
         toolbar = findViewById(R.id.create_edit_object_toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(getToolbar());
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         editTextNameOfItem = findViewById(R.id.create_edit_name);
         colorFab = findViewById(R.id.create_edit_color_fab);
@@ -152,4 +152,32 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
         });
     }
 
+    // getters
+
+    public Toolbar getToolbar() {
+        return toolbar;
+    }
+
+    public EditText getEditTextNameOfItem() {
+        return editTextNameOfItem;
+    }
+
+    public TextView getIconLabel() {
+        return iconLabel;
+    }
+
+    public TextView getCategoryLabel() {
+        return categoryLabel;
+    }
+
+    public MaterialButton getCategoryButton() {
+        return categoryButton;
+    }
+
+    public FloatingActionButton getColorFab() {
+        return colorFab;
+    }
+    public FloatingActionButton getIconFab() {
+        return iconFab;
+    }
 }

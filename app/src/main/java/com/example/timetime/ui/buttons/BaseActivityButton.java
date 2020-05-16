@@ -18,6 +18,9 @@ import com.google.android.material.button.MaterialButton;
 import java.util.List;
 
 public abstract class BaseActivityButton {
+    public static int ICON_KEY = 821478213;
+    public static int CAT_KEY = 196534123;
+    public static int COLOR_KEY = 532453552;
     private ActivityViewModel activityViewModel;
     private LifecycleOwner owner;
     private Context context;
@@ -81,6 +84,13 @@ public abstract class BaseActivityButton {
             this.mContext = mContext;
             setUpMaterialActivityButtonBasicAttributes();
             setUpMaterialActivityButtonIcon();
+            setTags();
+        }
+
+        private void setTags() {
+            mMaterialButton.setTag(ICON_KEY,this.mActivity.getIcon());
+            mMaterialButton.setTag(CAT_KEY,this.mActivity.getCategory());
+            mMaterialButton.setTag(COLOR_KEY, this.mActivity.getColor());
         }
 
         // TODO check icons for compatibility

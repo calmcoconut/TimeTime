@@ -1,8 +1,14 @@
 package com.example.timetime.ui.activitySummary;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import com.example.timetime.R;
 import com.example.timetime.ui.BaseCreateCategoryOrActivity;
+import com.example.timetime.ui.buttons.EditActivityButton;
+
+import java.util.Objects;
 
 public class EditActivityActivity extends BaseCreateCategoryOrActivity {
 
@@ -13,10 +19,24 @@ public class EditActivityActivity extends BaseCreateCategoryOrActivity {
         assignAllViews();
         setUpColorFab(this);
         setUpIconFab(this);
+        setToolBar();
+        setAttributes();
+    }
+
+    public void setAttributes() {
+        int color = Color.parseColor("#" + getIntent().getStringExtra(EditActivityButton.EXTRA_ACTIVITY_COLOR));
+        Drawable icon = getDrawable(getIntent().getIntExtra(EditActivityButton.EXTRA_ACTIVITY_ICON,0));
+
+        getEditTextNameOfItem().setText(getIntent().getStringExtra(EditActivityButton.EXTRA_ACTIVITY_NAME));
+        getCategoryButton().setText(getIntent().getStringExtra(EditActivityButton.EXTRA_ACTIVITY_CATEGORY));
+        getColorFab().setBackgroundTintList(ColorStateList.valueOf(color));
+        getIconFab().setBackgroundTintList(ColorStateList.valueOf(color));
+        getIconFab().setImageDrawable(icon);
     }
 
     @Override
     public void setToolBar() {
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Edit Activity");
     }
 
     @Override

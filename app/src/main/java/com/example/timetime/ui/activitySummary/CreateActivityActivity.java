@@ -4,6 +4,8 @@ import android.os.Bundle;
 import com.example.timetime.R;
 import com.example.timetime.ui.BaseCreateCategoryOrActivity;
 
+import java.util.Objects;
+
 public class CreateActivityActivity extends BaseCreateCategoryOrActivity {
 
     @Override
@@ -13,10 +15,12 @@ public class CreateActivityActivity extends BaseCreateCategoryOrActivity {
         assignAllViews();
         setUpColorFab(this);
         setUpIconFab(this);
+        setToolBar();
     }
 
     @Override
     public void setToolBar() {
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Create Activity");
     }
 
     @Override

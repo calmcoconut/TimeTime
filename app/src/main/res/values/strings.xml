@@ -3,4 +3,5 @@
     <string name="tab_title_home">home</string>
     <string name="tab_title_categories">activities</string>
     <string name="tab_title_activities">categories</string>
+    <string name="create_edit_submit_button">SUBMIT</string>
 </resources>
