@@ -1,18 +1,26 @@
 package com.example.timetime.ui.activitysummary;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import com.example.timetime.R;
+import com.example.timetime.database.entity.Color;
+import com.example.timetime.ui.dialogs.DialogAdapter;
+import com.example.timetime.viewmodels.ActivityViewModel;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
@@ -23,6 +31,8 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
     private FloatingActionButton iconFab;
     private TextView categoryLabel;
     private MaterialButton categoryButton;
+    private ActivityViewModel mActivityViewModel;
+    private List<String> colorsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +41,9 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
     }
 
     abstract void setUpToolBar();
+
     abstract void setEditTextHint();
+
     abstract void hideIrrelevantViews();
 
     public void assignAllViews() {
@@ -44,6 +56,20 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
         iconFab = findViewById(R.id.create_edit_icon_fab);
         categoryLabel = findViewById(R.id.create_edit_Heading_category);
         categoryButton = findViewById(R.id.create_edit_category_button);
+
+        mActivityViewModel = new ViewModelProvider(this).get(ActivityViewModel.class);
+        mActivityViewModel.getAllColors().observe(this, new Observer<List<Color>>() {
+            @Override
+            public void onChanged(List<Color> colors) {
+                if (colors !=null) {
+                    List<String> strList = new ArrayList<>();
+                    for (Color color:colors) {
+                        strList.add(color.getColor());
+                    }
+                    colorsList = strList;
+                }
+            }
+        });
     }
 
     public void setUpColorFab(Context context) {
@@ -57,24 +83,20 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
     }
 
     public void createDialog(Context context) {
-        CharSequence[] strs = {"test1","test2","test3","test4"};
-        DialogInterface.OnClickListener on = new DialogInterface.OnClickListener() {
-            /**
-             * This method will be invoked when a button in the dialog is clicked.
-             *
-             * @param dialog the dialog that received the click
-             * @param which  the button that was clicked (ex.
-             *               {@link DialogInterface#BUTTON_POSITIVE}) or the position
-             */
+        GridView gridView = new GridView(context);
+        DialogAdapter adapter = new DialogAdapter(this, android.R.layout.simple_list_item_1,colorsList);
+        gridView.setAdapter(adapter);
+        gridView.setNumColumns(5);
+        gridView.setHorizontalSpacing(1);
+        gridView.setPadding(50, 50, 50, 50);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             }
-        };
-        new MaterialAlertDialogBuilder(context)
-                .setTitle("test")
-                .setView(R.layout.dialog_recycler)
-                .setSingleChoiceItems(strs,1, on)
+        });
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
+        builder.setView(gridView)
+                .setTitle("Test")
                 .show();
     }
 }
