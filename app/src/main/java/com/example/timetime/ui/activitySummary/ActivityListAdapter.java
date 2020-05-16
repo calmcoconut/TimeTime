@@ -1,4 +1,4 @@
-package com.example.timetime.ui.activitysummary;
+package com.example.timetime.ui.activitySummary;
 
 import android.content.Context;
 import android.view.LayoutInflater;

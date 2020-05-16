@@ -10,11 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/MaterialAppTheme">
         <activity
-            android:name=".ui.activitysummary.CreateActivityActivity" android:parentActivityName=".MainActivity">
-        </activity>
+            android:name=".ui.activitySummary.CreateActivityActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ui.activitySummary.EditActivityActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ui.homesummary.LogTimeToActivity"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop">

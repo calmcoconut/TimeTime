@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.example.timetime.R;
-import com.example.timetime.ui.activitysummary.ActivityFragment;
+import com.example.timetime.ui.activitySummary.ActivityFragment;
 import com.example.timetime.ui.categorysummary.CategoryFragment;
 import com.example.timetime.ui.homesummary.HomeFragment;
 

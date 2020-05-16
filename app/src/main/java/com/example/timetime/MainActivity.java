@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 import com.example.timetime.ui.MainViewPagerAdapter;
-import com.example.timetime.ui.activitysummary.CreateActivityActivity;
+import com.example.timetime.ui.activitySummary.CreateActivityActivity;
 import com.example.timetime.ui.homesummary.LogTimeToActivity;
 import com.example.timetime.viewmodels.CategoryViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         FragmentManager fragmentManager = getSupportFragmentManager();
-        adapter = new MainViewPagerAdapter(this,fragmentManager);
+        adapter = new MainViewPagerAdapter(this, fragmentManager);
         viewPager.setAdapter(adapter);
     }
 

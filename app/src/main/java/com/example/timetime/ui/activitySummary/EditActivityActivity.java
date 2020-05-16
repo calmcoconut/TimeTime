@@ -1,10 +1,10 @@
-package com.example.timetime.ui.activitysummary;
+package com.example.timetime.ui.activitySummary;
 
 import android.os.Bundle;
 import com.example.timetime.R;
 import com.example.timetime.ui.BaseCreateCategoryOrActivity;
 
-public class CreateActivityActivity extends BaseCreateCategoryOrActivity {
+public class EditActivityActivity extends BaseCreateCategoryOrActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
