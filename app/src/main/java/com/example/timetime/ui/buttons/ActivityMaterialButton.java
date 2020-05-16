@@ -119,9 +119,4 @@ public class ActivityMaterialButton {
             viewModel.insertTimeLog(timeLog);
         }
     }
-
-    // TODO make on clicks
-    public static class ActivityButtonActivityPageOnClicks {
-
-    }
 }

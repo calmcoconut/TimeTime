@@ -36,7 +36,7 @@ public class LogTimeToActivity extends AppCompatActivity {
 
         mGridLayout = findViewById(R.id.activity_time_log_gridView);
         mGridContext = mGridLayout.getContext();
-        TEMPLATE_BUTTON = findViewById(R.id.activity_time_log_button_1);
+        TEMPLATE_BUTTON = findViewById(R.id.activity_button_template);
         timeLogic = TimeLogic.newInstance();
         mActivityViewModel = new ViewModelProvider(this).get(ActivityViewModel.class);
         toolbar = findViewById(R.id.activity_time_log_toolbar);

@@ -65,7 +65,7 @@
     </ScrollView>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/activity_time_log_button_1"
+        android:id="@+id/activity_button_template"
         style="@style/activity_log_button"
         android:visibility="gone" />
 </LinearLayout>

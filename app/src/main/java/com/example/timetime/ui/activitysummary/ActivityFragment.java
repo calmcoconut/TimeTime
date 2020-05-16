@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.timetime.R;
 import com.example.timetime.database.entity.Activity;
-import com.example.timetime.ui.buttons.BaseActivityButtons;
+import com.example.timetime.ui.buttons.LogTimeToActivityButton;
 import com.example.timetime.viewmodels.ActivityViewModel;
 import com.google.android.material.button.MaterialButton;
 
@@ -28,7 +28,7 @@ public class ActivityFragment extends Fragment {
     private Context mGridContext;
     private ActivityViewModel mActivityViewModel;
     private List<Activity> mActivities;
-    private BaseActivityButtons baseActivityButtons;
+    private LogTimeToActivityButton baseActivityButtons;
 
     @Nullable
     @Override
@@ -38,13 +38,13 @@ public class ActivityFragment extends Fragment {
 
         mGridLayout = rootView.findViewById(R.id.activity_time_log_gridView);
         mGridContext = mGridLayout.getContext();
-        TEMPLATE_BUTTON = rootView.findViewById(R.id.activity_time_log_button_1);
+        TEMPLATE_BUTTON = rootView.findViewById(R.id.activity_button_template);
 
         mActivityViewModel = new ViewModelProvider(this).get(ActivityViewModel.class);
         mActivities = new ArrayList<Activity>();
-        baseActivityButtons = new BaseActivityButtons();
-        baseActivityButtons.setUpActivityButtons(getViewLifecycleOwner(),mActivityViewModel,mActivities,mGridContext,mGridLayout,
-                TEMPLATE_BUTTON, true);
+        baseActivityButtons = new LogTimeToActivityButton();
+        baseActivityButtons.setUpActivityButtons(getViewLifecycleOwner(),mActivityViewModel,mGridContext,mGridLayout,
+                TEMPLATE_BUTTON);
 
         // clean up
         toolbar =  rootView.findViewById(R.id.activity_time_log_toolbar);
