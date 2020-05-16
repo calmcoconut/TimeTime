@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.timetime.R;
 import com.example.timetime.database.TimeLogic;
 import com.example.timetime.database.entity.Activity;
-import com.example.timetime.ui.buttons.BaseActivityButtons;
+import com.example.timetime.ui.buttons.LogTimeToActivityButton;
 import com.example.timetime.viewmodels.ActivityViewModel;
 import com.google.android.material.button.MaterialButton;
 
@@ -41,7 +41,7 @@ public class LogTimeToActivity extends AppCompatActivity {
         mActivityViewModel = new ViewModelProvider(this).get(ActivityViewModel.class);
         toolbar = findViewById(R.id.activity_time_log_toolbar);
         mActivities = new ArrayList<Activity>();
-        BaseActivityButtons baseActivityButtons = new BaseActivityButtons();
+        LogTimeToActivityButton baseActivityButtons = new LogTimeToActivityButton();
 
         mActivityViewModel.getLastSinceModified().observe(this, new Observer<Long>() {
             @Override
@@ -55,10 +55,10 @@ public class LogTimeToActivity extends AppCompatActivity {
             }
         });
         setUpToolBar(true);
-        baseActivityButtons.setUpActivityButtons(LogTimeToActivity.this, mActivityViewModel, mActivities,
+        baseActivityButtons.setUpActivityButtons(LogTimeToActivity.this, mActivityViewModel,
                 mGridContext,
                 mGridLayout,
-                TEMPLATE_BUTTON, false);
+                TEMPLATE_BUTTON);
     }
 
     private void setUpToolBar(boolean initialSetUp) {

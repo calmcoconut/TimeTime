@@ -32,7 +32,9 @@ public abstract class NewBaseActivityButton {
                                      Context gridContext, GridLayout gridLayout, MaterialButton TEMPLATE_BUTTON) {
         // TODO assure that minimum number of activities in the database is 1 or THIS WILL LOOP FOREVER.
         this.TEMPLATE_BUTTON = TEMPLATE_BUTTON;
+        this.owner = lifecycleOwner;
         this.activityViewModel = activityViewModel;
+        this.context = gridContext;
         activityViewModel.getAllActivities().observe(lifecycleOwner, new Observer<List<Activity>>() {
             @Override
             public void onChanged(List<Activity> activities) {
@@ -42,7 +44,8 @@ public abstract class NewBaseActivityButton {
                 }
                 else {
                     for (Activity activity : activities) {
-                        MaterialButton materialButton = new NewActivityMaterialButton(activity, gridContext).getActivityMaterialButton();
+                        MaterialButton materialButton =
+                                new NewActivityMaterialButton(activity, context).getActivityMaterialButton();
                         setMaterialButtonOnClick(materialButton);
                         gridLayout.addView(materialButton);
                     }
