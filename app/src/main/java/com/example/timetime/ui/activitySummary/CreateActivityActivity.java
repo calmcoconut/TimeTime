@@ -15,6 +15,7 @@ public class CreateActivityActivity extends BaseCreateCategoryOrActivity {
         assignAllViews();
         setUpColorFab(this);
         setUpIconFab(this);
+        setEditTextHint();
         setToolBar();
     }
 
@@ -25,6 +26,7 @@ public class CreateActivityActivity extends BaseCreateCategoryOrActivity {
 
     @Override
     public void setEditTextHint() {
+        getEditTextNameOfItem().setHint("New Activity Name");
     }
 
     @Override

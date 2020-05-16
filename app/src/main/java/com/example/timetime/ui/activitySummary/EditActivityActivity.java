@@ -20,13 +20,13 @@ public class EditActivityActivity extends BaseCreateCategoryOrActivity {
         setUpColorFab(this);
         setUpIconFab(this);
         setToolBar();
+        setEditTextHint();
         setAttributes();
     }
 
     public void setAttributes() {
         int color = Color.parseColor("#" + getIntent().getStringExtra(EditActivityButton.EXTRA_ACTIVITY_COLOR));
         Drawable icon = getDrawable(getIntent().getIntExtra(EditActivityButton.EXTRA_ACTIVITY_ICON,0));
-
         getEditTextNameOfItem().setText(getIntent().getStringExtra(EditActivityButton.EXTRA_ACTIVITY_NAME));
         getCategoryButton().setText(getIntent().getStringExtra(EditActivityButton.EXTRA_ACTIVITY_CATEGORY));
         getColorFab().setBackgroundTintList(ColorStateList.valueOf(color));
@@ -41,6 +41,7 @@ public class EditActivityActivity extends BaseCreateCategoryOrActivity {
 
     @Override
     public void setEditTextHint() {
+        getEditTextNameOfItem().setHint("Edit Activity Name");
     }
 
     @Override
