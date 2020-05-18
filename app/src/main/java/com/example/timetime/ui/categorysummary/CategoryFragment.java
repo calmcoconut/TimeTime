@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.timetime.R;
+import com.example.timetime.database.entity.Activity;
 import com.example.timetime.database.entity.Category;
 import com.example.timetime.viewmodels.CategoryViewModel;
 
@@ -42,6 +43,13 @@ public class CategoryFragment extends Fragment {
                     @Override
                     public void onChanged(@Nullable final List<Category> categories) {
                         adapter.setCategories(categories);
+                    }
+                });
+        mCategoryViewModel.getAllActivities().observe(getViewLifecycleOwner(),
+                new Observer<List<Activity>>() {
+                    @Override
+                    public void onChanged(List<Activity> activities) {
+                        adapter.setActivities(activities);
                     }
                 });
     }

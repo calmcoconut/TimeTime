@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/category_color_fab"
+        app:fabSize="mini"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:elevation="0dp"
+        app:rippleColor="@android:color/transparent"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:paddingTop="4dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/category_item_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="hello" />
+
+        <TextView
+            android:id="@+id/category_item_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="activity here"
+            android:paddingBottom="3dp"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>
