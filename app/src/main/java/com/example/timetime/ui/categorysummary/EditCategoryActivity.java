@@ -1,12 +1,9 @@
 package com.example.timetime.ui.categorysummary;
 
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.View;
 import com.example.timetime.R;
 import com.example.timetime.ui.BaseCreateCategoryOrActivity;
-import com.example.timetime.ui.buttons.EditActivityButton;
 
 import java.util.Objects;
 
@@ -22,34 +19,38 @@ public class EditCategoryActivity extends BaseCreateCategoryOrActivity {
         setToolBar();
         setEditTextHint();
         setAttributes();
+        setIrrelevantViews();
     }
 
     public void setAttributes() {
-        int color = Color.parseColor("#" + getIntent().getStringExtra(EditActivityButton.EXTRA_ACTIVITY_COLOR));
-        Drawable icon = getDrawable(getIntent().getIntExtra(EditActivityButton.EXTRA_ACTIVITY_ICON,0));
-        getEditTextNameOfItem().setText(getIntent().getStringExtra(EditActivityButton.EXTRA_ACTIVITY_NAME));
-        getCategoryButton().setText(getIntent().getStringExtra(EditActivityButton.EXTRA_ACTIVITY_CATEGORY));
-        getColorFab().setBackgroundTintList(ColorStateList.valueOf(color));
-        getIconFab().setBackgroundTintList(ColorStateList.valueOf(color));
-        getIconFab().setImageDrawable(icon);
+
     }
 
     @Override
     public void setToolBar() {
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Edit Activity");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Edit Category");
     }
 
     @Override
     public void setEditTextHint() {
-        getEditTextNameOfItem().setHint("Edit Activity Name");
+        getEditTextNameOfItem().setHint("Edit Category Name");
     }
 
     @Override
     public void setIrrelevantViews() {
+        getIconLabel().setVisibility(View.GONE);
+        getIconFab().setVisibility(View.GONE);
+        getCategoryLabel().setVisibility(View.GONE);
+        getCategoryButton().setVisibility(View.GONE);
     }
 
     @Override
     public void submitButtonAction() {
+        getValuesForDatabaseObject();
+    }
+
+    @Override
+    public void getValuesForDatabaseObject() {
 
     }
 }

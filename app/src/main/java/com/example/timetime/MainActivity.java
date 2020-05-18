@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 import com.example.timetime.ui.MainViewPagerAdapter;
 import com.example.timetime.ui.activitySummary.CreateActivityActivity;
+import com.example.timetime.ui.categorysummary.CreateCategoryActivity;
 import com.example.timetime.ui.homesummary.LogTimeToActivity;
 import com.example.timetime.viewmodels.CategoryViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -33,17 +34,21 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tab_layout);
 
         fab = findViewById(R.id.main_fab);
+
+        // tab logic
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
             public void onTabSelected(@NotNull TabLayout.Tab tab) {
                 super.onTabSelected(tab);
-                int position = tab.getPosition();
-                makeToast(position);
+                tabNumber = tab.getPosition();
+                setFabForTab(tabNumber);
             }
         });
         FragmentManager fragmentManager = getSupportFragmentManager();
         adapter = new MainViewPagerAdapter(this, fragmentManager);
         viewPager.setAdapter(adapter);
+        // if started by another activity, update tab
+        viewPager.setCurrentItem(getIntent().getIntExtra("tab",0));
     }
 
     private void setDefaultFabAction() {
@@ -56,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void setLaunchCreateCategoryAndActFab() {
+    private void setLaunchCreateActivityFab() {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,12 +71,23 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void makeToast(int pos) {
+    private void setLaunchCreateCategoryFab() {
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CreateCategoryActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void setFabForTab(int pos) {
         switch (pos) {
             case 1:
-                setLaunchCreateCategoryAndActFab();
+                setLaunchCreateActivityFab();
                 break;
             case 2:
+                setLaunchCreateCategoryFab();
                 break;
             default:
                 setDefaultFabAction();

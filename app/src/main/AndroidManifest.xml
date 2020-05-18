@@ -16,6 +16,12 @@
             android:name=".ui.activitySummary.EditActivityActivity"
             android:parentActivityName=".MainActivity" />
         <activity
+            android:name=".ui.categorysummary.CreateCategoryActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ui.categorysummary.EditCategoryActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".ui.homesummary.LogTimeToActivity"
             android:parentActivityName=".MainActivity" />
         <activity

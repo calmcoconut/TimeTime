@@ -1,6 +1,7 @@
 package com.example.timetime.ui.categorysummary;
 
 import android.os.Bundle;
+import android.view.View;
 import com.example.timetime.R;
 import com.example.timetime.ui.BaseCreateCategoryOrActivity;
 
@@ -17,6 +18,7 @@ public class CreateCategoryActivity extends BaseCreateCategoryOrActivity {
         setUpIconFab(this);
         setEditTextHint();
         setToolBar();
+        setIrrelevantViews();
     }
 
     @Override
@@ -31,10 +33,19 @@ public class CreateCategoryActivity extends BaseCreateCategoryOrActivity {
 
     @Override
     public void setIrrelevantViews() {
+        getIconLabel().setVisibility(View.GONE);
+        getIconFab().setVisibility(View.GONE);
+        getCategoryLabel().setVisibility(View.GONE);
+        getCategoryButton().setVisibility(View.GONE);
     }
 
     @Override
     public void submitButtonAction() {
+        getValuesForDatabaseObject();
+    }
+
+    @Override
+    public void getValuesForDatabaseObject() {
 
     }
 }

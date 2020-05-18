@@ -1,5 +1,6 @@
 package com.example.timetime.ui.categorysummary;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,13 @@ public class HomeCategoryFragment extends BaseCategoryFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.recycler_view, container, false);
         setAttributes(rootView);
-        setAdapterNoClick();
+        setAdapterWithClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), EditCategoryActivity.class);
+                startActivity(intent);
+            }
+        });
         return rootView;
     }
 

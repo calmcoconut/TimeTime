@@ -52,4 +52,11 @@ public class ActivityViewModel extends AndroidViewModel {
         mAppRepository.insertTimeLog(timeLog);
     }
 
+    // updaters
+    public void updateActivity(Activity oldActivity, Activity newActivity) {
+        if (!oldActivity.equals(newActivity)) {
+            mAppRepository.updateActivity(oldActivity,newActivity);
+        }
+    }
+
 }

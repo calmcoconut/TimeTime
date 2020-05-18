@@ -35,6 +35,7 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
     private FloatingActionButton iconFab;
     private TextView categoryLabel;
     private MaterialButton categoryButton;
+    private MaterialButton submitFab;
     private FragmentContainerView categoryFragmentView;
     private FragmentManager fragmentManager;
     private ActivityViewModel mActivityViewModel;
@@ -53,9 +54,14 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
     }
 
     public abstract void setToolBar();
+
     public abstract void setEditTextHint();
+
     public abstract void setIrrelevantViews();
+
     public abstract void submitButtonAction();
+
+    public abstract void getValuesForDatabaseObject();
 
     public void assignAllViews() {
         toolbar = findViewById(R.id.create_edit_object_toolbar);
@@ -67,6 +73,7 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
         iconFab = findViewById(R.id.create_edit_icon_fab);
         categoryLabel = findViewById(R.id.create_edit_Heading_category);
         categoryButton = findViewById(R.id.create_edit_category_button);
+        submitFab = findViewById(R.id.create_edit_submit_fab);
         categoryFragmentView = findViewById(R.id.create_edit_category_fragment);
         mActivityViewModel = new ViewModelProvider(this).get(ActivityViewModel.class);
         getAllColorsForAdapter();
@@ -103,7 +110,7 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
     }
 
     private void launchCategoryActivity() {
-       // TODO launch category fragment for intent data
+        // TODO launch category fragment for intent data
         final String[] newCategory = new String[1];
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -131,7 +138,8 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
             adapter = new ColorDialogAdapter(this, android.R.layout.simple_list_item_1, colorsList, colorFab, iconFab);
             gridView.setAdapter(adapter);
             setColorOnClick(gridView);
-        } else if (isIconDialog) {
+        }
+        else if (isIconDialog) {
             adapter = new IconDialogAdapter(this, android.R.layout.simple_list_item_1, iconList, iconFab);
             gridView.setAdapter(adapter);
             setIconOnClick(gridView);
@@ -230,7 +238,16 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
     public FloatingActionButton getColorFab() {
         return colorFab;
     }
+
     public FloatingActionButton getIconFab() {
         return iconFab;
+    }
+
+    public MaterialButton getSubmitFab() {
+        return submitFab;
+    }
+
+    public ActivityViewModel getActivityViewModel() {
+        return mActivityViewModel;
     }
 }

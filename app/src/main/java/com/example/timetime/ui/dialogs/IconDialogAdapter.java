@@ -38,18 +38,20 @@ public class IconDialogAdapter extends ArrayAdapter<String> {
         currentFab = convertView.findViewById(R.id.dialog_item_fab);
         if (icons != null) {
             currentFab.setBackgroundTintList(this.color);
-            Drawable icon = context.getDrawable(Integer.parseInt(getItem(position)));
+            int iconInt = Integer.parseInt(getItem(position));
+            Drawable icon = context.getDrawable(iconInt);
             currentFab.setImageDrawable(icon);
-            setCurrentIconOnClick(currentFab, icon);
+            setCurrentIconOnClick(currentFab, iconInt,icon);
         }
         return convertView;
     }
 
-    private void setCurrentIconOnClick(FloatingActionButton currentFab, Drawable icon) {
+    private void setCurrentIconOnClick(FloatingActionButton currentFab, int iconId, Drawable icon) {
         currentFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 iconFab.setImageDrawable(icon);
+                iconFab.setTag(iconId);
             }
         });
     }

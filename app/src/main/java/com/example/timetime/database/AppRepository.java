@@ -115,4 +115,21 @@ public class AppRepository {
             }
         });
     }
+
+    // update methods for database
+
+    public void updateActivity(Activity oldActivity, Activity newActivity) {
+        AppDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                String oldName = oldActivity.getActivity();
+                String newName = newActivity.getActivity();
+                String newCategory = newActivity.getCategory();
+                int newIcon = newActivity.getIcon();
+                String newColor = newActivity.getColor();
+
+                mActivityDao.updateActivity(oldName,newName,newCategory,newIcon,newColor);
+            }
+        });
+    }
 }

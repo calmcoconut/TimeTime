@@ -11,7 +11,7 @@ import java.util.List;
 
 @Dao
 public interface ActivityDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Activity activity);
 
     @Query("DELETE FROM activity_table")
@@ -19,6 +19,14 @@ public interface ActivityDao {
 
     @Query("SELECT * FROM activity_table")
     LiveData<List<Activity>> getAllActivity();
+
+    @Query("UPDATE activity_table SET activity = :newActivityName, category =:newCategoryName, icon = :newIcon, " +
+            "color = :newColor" +
+            " WHERE " +
+            "activity = " +
+            ":oldActivityName")
+    void updateActivity(String oldActivityName, String newActivityName, String newCategoryName, int newIcon,
+                        String newColor);
 
     @Query("SELECT *  FROM activity_table WHERE activity = :activityName")
     LiveData<Activity> findActivityByName(String activityName);

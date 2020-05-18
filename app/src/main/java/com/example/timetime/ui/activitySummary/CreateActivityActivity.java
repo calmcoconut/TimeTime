@@ -30,5 +30,11 @@ public class CreateActivityActivity extends BaseCreateCategoryOrActivity {
 
     @Override
     public void submitButtonAction() {
+        getValuesForDatabaseObject();
+    }
+
+    @Override
+    public void getValuesForDatabaseObject() {
+
     }
 }

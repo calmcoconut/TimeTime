@@ -15,6 +15,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 
 public class ColorDialogAdapter extends ArrayAdapter<String> {
+
     FloatingActionButton itemFab;
     FloatingActionButton colorFab;
     FloatingActionButton iconFab;
