@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.example.timetime.R;
 import com.example.timetime.ui.activitySummary.ActivityFragment;
-import com.example.timetime.ui.categorysummary.CategoryFragment;
+import com.example.timetime.ui.categorysummary.HomeCategoryFragment;
 import com.example.timetime.ui.homesummary.HomeFragment;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class MainViewPagerAdapter extends FragmentStatePagerAdapter {
             case 1:
                 return ActivityFragment.newInstance();
             case 2:
-                return CategoryFragment.newInstance();
+                return HomeCategoryFragment.newInstance();
             default:
                 return HomeFragment.newInstance();
         }

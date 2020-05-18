@@ -7,11 +7,15 @@ import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentContainerView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.timetime.R;
 import com.example.timetime.database.entity.Color;
 import com.example.timetime.database.entity.Icon;
+import com.example.timetime.ui.categorysummary.SelectCategoryFragment;
 import com.example.timetime.ui.dialogs.ColorDialogAdapter;
 import com.example.timetime.ui.dialogs.IconDialogAdapter;
 import com.example.timetime.viewmodels.ActivityViewModel;
@@ -31,6 +35,8 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
     private FloatingActionButton iconFab;
     private TextView categoryLabel;
     private MaterialButton categoryButton;
+    private FragmentContainerView categoryFragmentView;
+    private FragmentManager fragmentManager;
     private ActivityViewModel mActivityViewModel;
     private List<String> colorsList;
     private List<String> iconList;
@@ -39,11 +45,17 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_edit_object);
+
+        this.fragmentManager = getSupportFragmentManager();
+        assignAllViews();
+        setUpColorFab(this);
+        setUpIconFab(this);
     }
 
     public abstract void setToolBar();
     public abstract void setEditTextHint();
     public abstract void setIrrelevantViews();
+    public abstract void submitButtonAction();
 
     public void assignAllViews() {
         toolbar = findViewById(R.id.create_edit_object_toolbar);
@@ -55,6 +67,7 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
         iconFab = findViewById(R.id.create_edit_icon_fab);
         categoryLabel = findViewById(R.id.create_edit_Heading_category);
         categoryButton = findViewById(R.id.create_edit_category_button);
+        categoryFragmentView = findViewById(R.id.create_edit_category_fragment);
         mActivityViewModel = new ViewModelProvider(this).get(ActivityViewModel.class);
         getAllColorsForAdapter();
         getAllIconsForAdapter();
@@ -91,6 +104,23 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
 
     private void launchCategoryActivity() {
        // TODO launch category fragment for intent data
+        final String[] newCategory = new String[1];
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        SelectCategoryFragment fragment = SelectCategoryFragment.newInstance(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newCategory[0] = (String) v.getTag();
+                categoryButton.setText(newCategory[0]);
+                categoryFragmentView.setVisibility(View.GONE);
+
+                setToolBar();
+                fragmentManager.popBackStack();
+            }
+        });
+        setSelectCategoryToolBar();
+        categoryFragmentView.setVisibility(View.VISIBLE);
+        fragmentTransaction.add(categoryFragmentView.getId(), fragment).addToBackStack("categorySelect").commit();
     }
 
     private void createDialog(Context context, boolean isColorDialog, boolean isIconDialog) {
@@ -166,6 +196,15 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        categoryFragmentView.setVisibility(View.GONE);
+        super.onBackPressed();
+    }
+
+    private void setSelectCategoryToolBar() {
+        getToolbar().setTitle("Select Category");
+    }
     // getters
 
     public Toolbar getToolbar() {

@@ -47,4 +47,9 @@ public class EditActivityActivity extends BaseCreateCategoryOrActivity {
     @Override
     public void setIrrelevantViews() {
     }
+
+    @Override
+    public void submitButtonAction() {
+
+    }
 }

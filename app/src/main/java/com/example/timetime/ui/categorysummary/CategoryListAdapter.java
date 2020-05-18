@@ -33,19 +33,26 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             colorFab = itemView.findViewById(R.id.category_color_fab);
         }
     }
+
     private final LayoutInflater mInflator;
-    private List<Category> mCategories ; // cached copy of categories
-    private List<Activity> mActivities ; // cached copy of Activities
+    private List<Category> mCategories; // cached copy of categories
+    private List<Activity> mActivities; // cached copy of Activities
     private HashMap<String, List<String>> mCategoryActivityMap;
+    private View.OnClickListener onClickListener;
 
     CategoryListAdapter(Context context) {
+        mInflator = LayoutInflater.from(context);
+    }
+
+    CategoryListAdapter(Context context, View.OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
         mInflator = LayoutInflater.from(context);
     }
 
     @NonNull
     @Override
     public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = mInflator.inflate(R.layout.category_item,parent,false);
+        View itemView = mInflator.inflate(R.layout.category_item, parent, false);
         return new CategoryViewHolder(itemView);
     }
 
@@ -58,6 +65,10 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             Category current = mCategories.get(position);
             setCategoryRelatedAttributes(holder, current);
             setActivityList(holder, current);
+            if (this.onClickListener != null) {
+                holder.itemView.setTag(current.getCategory());
+                holder.itemView.setOnClickListener(this.onClickListener);
+            }
         }
         else {
             holder.mCategoryItemTitle.setText("There is an error or no items");
@@ -68,14 +79,14 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         List<String> activities = mCategoryActivityMap.get(category.getCategory());
         if (Objects.requireNonNull(activities).size() > 0) {
             String activitiesString = activities.toString()
-                    .replace("[","")
-                    .replace("]","");
+                    .replace("[", "")
+                    .replace("]", "");
             holder.mCategoryItemActivityNames.setText(activitiesString);
         }
     }
 
     private HashMap<String, List<String>> createCategoryActivityMap() {
-        HashMap<String, List<String>> result = new HashMap<String,List<String>>();
+        HashMap<String, List<String>> result = new HashMap<String, List<String>>();
         for (Category category : mCategories) {
             result.put(category.getCategory(), new ArrayList<String>());
         }
@@ -89,13 +100,14 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     private void setCategoryRelatedAttributes(CategoryViewHolder holder, Category category) {
         holder.mCategoryItemTitle.setText(category.getCategory());
-        holder.colorFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#"+category.getColor())));
+        holder.colorFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#" + category.getColor())));
     }
 
     public void setCategories(List<Category> categories) {
         mCategories = categories;
         notifyDataSetChanged();
     }
+
     public void setActivities(List<Activity> activities) {
         mActivities = activities;
         notifyDataSetChanged();
@@ -103,7 +115,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     @Override
     public int getItemCount() {
-        if (mCategories != null){
+        if (mCategories != null) {
             return mCategories.size();
         }
         else return 0;

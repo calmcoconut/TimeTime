@@ -32,4 +32,9 @@ public class CreateCategoryActivity extends BaseCreateCategoryOrActivity {
     @Override
     public void setIrrelevantViews() {
     }
+
+    @Override
+    public void submitButtonAction() {
+
+    }
 }

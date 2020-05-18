@@ -1,10 +1,6 @@
 package com.example.timetime.ui.categorysummary;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -18,26 +14,15 @@ import com.example.timetime.viewmodels.CategoryViewModel;
 
 import java.util.List;
 
-public class CategoryFragment extends Fragment {
+public abstract class BaseCategoryFragment extends Fragment {
     private CategoryViewModel mCategoryViewModel;
+    private RecyclerView recyclerView;
+    CategoryListAdapter adapter;
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        final View rootView = inflater.inflate(R.layout.recycler_view, container, false);
-        startRecyclerForCategory(rootView);
-        return rootView;
-    }
-
-    private void startRecyclerForCategory(View view) {
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_root);
-
-        final CategoryListAdapter adapter = new CategoryListAdapter(getContext());
+    private void startRecyclerForCategory() {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mCategoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         mCategoryViewModel.getAllCategories().observe(getViewLifecycleOwner(),
                 new Observer<List<Category>>() {
                     @Override
@@ -54,11 +39,18 @@ public class CategoryFragment extends Fragment {
                 });
     }
 
-    // factory method for returning an instance of the class
-    public static CategoryFragment newInstance() {
-        return new CategoryFragment();
+    public void setAttributes(View view) {
+        this.recyclerView = view.findViewById(R.id.recycler_view_root);
+        this.mCategoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
     }
-    // empty constructor
-    public CategoryFragment() {
+
+    public void setAdapterNoClick() {
+        this.adapter = new CategoryListAdapter(getContext());
+        startRecyclerForCategory();
+    }
+
+    public void setAdapterWithClick(View.OnClickListener onClickListener) {
+        this.adapter = new CategoryListAdapter(getContext(), onClickListener);
+        startRecyclerForCategory();
     }
 }
