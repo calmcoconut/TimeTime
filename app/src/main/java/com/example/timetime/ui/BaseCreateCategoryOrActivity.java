@@ -2,6 +2,7 @@ package com.example.timetime.ui;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
@@ -12,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import com.example.timetime.MainActivity;
 import com.example.timetime.R;
 import com.example.timetime.database.entity.Color;
 import com.example.timetime.database.entity.Icon;
@@ -208,6 +210,14 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
     public void onBackPressed() {
         categoryFragmentView.setVisibility(View.GONE);
         super.onBackPressed();
+    }
+
+    public void closeToMain() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("tab",1);
+        startActivity(intent);
+        finish();
+        overridePendingTransition(0, 0);
     }
 
     private void setSelectCategoryToolBar() {

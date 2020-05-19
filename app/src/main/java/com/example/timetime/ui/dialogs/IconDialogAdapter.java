@@ -2,6 +2,7 @@ package com.example.timetime.ui.dialogs;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,7 @@ public class IconDialogAdapter extends ArrayAdapter<String> {
             int iconInt = Integer.parseInt(getItem(position));
             Drawable icon = context.getDrawable(iconInt);
             currentFab.setImageDrawable(icon);
+            currentFab.setColorFilter(Color.WHITE);
             setCurrentIconOnClick(currentFab, iconInt,icon);
         }
         return convertView;

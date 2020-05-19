@@ -1,13 +1,11 @@
 package com.example.timetime.ui.activitySummary;
 
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-import com.example.timetime.MainActivity;
 import com.example.timetime.R;
 import com.example.timetime.database.entity.Activity;
 import com.example.timetime.ui.BaseCreateCategoryOrActivity;
@@ -77,14 +75,6 @@ public class EditActivityActivity extends BaseCreateCategoryOrActivity {
                 closeToMain();
             }
         });
-    }
-
-    private void closeToMain() {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("tab",1);
-        startActivity(intent);
-        finish();
-        overridePendingTransition(0, 0);
     }
 
     private void updateDatabase() {
