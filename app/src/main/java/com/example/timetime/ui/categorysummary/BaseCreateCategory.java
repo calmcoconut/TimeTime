@@ -42,7 +42,7 @@ public abstract class BaseCreateCategory extends BaseCreateCategoryOrActivity {
                 if (mNewCategory != null) {
                     updateDatabase();
                 }
-                closeToMain();
+                closeToMain(2);
             }
         });
     }

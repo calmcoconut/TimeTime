@@ -9,10 +9,10 @@ import java.util.List;
 @Dao
 public interface TimeLogDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert (TimeLog timeTracker);
+    void insert(TimeLog timeTracker);
 
     @Update
-    void update (TimeLog timeTracker);
+    void update(TimeLog timeTracker);
 
 //    @Query("UPDATE timeLog_table SET activity_color = :newColor WHERE activity = :activityName")
 //    void updateActivityColor(String activityName, String newColor);
@@ -37,4 +37,13 @@ public interface TimeLogDao {
 
     @Query("SELECT * FROM timeLog_table ORDER BY timestamp_modified DESC")
     LiveData<List<TimeLog>> getAllTimeLogs();
+
+    // updaters
+    @Query("UPDATE timeLog_table set activity = :newActivityName, activity_color= :newColor, activity_icon = " +
+            ":newIcon, category=:newCategoryName WHERE activity=:oldActivityName")
+    void updateActivity(String oldActivityName, String newActivityName, String newCategoryName, int newIcon,
+                        String newColor);
+
+    @Query("UPDATE timeLog_table set category = :newCategoryName WHERE category = :oldCategoryName")
+    void updateCategory(String oldCategoryName, String newCategoryName);
 }

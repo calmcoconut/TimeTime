@@ -125,9 +125,12 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
     }
 
 
-    public void closeToMain() {
+    /**
+     * @param position choose where to close to... 0 is Home, 1 is Activity, 2 is Category
+     */
+    public void closeToMain(Integer position) {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("tab", 1);
+        intent.putExtra("tab", position);
         startActivity(intent);
         finish();
         overridePendingTransition(0, 0);

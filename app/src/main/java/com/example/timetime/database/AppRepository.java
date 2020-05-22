@@ -128,7 +128,8 @@ public class AppRepository {
                 int newIcon = newActivity.getIcon();
                 String newColor = newActivity.getColor();
 
-                mActivityDao.updateActivity(oldName,newName,newCategory,newIcon,newColor);
+                mActivityDao.updateActivity(oldName, newName, newCategory, newIcon, newColor);
+                mTimeLogDao.updateActivity(oldName, newName, newCategory, newIcon, newColor);
             }
         });
     }
@@ -141,7 +142,8 @@ public class AppRepository {
                 String newName = newCategory.getCategory();
                 String newColor = newCategory.getColor();
 
-                mCategoryDao.updateCategory(oldName,newName, newColor);
+                mCategoryDao.updateCategory(oldName, newName, newColor);
+                mTimeLogDao.updateCategory(oldName, newName);
             }
         });
     }
