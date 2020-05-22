@@ -32,10 +32,11 @@ public class CreateActivityActivity extends BaseCreateActivity {
         Drawable defaultIcon = getDrawable(FirstDatabase.INITIAL_ICON);
         getIconFab().setImageDrawable(defaultIcon);
         getIconFab().setColorFilter(Color.WHITE);
+        getIconFab().setTag(FirstDatabase.INITIAL_ICON);
     }
 
     @Override
     protected void updateDatabase() {
-
+        getActivityViewModel().insert(getNewActivity());
     }
 }
