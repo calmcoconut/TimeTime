@@ -10,6 +10,7 @@ import com.example.timetime.R;
 import com.example.timetime.ui.activitySummary.ActivityFragment;
 import com.example.timetime.ui.categorysummary.HomeCategoryFragment;
 import com.example.timetime.ui.homesummary.HomeFragment;
+import com.example.timetime.ui.stats.StatsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,18 +18,20 @@ import java.util.List;
 
 public class MainViewPagerAdapter extends FragmentStatePagerAdapter {
     private List<String> fragmentList;
-    private String HOME, CATEGORIES, ACTIVITIES;
+    private String HOME, CATEGORIES, ACTIVITIES, STATS;
 
     public MainViewPagerAdapter(@NonNull Context context,@NonNull FragmentManager fragmentManager) {
         super(fragmentManager);
         this.HOME = context.getString(R.string.tab_title_home);
         this.CATEGORIES = context.getString(R.string.tab_title_categories);
         this.ACTIVITIES = context.getString(R.string.tab_title_activities);
+        this.STATS = "stats";
 
         this.fragmentList = new ArrayList<>();
         this.fragmentList.add(this.HOME);
         this.fragmentList.add(this.CATEGORIES);
         this.fragmentList.add(this.ACTIVITIES);
+        this.fragmentList.add(this.STATS);
     }
 
     @NonNull
@@ -41,6 +44,8 @@ public class MainViewPagerAdapter extends FragmentStatePagerAdapter {
                 return ActivityFragment.newInstance();
             case 2:
                 return HomeCategoryFragment.newInstance();
+            case 3:
+                return StatsFragment.newInstance();
             default:
                 return HomeFragment.newInstance();
         }
