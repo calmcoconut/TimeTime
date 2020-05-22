@@ -143,6 +143,7 @@ public class AppRepository {
                 String newColor = newCategory.getColor();
 
                 mCategoryDao.updateCategory(oldName, newName, newColor);
+                mActivityDao.updateCategory(oldName,newName);
                 mTimeLogDao.updateCategory(oldName, newName);
             }
         });

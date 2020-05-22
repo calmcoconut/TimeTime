@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import com.example.timetime.ui.MainViewPagerAdapter;
 import com.example.timetime.ui.activitySummary.CreateActivityActivity;
@@ -42,10 +43,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         FragmentManager fragmentManager = getSupportFragmentManager();
-        adapter = new MainViewPagerAdapter(this, fragmentManager);
+        adapter = new MainViewPagerAdapter(this, fragmentManager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         viewPager.setAdapter(adapter);
         // if started by another activity, update tab
-        viewPager.setCurrentItem(getIntent().getIntExtra("tab",0));
+        viewPager.setCurrentItem(getIntent().getIntExtra("tab", 0));
     }
 
     private void setDefaultFabAction() {

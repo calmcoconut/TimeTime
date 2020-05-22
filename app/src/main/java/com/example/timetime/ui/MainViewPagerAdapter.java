@@ -20,8 +20,8 @@ public class MainViewPagerAdapter extends FragmentStatePagerAdapter {
     private List<String> fragmentList;
     private String HOME, CATEGORIES, ACTIVITIES, STATS;
 
-    public MainViewPagerAdapter(@NonNull Context context,@NonNull FragmentManager fragmentManager) {
-        super(fragmentManager);
+    public MainViewPagerAdapter(@NonNull Context context,@NonNull FragmentManager fragmentManager, int behavior) {
+        super(fragmentManager,behavior);
         this.HOME = context.getString(R.string.tab_title_home);
         this.CATEGORIES = context.getString(R.string.tab_title_categories);
         this.ACTIVITIES = context.getString(R.string.tab_title_activities);
