@@ -36,4 +36,11 @@ public class CategoryViewModel extends AndroidViewModel {
     public void insert(Category category) {
         mAppRepository.insertCategory(category);
     }
+
+    // updaters
+    public void updateCategory(Category oldCategory, Category newCategory) {
+        if (!oldCategory.equals(newCategory)) {
+            mAppRepository.updateCategory(oldCategory, newCategory);
+        }
+    }
 }

@@ -1,26 +1,35 @@
 package com.example.timetime.ui.categorysummary;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
-import com.example.timetime.R;
+import com.example.timetime.database.entity.Category;
 
 import java.util.Objects;
 
 public class EditCategoryActivity extends BaseCreateCategory {
+    private Category mOldCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_edit_object);
-        assignAllViews();
-        setUpColorFab();
-        setToolBar();
-        setEditTextHint();
-        setAttributes();
-        setIrrelevantViews();
+        setToPreviousCategoryAttributes();
+        submitButtonAction();
     }
 
-    public void setAttributes() {
+    private void setToPreviousCategoryAttributes() {
+        String oldColor;
+        String oldCatName = getIntent().getStringExtra(HomeCategoryFragment.EXTRA_CATEGORY_NAME);
+        int colorRaw = getIntent().getIntExtra(HomeCategoryFragment.EXTRA_CATEGORY_COLOR,0);
+        oldColor = Integer.toHexString(colorRaw);
 
+        getEditTextNameOfItem().setText(oldCatName);
+        getColorFab().setBackgroundTintList(ColorStateList.valueOf(colorRaw));
+        this.mOldCategory = new Category(Objects.requireNonNull(oldCatName),oldColor);
+    }
+
+    @Override
+    protected void updateDatabase() {
+        getCategoryViewModel().updateCategory(mOldCategory,getNewCategory());
     }
 
     @Override
@@ -33,13 +42,4 @@ public class EditCategoryActivity extends BaseCreateCategory {
         getEditTextNameOfItem().setHint("Edit Category Name");
     }
 
-    @Override
-    public void submitButtonAction() {
-        getValuesForDatabaseObject();
-    }
-
-
-    public void getValuesForDatabaseObject() {
-
-    }
 }

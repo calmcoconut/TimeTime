@@ -11,7 +11,7 @@ import java.util.List;
 
 @Dao
 public interface CategoryDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Category category);
 
     @Query("DELETE FROM category_table")
@@ -19,4 +19,11 @@ public interface CategoryDao {
 
     @Query("SELECT * FROM category_table")
     LiveData<List<Category>> getAllCategories();
+
+    @Query("UPDATE category_table SET category = :newCategoryName, category =:newCategoryName,  " +
+            "color = :newColor" +
+            " WHERE " +
+            "category = " +
+            ":oldCategoryName")
+    void updateCategory(String oldCategoryName, String newCategoryName, String newColor);
 }

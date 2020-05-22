@@ -59,7 +59,7 @@ public abstract class BaseCreateActivity extends BaseCreateCategoryOrActivity {
         });
     }
 
-    public Activity getValuesForDatabaseActivity() {
+    private Activity getValuesForDatabaseActivity() {
         final String activity = getEditTextNameOfItem().getText().toString();
         final String category = getCategoryButton().getText().toString();
         final Integer icon = (Integer) getIconFab().getTag();
@@ -93,7 +93,7 @@ public abstract class BaseCreateActivity extends BaseCreateCategoryOrActivity {
         });
     }
 
-    public void setUpIconFab() {
+    private void setUpIconFab() {
         getIconFab().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,14 +102,14 @@ public abstract class BaseCreateActivity extends BaseCreateCategoryOrActivity {
         });
     }
 
-    public boolean isValidCategoryType(String categorySelected) {
+    private boolean isValidCategoryType(String categorySelected) {
         if (categorySelected == null || categorySelected.equals(getString(R.string.create_edit_category_button_title))) {
             return false;
         }
         return true;
     }
 
-    public boolean isValidIcon(@Nullable Integer icon) {
+    private boolean isValidIcon(@Nullable Integer icon) {
         if (icon == null) {
             return false;
         }

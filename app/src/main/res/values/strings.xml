@@ -5,4 +5,5 @@
     <string name="tab_title_activities">categories</string>
     <string name="create_edit_submit_button">SUBMIT</string>
     <string name="create_edit_category_button_title">Categories</string>
+    <string name="default_category_item_subHeading">None</string>
 </resources>

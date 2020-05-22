@@ -10,15 +10,12 @@ import com.example.timetime.ui.MainViewPagerAdapter;
 import com.example.timetime.ui.activitySummary.CreateActivityActivity;
 import com.example.timetime.ui.categorysummary.CreateCategoryActivity;
 import com.example.timetime.ui.homesummary.LogTimeToActivity;
-import com.example.timetime.viewmodels.CategoryViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import org.jetbrains.annotations.NotNull;
 
 public class MainActivity extends AppCompatActivity {
-    private CategoryViewModel mCategoryViewModel; // used to make sure data updates when db changes
     private MainViewPagerAdapter adapter;
-
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private int tabNumber;

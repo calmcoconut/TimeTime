@@ -31,7 +31,7 @@
             android:id="@+id/category_item_activity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="activity here"
+            android:text="@string/default_category_item_subHeading"
             android:paddingBottom="3dp" />
 
         <View

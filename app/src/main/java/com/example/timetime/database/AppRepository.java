@@ -132,4 +132,17 @@ public class AppRepository {
             }
         });
     }
+
+    public void updateCategory(Category oldCategory, Category newCategory) {
+        AppDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                String oldName = oldCategory.getCategory();
+                String newName = newCategory.getCategory();
+                String newColor = newCategory.getColor();
+
+                mCategoryDao.updateCategory(oldName,newName, newColor);
+            }
+        });
+    }
 }
