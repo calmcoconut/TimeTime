@@ -49,7 +49,7 @@ public class EditCategoryActivity extends BaseCreateCategoryOrActivity {
         getValuesForDatabaseObject();
     }
 
-    @Override
+
     public void getValuesForDatabaseObject() {
 
     }

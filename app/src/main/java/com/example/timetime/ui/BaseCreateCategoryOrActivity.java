@@ -63,8 +63,6 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
 
     public abstract void submitButtonAction();
 
-    public abstract void getValuesForDatabaseObject();
-
     public void assignAllViews() {
         toolbar = findViewById(R.id.create_edit_object_toolbar);
         setSupportActionBar(getToolbar());
@@ -111,8 +109,28 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
         });
     }
 
+
+//    public Category getValuesForDatabaseCategory() {
+//        final String activity = getEditTextNameOfItem().getText().toString();
+//        final String category = getCategoryButton().getText().toString();
+//        final int icon = (int) getIconFab().getTag();
+//        final String color;
+//        final int colorRaw = Objects.requireNonNull(getColorFab().getBackgroundTintList()).getDefaultColor();
+//        color = Integer.toHexString(colorRaw);
+//
+//        if (isValidName(activity) && isValidCategoryType(category)) {
+//            return new Activity(activity, category, icon, color);
+//        }
+//        else if (!isValidName(activity)) {
+//            Toast.makeText(this, "Invalid Name!", Toast.LENGTH_SHORT).show();
+//        }
+//        else if (!isValidCategoryType(category)) {
+//            Toast.makeText(this, "Invalid Category!", Toast.LENGTH_SHORT).show();
+//        }
+//        return null;
+//    }
+
     private void launchCategoryActivity() {
-        // TODO launch category fragment for intent data
         final String[] newCategory = new String[1];
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -214,7 +232,7 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
 
     public void closeToMain() {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("tab",1);
+        intent.putExtra("tab", 1);
         startActivity(intent);
         finish();
         overridePendingTransition(0, 0);
@@ -223,6 +241,14 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
     private void setSelectCategoryToolBar() {
         getToolbar().setTitle("Select Category");
     }
+
+    public boolean isValidName(String name) {
+        if (name == null || name.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
     // getters
 
     public Toolbar getToolbar() {
@@ -259,5 +285,17 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
 
     public ActivityViewModel getActivityViewModel() {
         return mActivityViewModel;
+    }
+
+    public FragmentContainerView getCategoryFragmentView() {
+        return this.categoryFragmentView;
+    }
+
+    public FragmentManager getLocalFragmentManager() {
+        return this.fragmentManager;
+    }
+
+    public List<String> getIconList() {
+        return iconList;
     }
 }

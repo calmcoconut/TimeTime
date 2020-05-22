@@ -30,16 +30,20 @@ public class ActivityViewModel extends AndroidViewModel {
         mColors = mAppRepository.getAllColors();
         mIcons = mAppRepository.getAllIcons();
     }
+
     // Getters
     public LiveData<List<Activity>> getAllActivities() {
         return mAllActivities;
     }
+
     public LiveData<Long> getLastSinceModified() {
         return mLatestTimeStamp;
     }
+
     public LiveData<List<Color>> getAllColors() {
         return mColors;
     }
+
     public LiveData<List<Icon>> getAllIcons() {
         return mIcons;
     }
@@ -48,6 +52,7 @@ public class ActivityViewModel extends AndroidViewModel {
     public void insert(Activity activity) {
         mAppRepository.insertActivity(activity);
     }
+
     public void insertTimeLog(TimeLog timeLog) {
         mAppRepository.insertTimeLog(timeLog);
     }
@@ -55,7 +60,7 @@ public class ActivityViewModel extends AndroidViewModel {
     // updaters
     public void updateActivity(Activity oldActivity, Activity newActivity) {
         if (!oldActivity.equals(newActivity)) {
-            mAppRepository.updateActivity(oldActivity,newActivity);
+            mAppRepository.updateActivity(oldActivity, newActivity);
         }
     }
 

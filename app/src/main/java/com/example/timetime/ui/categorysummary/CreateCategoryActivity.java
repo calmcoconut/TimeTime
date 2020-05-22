@@ -44,7 +44,7 @@ public class CreateCategoryActivity extends BaseCreateCategoryOrActivity {
         getValuesForDatabaseObject();
     }
 
-    @Override
+
     public void getValuesForDatabaseObject() {
 
     }

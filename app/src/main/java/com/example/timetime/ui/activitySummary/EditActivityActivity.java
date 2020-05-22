@@ -5,15 +5,12 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
-import com.example.timetime.R;
 import com.example.timetime.database.entity.Activity;
-import com.example.timetime.ui.BaseCreateCategoryOrActivity;
 import com.example.timetime.ui.buttons.EditActivityButton;
 
 import java.util.Objects;
 
-public class EditActivityActivity extends BaseCreateCategoryOrActivity {
+public class EditActivityActivity extends BaseCreateActivity {
     private String mOldActivityName;
     private String mOldCategoryName;
     private int mOldIcon;
@@ -24,21 +21,19 @@ public class EditActivityActivity extends BaseCreateCategoryOrActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_edit_object);
-        assignAllViews();
-        setUpColorFab(this);
-        setUpIconFab(this);
+
         setToolBar();
         setEditTextHint();
         setAttributes();
-        mOldActivity = new Activity(mOldActivityName,mOldCategoryName,mOldIcon,mOldColor);
+        mOldActivity = new Activity(mOldActivityName, mOldCategoryName, mOldIcon, mOldColor);
         submitButtonAction();
     }
 
     public void setAttributes() {
         mOldActivityName = getIntent().getStringExtra(EditActivityButton.EXTRA_ACTIVITY_NAME);
         mOldCategoryName = getIntent().getStringExtra(EditActivityButton.EXTRA_ACTIVITY_CATEGORY);
-        mOldIcon = getIntent().getIntExtra(EditActivityButton.EXTRA_ACTIVITY_ICON,0);;
+        mOldIcon = getIntent().getIntExtra(EditActivityButton.EXTRA_ACTIVITY_ICON, 0);
+        ;
         mOldColor = getIntent().getStringExtra(EditActivityButton.EXTRA_ACTIVITY_COLOR);
 
         int color = Color.parseColor("#" + mOldColor);
@@ -48,6 +43,7 @@ public class EditActivityActivity extends BaseCreateCategoryOrActivity {
         getColorFab().setBackgroundTintList(ColorStateList.valueOf(color));
         getIconFab().setBackgroundTintList(ColorStateList.valueOf(color));
         getIconFab().setImageDrawable(icon);
+        getIconFab().setColorFilter(Color.WHITE);
         getIconFab().setTag(mOldIcon);
     }
 
@@ -56,41 +52,23 @@ public class EditActivityActivity extends BaseCreateCategoryOrActivity {
         Objects.requireNonNull(getSupportActionBar()).setTitle("Edit Activity");
     }
 
-    @Override
-    public void setEditTextHint() {
-        getEditTextNameOfItem().setHint("Edit Activity Name");
-    }
 
-    @Override
-    public void setIrrelevantViews() {
-    }
 
     @Override
     public void submitButtonAction() {
         getSubmitFab().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getValuesForDatabaseObject();
-                updateDatabase();
+                mNewActivity = getValuesForDatabaseActivity();
+                if (mNewActivity != null) {
+                    updateDatabase();
+                }
                 closeToMain();
             }
         });
     }
 
     private void updateDatabase() {
-        getActivityViewModel().updateActivity(mOldActivity,mNewActivity);
-    }
-
-    @Override
-    public void getValuesForDatabaseObject() {
-        final String activity = getEditTextNameOfItem().getText().toString();
-        final String category = getCategoryButton().getText().toString();
-        final int icon = (int) getIconFab().getTag();
-        final String color;
-        final int colorRaw= Objects.requireNonNull(getColorFab().getBackgroundTintList()).getDefaultColor();
-        color = Integer.toHexString(colorRaw);
-        Toast.makeText(this,icon + "  " + color,Toast.LENGTH_SHORT).show();
-
-         mNewActivity = new Activity(activity,category,icon,color);
+        getActivityViewModel().updateActivity(mOldActivity, mNewActivity);
     }
 }
