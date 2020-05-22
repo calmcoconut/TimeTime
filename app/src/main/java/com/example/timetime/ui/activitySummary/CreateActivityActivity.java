@@ -4,11 +4,10 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import com.example.timetime.database.database.FirstDatabase;
-import com.example.timetime.ui.BaseCreateCategoryOrActivity;
 
 import java.util.Objects;
 
-public class CreateActivityActivity extends BaseCreateCategoryOrActivity {
+public class CreateActivityActivity extends BaseCreateActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,22 +27,15 @@ public class CreateActivityActivity extends BaseCreateCategoryOrActivity {
         getEditTextNameOfItem().setHint("New Activity Name");
     }
 
-    @Override
-    public void setIrrelevantViews() {
-    }
 
-    @Override
-    public void submitButtonAction() {
-        getValuesForDatabaseObject();
-    }
-
-    public void getValuesForDatabaseObject() {
-
-    }
-
-    private void setDefaultIcon() {
+    public void setDefaultIcon() {
         Drawable defaultIcon = getDrawable(FirstDatabase.INITIAL_ICON);
         getIconFab().setImageDrawable(defaultIcon);
         getIconFab().setColorFilter(Color.WHITE);
+    }
+
+    @Override
+    protected void updateDatabase() {
+
     }
 }

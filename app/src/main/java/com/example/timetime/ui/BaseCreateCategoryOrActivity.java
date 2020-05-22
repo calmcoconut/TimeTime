@@ -1,6 +1,5 @@
 package com.example.timetime.ui;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,17 +8,12 @@ import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentContainerView;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.timetime.MainActivity;
 import com.example.timetime.R;
 import com.example.timetime.database.entity.Color;
-import com.example.timetime.database.entity.Icon;
-import com.example.timetime.ui.categorysummary.SelectCategoryFragment;
 import com.example.timetime.ui.dialogs.ColorDialogAdapter;
-import com.example.timetime.ui.dialogs.IconDialogAdapter;
 import com.example.timetime.viewmodels.ActivityViewModel;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -39,20 +33,16 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
     private MaterialButton categoryButton;
     private MaterialButton submitFab;
     private FragmentContainerView categoryFragmentView;
-    private FragmentManager fragmentManager;
     private ActivityViewModel mActivityViewModel;
     private List<String> colorsList;
-    private List<String> iconList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_edit_object);
 
-        this.fragmentManager = getSupportFragmentManager();
         assignAllViews();
-        setUpColorFab(this);
-        setUpIconFab(this);
+        setUpColorFab();
     }
 
     public abstract void setToolBar();
@@ -77,93 +67,26 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
         categoryFragmentView = findViewById(R.id.create_edit_category_fragment);
         mActivityViewModel = new ViewModelProvider(this).get(ActivityViewModel.class);
         getAllColorsForAdapter();
-        getAllIconsForAdapter();
-        setUpCategoryButton();
-        setUpColorFab(this);
+        setUpColorFab();
     }
 
-    public void setUpColorFab(Context context) {
+    public void setUpColorFab() {
         colorFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createDialog(context, true, false);
+                createColorDialog();
             }
         });
     }
 
-    public void setUpIconFab(Context context) {
-        iconFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createDialog(context, false, true);
-            }
-        });
-    }
-
-    private void setUpCategoryButton() {
-        categoryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchCategoryActivity();
-            }
-        });
-    }
-
-
-//    public Category getValuesForDatabaseCategory() {
-//        final String activity = getEditTextNameOfItem().getText().toString();
-//        final String category = getCategoryButton().getText().toString();
-//        final int icon = (int) getIconFab().getTag();
-//        final String color;
-//        final int colorRaw = Objects.requireNonNull(getColorFab().getBackgroundTintList()).getDefaultColor();
-//        color = Integer.toHexString(colorRaw);
-//
-//        if (isValidName(activity) && isValidCategoryType(category)) {
-//            return new Activity(activity, category, icon, color);
-//        }
-//        else if (!isValidName(activity)) {
-//            Toast.makeText(this, "Invalid Name!", Toast.LENGTH_SHORT).show();
-//        }
-//        else if (!isValidCategoryType(category)) {
-//            Toast.makeText(this, "Invalid Category!", Toast.LENGTH_SHORT).show();
-//        }
-//        return null;
-//    }
-
-    private void launchCategoryActivity() {
-        final String[] newCategory = new String[1];
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        SelectCategoryFragment fragment = SelectCategoryFragment.newInstance(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                newCategory[0] = (String) v.getTag();
-                categoryButton.setText(newCategory[0]);
-                categoryFragmentView.setVisibility(View.GONE);
-
-                setToolBar();
-                fragmentManager.popBackStack();
-            }
-        });
-        setSelectCategoryToolBar();
-        categoryFragmentView.setVisibility(View.VISIBLE);
-        fragmentTransaction.add(categoryFragmentView.getId(), fragment).addToBackStack("categorySelect").commit();
-    }
-
-    private void createDialog(Context context, boolean isColorDialog, boolean isIconDialog) {
-        GridView gridView = new GridView(context);
+    private void createColorDialog() {
+        GridView gridView = new GridView(this);
         ArrayAdapter adapter;
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
-        if (isColorDialog) {
-            adapter = new ColorDialogAdapter(this, android.R.layout.simple_list_item_1, colorsList, colorFab, iconFab);
-            gridView.setAdapter(adapter);
-            setColorOnClick(gridView);
-        }
-        else if (isIconDialog) {
-            adapter = new IconDialogAdapter(this, android.R.layout.simple_list_item_1, iconList, iconFab);
-            gridView.setAdapter(adapter);
-            setIconOnClick(gridView);
-        }
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+
+        adapter = new ColorDialogAdapter(this, android.R.layout.simple_list_item_1, colorsList, colorFab, iconFab);
+        gridView.setAdapter(adapter);
+        setColorOnClick(gridView);
 
         gridView.setNumColumns(5);
         gridView.setHorizontalSpacing(1);
@@ -186,14 +109,6 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
         });
     }
 
-    private void setIconOnClick(GridView gridView) {
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            }
-        });
-    }
-
     private void getAllColorsForAdapter() {
         mActivityViewModel.getAllColors().observe(this, new Observer<List<Color>>() {
             @Override
@@ -209,26 +124,6 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
         });
     }
 
-    private void getAllIconsForAdapter() {
-        mActivityViewModel.getAllIcons().observe(this, new Observer<List<Icon>>() {
-            @Override
-            public void onChanged(List<Icon> colors) {
-                if (colors != null) {
-                    List<String> strList = new ArrayList<>();
-                    for (Icon icon : colors) {
-                        strList.add(String.valueOf(icon.getIcon()));
-                    }
-                    iconList = strList;
-                }
-            }
-        });
-    }
-
-    @Override
-    public void onBackPressed() {
-        categoryFragmentView.setVisibility(View.GONE);
-        super.onBackPressed();
-    }
 
     public void closeToMain() {
         Intent intent = new Intent(this, MainActivity.class);
@@ -236,10 +131,6 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
         overridePendingTransition(0, 0);
-    }
-
-    private void setSelectCategoryToolBar() {
-        getToolbar().setTitle("Select Category");
     }
 
     public boolean isValidName(String name) {
@@ -288,14 +179,6 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
     }
 
     public FragmentContainerView getCategoryFragmentView() {
-        return this.categoryFragmentView;
-    }
-
-    public FragmentManager getLocalFragmentManager() {
-        return this.fragmentManager;
-    }
-
-    public List<String> getIconList() {
-        return iconList;
+        return categoryFragmentView;
     }
 }
