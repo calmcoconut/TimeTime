@@ -24,7 +24,7 @@ public class TimeLogCard {
         final Long timestampModified = timeLog.getTimestamp_modified();
         final String timeSpan = timeLogic.getLocalTimeFromDatabase(timeStampCreated) + " - " +
                 timeLogic.getLocalTimeFromDatabase(timestampModified);
-        String timeSpentValue = timeLogic.getHumanformattedTimeBetweenTwoTimeSpans(timeStampCreated, timestampModified);
+        String timeSpentValue = timeLogic.getHumanFormattedTimeBetweenTwoTimeSpans(timeStampCreated, timestampModified);
         final int icon = timeLog.getActivityIcon();
         final String color = timeLog.getActivityColor();
 
