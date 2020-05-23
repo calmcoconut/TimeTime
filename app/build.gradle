@@ -27,12 +27,20 @@ android {
 
 }
 
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     def roomVersion = '2.2.5'
+    def androidChartVersion = '3.1.0'
     def archLifecycleVersion = '2.2.0'
     def coreTestingVersion = '2.1.0'
+
+    // data visualization
+    implementation "com.github.PhilJay:MPAndroidChart:$androidChartVersion"
 
     // room components
     implementation "androidx.room:room-runtime:$roomVersion"

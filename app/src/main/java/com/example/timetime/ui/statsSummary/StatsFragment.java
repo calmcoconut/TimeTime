@@ -1,4 +1,4 @@
-package com.example.timetime.ui.help;
+package com.example.timetime.ui.statsSummary;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,21 +8,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.example.timetime.R;
-import com.example.timetime.ui.activitySummary.ActivityFragment;
 
-public class HelpFragment extends Fragment {
+public class StatsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.recycler_view, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_stats, container, false);
         return rootView;
     }
 
     // factory method for returning an instance of the class
-    public static ActivityFragment newInstance() {
-        return new ActivityFragment();
+    public static StatsFragment newInstance() {
+        return new StatsFragment();
     }
     // empty constructor
-    public HelpFragment() {
+    public StatsFragment() {
     }
 }

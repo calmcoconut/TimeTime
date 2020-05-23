@@ -42,9 +42,10 @@
 
     </LinearLayout>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_scrollFlags="scroll|enterAlways"
         android:layout_gravity="center">
 
         <GridLayout
@@ -62,7 +63,7 @@
             app:layout_constraintBottom_toBottomOf="parent">
 
         </GridLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/activity_button_template"

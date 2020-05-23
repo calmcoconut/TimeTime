@@ -6,4 +6,6 @@
     <string name="create_edit_submit_button">SUBMIT</string>
     <string name="create_edit_category_button_title">Categories</string>
     <string name="default_category_item_subHeading">None</string>
+    <string name="help_fragment_credits"><b>Alejandro Diaz</b> \nmore information about me can be found </string>
+    <string name="fragment_help_patreon">Show your support! \nFree and full feature, Always.</string>
 </resources>
