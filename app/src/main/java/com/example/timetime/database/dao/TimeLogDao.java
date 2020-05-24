@@ -35,6 +35,10 @@ public interface TimeLogDao {
     @Query("SELECT MAX(timestamp_modified) as newest FROM timeLog_table")
     LiveData<Long> metaNewestEntry();
 
+    @Query("SELECT * FROM TIMELOG_TABLE WHERE (timestamp_created>=:fromDay OR timestamp_modified>=:fromDay) AND " +
+            "(timestamp_created<=:toDay OR timestamp_modified<=:toDay)")
+    LiveData<List<TimeLog>> getTimeLogsFromDayToDay(Long fromDay, Long toDay);
+
     @Query("SELECT * FROM timeLog_table ORDER BY timestamp_modified DESC")
     LiveData<List<TimeLog>> getAllTimeLogs();
 

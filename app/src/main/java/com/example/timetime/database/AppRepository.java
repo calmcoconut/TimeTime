@@ -62,6 +62,10 @@ public class AppRepository {
         return mAllTimeTracker;
     }
 
+    public LiveData<List<TimeLog>> getTimeLogsFromDayToDay(Long fromDate, Long toDate) {
+        return mTimeLogDao.getTimeLogsFromDayToDay(fromDate, toDate);
+    }
+
     public LiveData<Long> getMostRecentModified() {
         return mMostRecentModified;
     }

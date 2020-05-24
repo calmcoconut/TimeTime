@@ -134,12 +134,13 @@ public class TimeLogic {
         return humanLongDate;
     }
 
-    public Long add23Hours59MinutesToLong(Long databaseValue) {
+    public Long addDayToLong(Long databaseValue) {
         long hours = 23;
         long mins = 59;
         // assure that that value is already at hour 0 and min 0
-        Instant instant = convertLongToInstant(databaseValue).truncatedTo(ChronoUnit.DAYS);
-        return convertInstantToLong(instant.plus(hours, ChronoUnit.HOURS).plus(mins, ChronoUnit.MINUTES));
+        ZonedDateTime zonedDateTime =
+                ZonedDateTime.ofInstant(convertLongToInstant(databaseValue),getZoneId()).truncatedTo(ChronoUnit.DAYS).plusHours(hours).plusMinutes(mins);
+        return zonedDateTime.truncatedTo(ChronoUnit.SECONDS).toEpochSecond();
     }
 
     public Long getLongForDataBaseFromInts(int year, int month, int day) {

@@ -6,14 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.timetime.R;
 import com.example.timetime.database.TimeLogic;
-import com.example.timetime.viewmodels.ActivityViewModel;
+import com.example.timetime.viewmodels.TimeLogViewModel;
 import com.github.mikephil.charting.charts.PieChart;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
@@ -31,7 +30,7 @@ public class StatsFragment extends Fragment {
     MaterialStyledDatePickerDialog toDatePickerDialog;
     TimeLogic timeLogic;
     PieChart pieChart;
-    ActivityViewModel activityViewModel;
+    TimeLogViewModel timeLogViewModel;
     Long fromDate;
     Long toDate;
 
@@ -53,7 +52,12 @@ public class StatsFragment extends Fragment {
 
     private void updatePie() {
         if (isPieAttributesValid()) {
-            Toast.makeText(inflatedView.getContext(), "valid", Toast.LENGTH_SHORT).show();
+            if (chipActivity.isChecked()) {
+                PieChartFactory.createActivityPieChart(this, pieChart, fromDate, toDate, timeLogViewModel);
+            }
+            else {
+                PieChartFactory.createCategoryPieChart(this, pieChart, fromDate, toDate, timeLogViewModel);
+            }
         }
     }
 
@@ -68,28 +72,32 @@ public class StatsFragment extends Fragment {
     }
 
     private void setDatePicker() {
+        int year = timeLogic.getIntYear();
+        // picker's month index begins at 0.
+        int month = timeLogic.getIntMonth() - 1;
+        int day = timeLogic.getIntDayOfMonth();
+
         fromDatePickerDialog = new MaterialStyledDatePickerDialog(inflatedView.getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                fromDate = timeLogic.getLongForDataBaseFromInts(year, month, dayOfMonth);
+                fromDate = timeLogic.getLongForDataBaseFromInts(year, month+1, dayOfMonth); // again rectifying month
                 setSelectionButtonText(true);
                 updatePie();
             }
         }
-                , timeLogic.getIntYear(), timeLogic.getIntMonth(), timeLogic.getIntDayOfMonth());
-
+                , year, month, day);
         toDatePickerDialog = new MaterialStyledDatePickerDialog(inflatedView.getContext(),
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        toDate = timeLogic.add23Hours59MinutesToLong(
-                                timeLogic.getLongForDataBaseFromInts(year, month,dayOfMonth)
+                        toDate = timeLogic.addDayToLong(
+                                timeLogic.getLongForDataBaseFromInts(year, month+1, dayOfMonth)
                         );
                         setSelectionButtonText(false);
                         updatePie();
                     }
                 }
-                , timeLogic.getIntYear(), timeLogic.getIntMonth(), timeLogic.getIntDayOfMonth());
+                , year, month, day);
     }
 
     private void setSelectionButtonText(boolean isFromButton) {
@@ -150,9 +158,10 @@ public class StatsFragment extends Fragment {
         defaultFromLabel = materialButtonFromSelection.getText().toString();
         defaultToLabel = materialButtonToSelection.getText().toString();
         chipActivity = inflatedView.findViewById(R.id.fragment_stats_activity_chip);
+        chipActivity.setChecked(true);
         chipCategory = inflatedView.findViewById(R.id.fragment_stats_category_chip);
         pieChart = inflatedView.findViewById(R.id.fragment_stats_pie_chart);
-        activityViewModel = new ViewModelProvider(this).get(ActivityViewModel.class);
+        timeLogViewModel = new ViewModelProvider(this).get(TimeLogViewModel.class);
     }
 
     // factory method for returning an instance of the class

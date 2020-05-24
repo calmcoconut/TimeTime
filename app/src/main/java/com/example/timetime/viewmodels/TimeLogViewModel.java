@@ -21,8 +21,13 @@ public class TimeLogViewModel extends AndroidViewModel {
         mAppRepository = new AppRepository(application);
         mAllTimeLogs = mAppRepository.getAllTimeLogs();
     }
+
     public LiveData<List<TimeLog>> getAllTimeLogs() {
         return mAllTimeLogs;
+    }
+
+    public LiveData<List<TimeLog>> getTimeLogsFromDayToDay(Long fromDate, Long toDate) {
+        return mAppRepository.getTimeLogsFromDayToDay(fromDate, toDate);
     }
 
     public void insert(TimeLog timeLog) {
