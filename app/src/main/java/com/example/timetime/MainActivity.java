@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import com.example.timetime.notifications.NotificationBroadcastReceiver;
 import com.example.timetime.ui.MainViewPagerAdapter;
 import com.example.timetime.ui.activitySummary.CreateActivityActivity;
 import com.example.timetime.ui.categorysummary.CreateCategoryActivity;
@@ -16,11 +17,12 @@ import com.google.android.material.tabs.TabLayout;
 import org.jetbrains.annotations.NotNull;
 
 public class MainActivity extends AppCompatActivity {
+    public static final boolean IS_DEV_DB = false;
+
     private MainViewPagerAdapter adapter;
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private int tabNumber;
-
     FloatingActionButton fab;
 
     @Override
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         // if started by another activity, update tab
         viewPager.setCurrentItem(getIntent().getIntExtra("tab", 0));
+        NotificationBroadcastReceiver.TimeTimeNotificationSetUp.createRepeatingNotification(this);
     }
 
     private void setDefaultFabAction() {

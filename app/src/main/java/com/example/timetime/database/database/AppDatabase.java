@@ -6,6 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
+import com.example.timetime.MainActivity;
 import com.example.timetime.database.dao.*;
 import com.example.timetime.database.entity.*;
 
@@ -37,8 +38,17 @@ public abstract class AppDatabase extends RoomDatabase {
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
             databaseWriteExecutor.execute(() -> {
-                UtilityClass.deleteAllDatabaseRows();
-                UtilityClass.loadDefaultDatabase();
+                if (MainActivity.IS_DEV_DB) {
+                    UtilityClass.deleteAllDatabaseRows();
+                    UtilityClass.loadFirstTimeDefaultDatabase();
+                }
+                else {
+                    if (INSTANCE == null) {
+                        UtilityClass.loadFirstTimeDefaultDatabase();
+                    }
+                    else {
+                    }
+                }
             });
         }
     };
@@ -72,7 +82,16 @@ public abstract class AppDatabase extends RoomDatabase {
             TimeLogDao timeLogDao = INSTANCE.timeLogDao();
             timeLogDao.deleteAll();
         }
+
         public static void loadDefaultDatabase() {
+            ColorDao colorDao = INSTANCE.colorDao();
+            IconDao iconDao = INSTANCE.iconDao();
+            CategoryDao categoryDao = INSTANCE.categoryDao();
+            ActivityDao activityDao = INSTANCE.activityDao();
+            TimeLogDao timeLogDao = INSTANCE.timeLogDao();
+        }
+
+        public static void loadFirstTimeDefaultDatabase() {
             ColorDao colorDao = INSTANCE.colorDao();
             IconDao iconDao = INSTANCE.iconDao();
             CategoryDao categoryDao = INSTANCE.categoryDao();
