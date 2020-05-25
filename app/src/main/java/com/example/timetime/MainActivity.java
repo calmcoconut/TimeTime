@@ -17,7 +17,7 @@ import com.google.android.material.tabs.TabLayout;
 import org.jetbrains.annotations.NotNull;
 
 public class MainActivity extends AppCompatActivity {
-    public static final boolean IS_DEV_DB = false;
+    public static final boolean IS_DEV_DB = true;
 
     private MainViewPagerAdapter adapter;
     private ViewPager viewPager;

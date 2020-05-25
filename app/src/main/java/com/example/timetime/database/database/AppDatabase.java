@@ -18,9 +18,13 @@ import java.util.concurrent.Executors;
 public abstract class AppDatabase extends RoomDatabase {
     // access our respective DAO objects
     public abstract ColorDao colorDao();
+
     public abstract IconDao iconDao();
+
     public abstract CategoryDao categoryDao();
+
     public abstract ActivityDao activityDao();
+
     public abstract TimeLogDao timeLogDao();
 
     // Instance of our database
@@ -30,10 +34,17 @@ public abstract class AppDatabase extends RoomDatabase {
     // executor to handle background, async tasks
     public static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
-    // onOpen database call back for testing
     private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
-        // override onOpen for testing purposes
-        // TODO remove testing before release
+        @Override
+        public void onCreate(@NonNull SupportSQLiteDatabase db) {
+            super.onCreate(db);
+            databaseWriteExecutor.execute(() -> {
+                if (!MainActivity.IS_DEV_DB) {
+                    UtilityClass.loadFirstTimeDefaultDatabase();
+                }
+            });
+        }
+
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
@@ -41,13 +52,6 @@ public abstract class AppDatabase extends RoomDatabase {
                 if (MainActivity.IS_DEV_DB) {
                     UtilityClass.deleteAllDatabaseRows();
                     UtilityClass.loadFirstTimeDefaultDatabase();
-                }
-                else {
-                    if (INSTANCE == null) {
-                        UtilityClass.loadFirstTimeDefaultDatabase();
-                    }
-                    else {
-                    }
                 }
             });
         }
@@ -81,14 +85,6 @@ public abstract class AppDatabase extends RoomDatabase {
             activityDao.deleteAll();
             TimeLogDao timeLogDao = INSTANCE.timeLogDao();
             timeLogDao.deleteAll();
-        }
-
-        public static void loadDefaultDatabase() {
-            ColorDao colorDao = INSTANCE.colorDao();
-            IconDao iconDao = INSTANCE.iconDao();
-            CategoryDao categoryDao = INSTANCE.categoryDao();
-            ActivityDao activityDao = INSTANCE.activityDao();
-            TimeLogDao timeLogDao = INSTANCE.timeLogDao();
         }
 
         public static void loadFirstTimeDefaultDatabase() {
