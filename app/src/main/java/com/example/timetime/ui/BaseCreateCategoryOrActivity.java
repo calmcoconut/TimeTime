@@ -1,14 +1,14 @@
 package com.example.timetime.ui;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.*;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentContainerView;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.timetime.MainActivity;
 import com.example.timetime.R;
@@ -70,12 +70,7 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
     }
 
     public void setUpColorFab() {
-        colorFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createColorDialog();
-            }
-        });
+        colorFab.setOnClickListener(v -> createColorDialog());
     }
 
     private void createColorDialog() {
@@ -83,47 +78,36 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
 
         ArrayAdapter adapter = new ColorDialogAdapter(this,
-                                                        android.R.layout.simple_list_item_1,
-                                                        colorsList,
-                                                        colorFab,
-                                                        iconFab);
+                android.R.layout.simple_list_item_1,
+                colorsList,
+                colorFab,
+                iconFab);
         gridView.setAdapter(adapter);
         setColorOnClick(gridView);
 
         gridView.setNumColumns(5);
         gridView.setHorizontalSpacing(1);
         builder.setView(gridView)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
                 .show();
     }
 
     private void setColorOnClick(GridView gridView) {
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                parent.getAdapter().getItem(position);
-            }
-        });
+        gridView.setOnItemClickListener((parent, view, position, id) -> parent.getAdapter().getItem(position));
     }
 
     private void getAllColorsForAdapter() {
-        mActivityViewModel.getAllColors().observe(this, new Observer<List<Color>>() {
-            @Override
-            public void onChanged(List<Color> colors) {
-                if (colors != null) {
-                    List<String> strList = new ArrayList<>();
-                    for (Color color : colors) {
-                        strList.add(color.getColor());
+        mActivityViewModel.getAllColors().observe(this,
+                colors -> {
+                    if (colors != null) {
+                        List<String> strList = new ArrayList<>();
+                        for (Color color : colors) {
+                            strList.add(color.getColor());
+                        }
+                        colorsList = strList;
                     }
-                    colorsList = strList;
                 }
-            }
-        });
+        );
     }
 
     public void closeToMain(Integer position) {
