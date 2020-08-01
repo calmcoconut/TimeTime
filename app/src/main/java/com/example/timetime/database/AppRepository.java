@@ -76,80 +76,54 @@ public class AppRepository {
 
     // insert into database methods
     public void insertActivity(final Activity activity) {
-        AppDatabase.databaseWriteExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                mActivityDao.insert(activity);
-            }
-        });
+        AppDatabase.databaseWriteExecutor.execute(() ->
+                mActivityDao.insert(activity));
     }
 
     public void insertCategory(final Category category) {
-        AppDatabase.databaseWriteExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                mCategoryDao.insert(category);
-            }
-        });
+        AppDatabase.databaseWriteExecutor.execute(() ->
+                mCategoryDao.insert(category));
     }
 
     public void insertColor(final Color color) {
-        AppDatabase.databaseWriteExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                mColorDao.insert(color);
-            }
-        });
+        AppDatabase.databaseWriteExecutor.execute(() ->
+                mColorDao.insert(color));
     }
 
     public void insertIcon(final Icon icon) {
-        AppDatabase.databaseWriteExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                mIconDao.insert(icon);
-            }
-        });
+        AppDatabase.databaseWriteExecutor.execute(() ->
+                mIconDao.insert(icon));
     }
 
     public void insertTimeLog(final TimeLog timeLog) {
-        AppDatabase.databaseWriteExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                mTimeLogDao.insert(timeLog);
-            }
-        });
+        AppDatabase.databaseWriteExecutor.execute(() ->
+                mTimeLogDao.insert(timeLog));
     }
 
     // update methods for database
 
     public void updateActivity(Activity oldActivity, Activity newActivity) {
-        AppDatabase.databaseWriteExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                String oldName = oldActivity.getActivity();
-                String newName = newActivity.getActivity();
-                String newCategory = newActivity.getCategory();
-                int newIcon = newActivity.getIcon();
-                String newColor = newActivity.getColor();
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            String oldName = oldActivity.getActivity();
+            String newName = newActivity.getActivity();
+            String newCategory = newActivity.getCategory();
+            int newIcon = newActivity.getIcon();
+            String newColor = newActivity.getColor();
 
-                mActivityDao.updateActivity(oldName, newName, newCategory, newIcon, newColor);
-                mTimeLogDao.updateActivity(oldName, newName, newCategory, newIcon, newColor);
-            }
+            mActivityDao.updateActivity(oldName, newName, newCategory, newIcon, newColor);
+            mTimeLogDao.updateActivity(oldName, newName, newCategory, newIcon, newColor);
         });
     }
 
     public void updateCategory(Category oldCategory, Category newCategory) {
-        AppDatabase.databaseWriteExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                String oldName = oldCategory.getCategory();
-                String newName = newCategory.getCategory();
-                String newColor = newCategory.getColor();
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            String oldName = oldCategory.getCategory();
+            String newName = newCategory.getCategory();
+            String newColor = newCategory.getColor();
 
-                mCategoryDao.updateCategory(oldName, newName, newColor);
-                mActivityDao.updateCategory(oldName,newName);
-                mTimeLogDao.updateCategory(oldName, newName);
-            }
+            mCategoryDao.updateCategory(oldName, newName, newColor);
+            mActivityDao.updateCategory(oldName, newName);
+            mTimeLogDao.updateCategory(oldName, newName);
         });
     }
 }

@@ -51,17 +51,15 @@ public class TimeLogic {
     public Integer getMinutesBetweenNowAndLastDatabaseTime(Long databaseValue) {
         final Instant databaseInstant = convertLongToInstant(databaseValue);
         final Instant nowInstant = Instant.now().truncatedTo(ChronoUnit.MINUTES);
-        Long r = ChronoUnit.MINUTES.between(databaseInstant, nowInstant);
-        Integer result = r.intValue();
-        return result;
+        long r = ChronoUnit.MINUTES.between(databaseInstant, nowInstant);
+        return (int) r;
     }
 
     public Integer getMinutesBetweenTwoTimeStamps(Long databaseValueOlder, Long databaseValueNewer) {
         final Instant databaseInstantOld = convertLongToInstant(databaseValueOlder);
         final Instant databaseInstantNew = convertLongToInstant(databaseValueNewer);
-        Long r = ChronoUnit.MINUTES.between(databaseInstantOld, databaseInstantNew);
-        Integer result = r.intValue();
-        return result;
+        long r = ChronoUnit.MINUTES.between(databaseInstantOld, databaseInstantNew);
+        return (int) r;
     }
 
     public String getHumanFormattedTimeBetweenTwoTimeSpans(Long databaseValueOlder, Long databaseValueNewer) {
@@ -70,15 +68,15 @@ public class TimeLogic {
         String minutes = "";
         Integer totalMinutes = getMinutesBetweenTwoTimeStamps(databaseValueOlder, databaseValueNewer);
         if ((totalMinutes / 1440) > 0) {
-            days = String.valueOf(totalMinutes / MINUTES_DAY) + "D ";
+            days = (totalMinutes / MINUTES_DAY) + "D ";
             totalMinutes = totalMinutes % MINUTES_DAY;
         }
         if ((totalMinutes / MINUTES_HOUR) > 0) {
-            hours = String.valueOf(totalMinutes / MINUTES_HOUR) + "h ";
+            hours = (totalMinutes / MINUTES_HOUR) + "h ";
             totalMinutes = totalMinutes % MINUTES_HOUR;
         }
         if (totalMinutes > 0) {
-            minutes = String.valueOf(totalMinutes) + "min";
+            minutes = totalMinutes + "min";
         }
         return days + hours + minutes;
     }
@@ -89,15 +87,15 @@ public class TimeLogic {
         String minutes = "";
         Integer totalMinutes = getMinutesBetweenTwoTimeStamps(databaseValue, convertInstantToLong(getCurrentInstant()));
         if ((totalMinutes / 1440) > 0) {
-            days = String.valueOf(totalMinutes / MINUTES_DAY) + "D ";
+            days = (totalMinutes / MINUTES_DAY) + "D ";
             totalMinutes = totalMinutes % MINUTES_DAY;
         }
         if ((totalMinutes / MINUTES_HOUR) > 0) {
-            hours = String.valueOf(totalMinutes / MINUTES_HOUR) + "h ";
+            hours = (totalMinutes / MINUTES_HOUR) + "h ";
             totalMinutes = totalMinutes % MINUTES_HOUR;
         }
         if (totalMinutes > 0) {
-            minutes = String.valueOf(totalMinutes) + "min";
+            minutes = totalMinutes + "min";
         }
         else if (totalMinutes == 0) {
             minutes = "0MIN";
@@ -112,7 +110,7 @@ public class TimeLogic {
     public String getLocalTimeFromDatabase(Long dataBaseValue) {
         Instant instant = convertLongToInstant(dataBaseValue);
         ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(instant, getZoneId());
-        return (String) zonedDateTime.format(DateTimeFormatter.ofPattern("HH:mm a"));
+        return zonedDateTime.format(DateTimeFormatter.ofPattern("HH:mm a"));
     }
 
     public String getHumanFormattedLongDateFromDatabase(Long databaseLong) {
@@ -129,7 +127,7 @@ public class TimeLogic {
             humanLongDate = "Yesterday";
         }
         else {
-            humanLongDate = (String) zonedDateTime.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL));
+            humanLongDate = zonedDateTime.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL));
         }
         return humanLongDate;
     }
@@ -139,7 +137,7 @@ public class TimeLogic {
         long mins = 59;
         // assure that that value is already at hour 0 and min 0
         ZonedDateTime zonedDateTime =
-                ZonedDateTime.ofInstant(convertLongToInstant(databaseValue),getZoneId()).truncatedTo(ChronoUnit.DAYS).plusHours(hours).plusMinutes(mins);
+                ZonedDateTime.ofInstant(convertLongToInstant(databaseValue), getZoneId()).truncatedTo(ChronoUnit.DAYS).plusHours(hours).plusMinutes(mins);
         return zonedDateTime.truncatedTo(ChronoUnit.SECONDS).toEpochSecond();
     }
 

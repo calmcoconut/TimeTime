@@ -104,7 +104,7 @@ public class TimeLog {
         return mActivityIcon;
     }
 
-    public void setActivityIcon(@NonNull int mActivityIcon) {
+    public void setActivityIcon(int mActivityIcon) {
         this.mActivityIcon = mActivityIcon;
     }
 }
