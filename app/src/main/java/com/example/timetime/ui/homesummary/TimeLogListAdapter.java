@@ -17,66 +17,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.TimeLogViewHolder> {
-
-
-    class TimeLogViewHolder extends RecyclerView.ViewHolder {
-
-        private final TextView mTimeLogCardTitle;
-        private final TextView mTimeLogCardTimeSpent;
-        private final TextView mTimeLogCardTimeSpan;
-        private final TextView mTimeLogCardDateHeading;
-        private final ImageView mTimeLogCardThumbnail;
-        private final View mTimeLogDivider;
-
-        private TimeLogViewHolder(View itemView) {
-            super(itemView);
-            mTimeLogCardTitle = itemView.findViewById(R.id.time_card_log_title);
-            mTimeLogCardTimeSpent = itemView.findViewById(R.id.time_card_log_time_spent);
-            mTimeLogCardTimeSpan = itemView.findViewById(R.id.time_card_log_time_span);
-            mTimeLogCardDateHeading = itemView.findViewById(R.id.time_log_day_heading);
-            mTimeLogDivider = itemView.findViewById(R.id.time_log_divider);
-            mTimeLogCardThumbnail = itemView.findViewById(R.id.time_log_card_thumbnail);
-        }
-
-        // getters
-        public TextView getmTimeLogCardTitle() {
-            return mTimeLogCardTitle;
-        }
-
-        public TextView getmTimeLogCardTimeSpent() {
-            return mTimeLogCardTimeSpent;
-        }
-
-        public TextView getmTimeLogCardTimeSpan() {
-            return mTimeLogCardTimeSpan;
-        }
-
-        public TextView getmTimeLogCardDateHeading() {
-            return mTimeLogCardDateHeading;
-        }
-
-        public View getmTimeLogDivider() {
-            return mTimeLogDivider;
-        }
-
-        public ImageView getmTimeLogCardThumbnail() {
-            return mTimeLogCardThumbnail;
-        }
-
-        public ZonedDateTime getPreviousCardDate() {
-            return mPreviousCardDate;
-        }
-
-        public void setPreviousCardDate(ZonedDateTime day) {
-            mPreviousCardDate = day;
-        }
-
-        public ZonedDateTime getToday() {
-            return mTodaysDay;
-        }
-    }
-
-
     private final LayoutInflater mInflator;
     private final Context mContext;
     private final TimeLogic timeLogic;
@@ -127,5 +67,62 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
         if (mTimeLog != null) {
             return mTimeLog.size();
         } else return 0;
+    }
+
+    class TimeLogViewHolder extends RecyclerView.ViewHolder {
+
+        private final TextView mTimeLogCardTitle;
+        private final TextView mTimeLogCardTimeSpent;
+        private final TextView mTimeLogCardTimeSpan;
+        private final TextView mTimeLogCardDateHeading;
+        private final ImageView mTimeLogCardThumbnail;
+        private final View mTimeLogDivider;
+
+        private TimeLogViewHolder(View itemView) {
+            super(itemView);
+            mTimeLogCardTitle = itemView.findViewById(R.id.time_card_log_title);
+            mTimeLogCardTimeSpent = itemView.findViewById(R.id.time_card_log_time_spent);
+            mTimeLogCardTimeSpan = itemView.findViewById(R.id.time_card_log_time_span);
+            mTimeLogCardDateHeading = itemView.findViewById(R.id.time_log_day_heading);
+            mTimeLogDivider = itemView.findViewById(R.id.time_log_divider);
+            mTimeLogCardThumbnail = itemView.findViewById(R.id.time_log_card_thumbnail);
+        }
+
+        // getters
+        public TextView getTimeLogCardTitle() {
+            return mTimeLogCardTitle;
+        }
+
+        public TextView getTimeLogCardTimeSpent() {
+            return mTimeLogCardTimeSpent;
+        }
+
+        public TextView getTimeLogCardTimeSpan() {
+            return mTimeLogCardTimeSpan;
+        }
+
+        public TextView getTimeLogCardDateHeading() {
+            return mTimeLogCardDateHeading;
+        }
+
+        public View getTimeLogDivider() {
+            return mTimeLogDivider;
+        }
+
+        public ImageView getTimeLogCardThumbnail() {
+            return mTimeLogCardThumbnail;
+        }
+
+        public ZonedDateTime getPreviousCardDate() {
+            return mPreviousCardDate;
+        }
+
+        public void setPreviousCardDate(ZonedDateTime day) {
+            mPreviousCardDate = day;
+        }
+
+        public ZonedDateTime getToday() {
+            return mTodaysDay;
+        }
     }
 }

@@ -13,10 +13,6 @@ import java.time.temporal.ChronoUnit;
 
 public class TimeLogCard {
 
-
-    public TimeLogCard() {
-    }
-
     public void setUpTimeCard(TimeLogListAdapter.TimeLogViewHolder holder, TimeLogic timeLogic, TimeLog timeLog,
                               Context context, int position) {
         final String activityString = timeLog.getActivity();
@@ -28,11 +24,11 @@ public class TimeLogCard {
         final int icon = timeLog.getActivityIcon();
         final String color = timeLog.getActivityColor();
 
-        holder.getmTimeLogCardTitle().setText(activityString);
-        holder.getmTimeLogCardTimeSpan().setText(timeSpan);
-        holder.getmTimeLogCardTimeSpent().setText(timeSpentValue);
-        holder.getmTimeLogCardThumbnail().setBackgroundColor(Color.parseColor(("#" + color)));
-        holder.getmTimeLogCardThumbnail().setImageDrawable(context.getDrawable(icon));
+        holder.getTimeLogCardTitle().setText(activityString);
+        holder.getTimeLogCardTimeSpan().setText(timeSpan);
+        holder.getTimeLogCardTimeSpent().setText(timeSpentValue);
+        holder.getTimeLogCardThumbnail().setBackgroundColor(Color.parseColor(("#" + color)));
+        holder.getTimeLogCardThumbnail().setImageDrawable(context.getDrawable(icon));
 
         setupCorrectTitle(holder, timeLogic, timeLog, position);
     }
@@ -41,31 +37,36 @@ public class TimeLogCard {
                                    int position) {
         ZonedDateTime today = holder.getToday();
         ZonedDateTime yesterday = today.minusDays(1);
-        ZonedDateTime currentEntryDate =
-                timeLogic.getZonedDateTimeFromDatabaseLong(timeLog.getTimestamp_created()).truncatedTo(ChronoUnit.DAYS);
+        ZonedDateTime currentEntryDate = timeLogic
+                .getZonedDateTimeFromDatabaseLong(timeLog.getTimestamp_created())
+                .truncatedTo(ChronoUnit.DAYS);
+
         ZonedDateTime previousEntryDate = holder.getPreviousCardDate();
         if (position == 0) {
             if (currentEntryDate.equals(today)) {
-                holder.getmTimeLogCardDateHeading().setText("Today");
+                holder.getTimeLogCardDateHeading().setText("Today");
             }
             else if (currentEntryDate.equals(yesterday)) {
-                holder.getmTimeLogCardDateHeading().setText("Yesterday");
+                holder.getTimeLogCardDateHeading().setText("Yesterday");
             }
             else {
                 String humanDate = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).format(currentEntryDate);
-                holder.getmTimeLogCardDateHeading().setText(humanDate);
+                holder.getTimeLogCardDateHeading().setText(humanDate);
             }
         } else {
-            holder.getmTimeLogDivider().setVisibility(View.VISIBLE);
+            holder.getTimeLogDivider().setVisibility(View.VISIBLE);
             if (currentEntryDate.equals(previousEntryDate)) {
-                holder.getmTimeLogCardDateHeading().setVisibility(View.GONE);
+                holder.getTimeLogCardDateHeading().setVisibility(View.GONE);
             } else if (currentEntryDate.equals(yesterday)) {
-                holder.getmTimeLogCardDateHeading().setText("Yesterday");
+                holder.getTimeLogCardDateHeading().setText("Yesterday");
             } else {
                 String humanDate = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).format(currentEntryDate);
-                holder.getmTimeLogCardDateHeading().setText(humanDate);
+                holder.getTimeLogCardDateHeading().setText(humanDate);
             }
         }
         holder.setPreviousCardDate(currentEntryDate);
+    }
+
+    public TimeLogCard() {
     }
 }

@@ -3,10 +3,8 @@ package com.example.timetime.ui.homesummary;
 import android.content.Context;
 import android.os.Bundle;
 import android.widget.GridLayout;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.timetime.R;
 import com.example.timetime.database.TimeLogic;
@@ -36,24 +34,27 @@ public class LogTimeToActivity extends AppCompatActivity {
         timeLogic = TimeLogic.newInstance();
         mActivityViewModel = new ViewModelProvider(this).get(ActivityViewModel.class);
         toolbar = findViewById(R.id.activity_time_log_toolbar);
+
         LogTimeToActivityButton baseActivityButtons = new LogTimeToActivityButton();
 
-        mActivityViewModel.getLastSinceModified().observe(this, new Observer<Long>() {
-            @Override
-            public void onChanged(@Nullable final Long latestModifiedTime) {
-                if (latestModifiedTime == null) {
-                    mToolBarTime = "not working";
-                } else {
-                    mToolBarTime = timeLogic.getHumanFormattedTimeBetweenDbValueAndNow(latestModifiedTime);
-                    setUpToolBar(false);
-                }
-            }
-        });
+        ObserveChangeInLastModified();
         setUpToolBar(true);
         baseActivityButtons.setUpActivityButtons(LogTimeToActivity.this, mActivityViewModel,
                 mGridContext,
                 mGridLayout,
                 TEMPLATE_BUTTON);
+    }
+
+    private void ObserveChangeInLastModified() {
+        mActivityViewModel.getLastSinceModified().observe(this, latestModifiedTime -> {
+            if (latestModifiedTime == null) {
+                mToolBarTime = "not working";
+            }
+            else {
+                mToolBarTime = timeLogic.getHumanFormattedTimeBetweenDbValueAndNow(latestModifiedTime);
+                setUpToolBar(false);
+            }
+        });
     }
 
     private void setUpToolBar(boolean initialSetUp) {
@@ -64,7 +65,8 @@ public class LogTimeToActivity extends AppCompatActivity {
         }
         if (mToolBarTime == null) {
             setTitle(mToolBarTime);
-        } else {
+        }
+        else {
             setTitle("Last Log: " + mToolBarTime.toUpperCase());
         }
     }
