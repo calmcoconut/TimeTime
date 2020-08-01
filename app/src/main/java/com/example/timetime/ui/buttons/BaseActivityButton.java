@@ -15,6 +15,7 @@ import com.example.timetime.viewmodels.ActivityViewModel;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
+import java.util.Objects;
 
 public abstract class BaseActivityButton {
     public static final int ICON_KEY = 821478213;
@@ -37,21 +38,33 @@ public abstract class BaseActivityButton {
         this.owner = lifecycleOwner;
         this.activityViewModel = activityViewModel;
         this.context = gridContext;
-        activityViewModel.getAllActivities().observe(lifecycleOwner, activities -> {
+
+        verifyActivityLoadedWithObservable(gridLayout);
+    }
+
+    private void verifyActivityLoadedWithObservable(GridLayout gridLayout) {
+        this.activityViewModel.getAllActivities().observe(this.owner, activities -> {
                     activitiesList = activities;
                     if (activitiesList == null) {
-                        setUpActivityButtons(lifecycleOwner, activityViewModel, gridContext, gridLayout, TEMPLATE_BUTTON);
+                        setUpActivityButtons(this.owner, this.activityViewModel, this.context, gridLayout, this.TEMPLATE_BUTTON);
                     }
-                    else {
-                        for (Activity activity : activities) {
-                            MaterialButton materialButton =
-                                    new NewActivityMaterialButton(activity, context).getActivityMaterialButton();
-                            setMaterialButtonOnClickAction(materialButton);
-                            gridLayout.addView(materialButton);
-                        }
+                    for (Activity activity : Objects.requireNonNull(activities)) {
+                        createActivityButton(gridLayout, activity);
                     }
                 }
         );
+    }
+
+    private void createActivityButton(GridLayout gridLayout, Activity activity) {
+        MaterialButton materialButton = new NewActivityMaterialButton(activity, context)
+                .getActivityMaterialButton();
+        setMaterialButtonOnClickAction(materialButton);
+        gridLayout.addView(materialButton);
+    }
+
+    // getters
+    public Context getContext() {
+        return context;
     }
 
     public ActivityViewModel getActivityViewModel() {
@@ -62,8 +75,8 @@ public abstract class BaseActivityButton {
         return owner;
     }
 
-    private class NewActivityMaterialButton {
 
+    private class NewActivityMaterialButton {
         private Activity mActivity;
         private MaterialButton mMaterialButton;
         private Context mContext;
@@ -88,12 +101,10 @@ public abstract class BaseActivityButton {
         }
 
         // TODO check icons for compatibility
-
         private void setUpMaterialActivityButtonIcon() {
             Drawable icon = this.mContext.getDrawable(this.mActivity.getIcon());
             this.mMaterialButton.setCompoundDrawablesRelativeWithIntrinsicBounds(null, icon, null,
                     null);
-            assert icon != null;
             icon.setTint(Color.WHITE);
         }
 
@@ -106,13 +117,8 @@ public abstract class BaseActivityButton {
             this.mMaterialButton.setBackgroundColor(Color.parseColor(("#" + this.mActivity.getColor())));
         }
 
-        // getters
         public MaterialButton getActivityMaterialButton() {
             return mMaterialButton;
-        }
-
-        public Context getContext() {
-            return context;
         }
     }
 }
