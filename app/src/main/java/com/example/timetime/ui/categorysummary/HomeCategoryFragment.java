@@ -21,19 +21,17 @@ public class HomeCategoryFragment extends BaseCategoryFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.recycler_view, container, false);
-        setAttributes(rootView);
-        setAdapterWithClick(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TextView textView = v.findViewById(R.id.category_item_heading);
-                FloatingActionButton colorFab = v.findViewById(R.id.category_color_fab);
-                int color = Objects.requireNonNull(colorFab.getBackgroundTintList()).getDefaultColor();
 
-                Intent intent = new Intent(getContext(), EditCategoryActivity.class);
-                intent.putExtra(EXTRA_CATEGORY_NAME, textView.getText().toString());
-                intent.putExtra(EXTRA_CATEGORY_COLOR,color);
-                startActivity(intent);
-            }
+        setAttributes(rootView);
+        setAdapterWithClick(v -> {
+            TextView textView = v.findViewById(R.id.category_item_heading);
+            FloatingActionButton colorFab = v.findViewById(R.id.category_color_fab);
+            int color = Objects.requireNonNull(colorFab.getBackgroundTintList()).getDefaultColor();
+
+            Intent intent = new Intent(getContext(), EditCategoryActivity.class);
+            intent.putExtra(EXTRA_CATEGORY_NAME, textView.getText().toString());
+            intent.putExtra(EXTRA_CATEGORY_COLOR,color);
+            startActivity(intent);
         });
         return rootView;
     }

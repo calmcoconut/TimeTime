@@ -9,12 +9,13 @@ import androidx.annotation.Nullable;
 import com.example.timetime.R;
 
 public class SelectCategoryFragment extends BaseCategoryFragment {
-    private View.OnClickListener onClickListener;
+    private final View.OnClickListener onClickListener;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.recycler_view, container, false);
+
         setAttributes(rootView);
         setAdapterWithClick(onClickListener);
         return rootView;
