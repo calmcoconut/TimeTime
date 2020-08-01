@@ -21,33 +21,11 @@ import java.util.Objects;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.CategoryViewHolder> {
 
-    class CategoryViewHolder extends RecyclerView.ViewHolder {
-        private final TextView mCategoryItemTitle;
-        private final TextView mCategoryItemActivityNames;
-        private final FloatingActionButton colorFab;
-
-        private CategoryViewHolder(View itemView) {
-            super(itemView);
-            mCategoryItemTitle = itemView.findViewById(R.id.category_item_heading);
-            mCategoryItemActivityNames = itemView.findViewById(R.id.category_item_activity);
-            colorFab = itemView.findViewById(R.id.category_color_fab);
-        }
-    }
-
     private final LayoutInflater mInflator;
     private List<Category> mCategories; // cached copy of categories
     private List<Activity> mActivities; // cached copy of Activities
     private HashMap<String, List<String>> mCategoryActivityMap;
     private View.OnClickListener onClickListener;
-
-    CategoryListAdapter(Context context) {
-        mInflator = LayoutInflater.from(context);
-    }
-
-    CategoryListAdapter(Context context, View.OnClickListener onClickListener) {
-        this.onClickListener = onClickListener;
-        mInflator = LayoutInflater.from(context);
-    }
 
     @NonNull
     @Override
@@ -75,16 +53,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         }
     }
 
-    private void setActivityList(CategoryViewHolder holder, Category category) {
-        List<String> activities = mCategoryActivityMap.get(category.getCategory());
-        if (Objects.requireNonNull(activities).size() > 0) {
-            String activitiesString = activities.toString()
-                    .replace("[", "")
-                    .replace("]", "");
-            holder.mCategoryItemActivityNames.setText(activitiesString);
-        }
-    }
-
     private HashMap<String, List<String>> createCategoryActivityMap() {
         HashMap<String, List<String>> result = new HashMap<String, List<String>>();
         for (Category category : mCategories) {
@@ -96,6 +64,25 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             }
         }
         return result;
+    }
+
+    CategoryListAdapter(Context context) {
+        mInflator = LayoutInflater.from(context);
+    }
+
+    CategoryListAdapter(Context context, View.OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
+        mInflator = LayoutInflater.from(context);
+    }
+
+    private void setActivityList(CategoryViewHolder holder, Category category) {
+        List<String> activities = mCategoryActivityMap.get(category.getCategory());
+        if (Objects.requireNonNull(activities).size() > 0) {
+            String activitiesString = activities.toString()
+                    .replace("[", "")
+                    .replace("]", "");
+            holder.mCategoryItemActivityNames.setText(activitiesString);
+        }
     }
 
     private void setCategoryRelatedAttributes(CategoryViewHolder holder, Category category) {
@@ -119,5 +106,20 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             return mCategories.size();
         }
         else return 0;
+    }
+
+    ///
+
+    static class CategoryViewHolder extends RecyclerView.ViewHolder {
+        private final TextView mCategoryItemTitle;
+        private final TextView mCategoryItemActivityNames;
+        private final FloatingActionButton colorFab;
+
+        private CategoryViewHolder(View itemView) {
+            super(itemView);
+            mCategoryItemTitle = itemView.findViewById(R.id.category_item_heading);
+            mCategoryItemActivityNames = itemView.findViewById(R.id.category_item_activity);
+            colorFab = itemView.findViewById(R.id.category_color_fab);
+        }
     }
 }
