@@ -2,7 +2,6 @@ package com.example.timetime.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -23,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
+public abstract class BaseCreateAnAction extends AppCompatActivity {
     private Toolbar toolbar;
     private EditText editTextNameOfItem;
     private FloatingActionButton colorFab;
@@ -53,7 +52,7 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
 
     public abstract void setIrrelevantViews();
 
-    public abstract void submitButtonAction();
+    public abstract void submitButtonOnClickAction();
 
     public void assignAllViews() {
         toolbar = findViewById(R.id.create_edit_object_toolbar);
@@ -77,7 +76,7 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
         GridView gridView = new GridView(this);
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
 
-        ArrayAdapter adapter = new ColorDialogAdapter(this,
+        ColorDialogAdapter adapter = new ColorDialogAdapter(this,
                 android.R.layout.simple_list_item_1,
                 colorsList,
                 colorFab,

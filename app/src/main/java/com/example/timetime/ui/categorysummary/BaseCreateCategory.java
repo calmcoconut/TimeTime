@@ -5,12 +5,12 @@ import android.view.View;
 import android.widget.Toast;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.timetime.database.entity.Category;
-import com.example.timetime.ui.BaseCreateCategoryOrActivity;
+import com.example.timetime.ui.BaseCreateAnAction;
 import com.example.timetime.viewmodels.CategoryViewModel;
 
 import java.util.Objects;
 
-public abstract class BaseCreateCategory extends BaseCreateCategoryOrActivity {
+public abstract class BaseCreateCategory extends BaseCreateAnAction {
     private CategoryViewModel mCategoryViewModel;
     private Category mNewCategory;
 
@@ -34,7 +34,7 @@ public abstract class BaseCreateCategory extends BaseCreateCategoryOrActivity {
     }
 
     @Override
-    public void submitButtonAction() {
+    public void submitButtonOnClickAction() {
         getSubmitFab().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

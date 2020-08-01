@@ -9,7 +9,7 @@ public class CreateCategoryActivity extends BaseCreateCategory {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        submitButtonAction();
+        submitButtonOnClickAction();
     }
 
     @Override

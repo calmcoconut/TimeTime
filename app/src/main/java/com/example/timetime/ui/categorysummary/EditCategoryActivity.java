@@ -13,7 +13,7 @@ public class EditCategoryActivity extends BaseCreateCategory {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setToPreviousCategoryAttributes();
-        submitButtonAction();
+        submitButtonOnClickAction();
     }
 
     private void setToPreviousCategoryAttributes() {

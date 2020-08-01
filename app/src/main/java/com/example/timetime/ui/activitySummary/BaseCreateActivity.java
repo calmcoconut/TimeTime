@@ -1,20 +1,16 @@
 package com.example.timetime.ui.activitySummary;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
 import com.example.timetime.R;
 import com.example.timetime.database.entity.Activity;
 import com.example.timetime.database.entity.Icon;
-import com.example.timetime.ui.BaseCreateCategoryOrActivity;
+import com.example.timetime.ui.BaseCreateAnAction;
 import com.example.timetime.ui.categorysummary.SelectCategoryFragment;
 import com.example.timetime.ui.dialogs.IconDialogAdapter;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -23,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class BaseCreateActivity extends BaseCreateCategoryOrActivity {
+public abstract class BaseCreateActivity extends BaseCreateAnAction {
     private FragmentManager fragmentManager;
     private List<String> iconList;
     private Activity mNewActivity;
@@ -38,7 +34,7 @@ public abstract class BaseCreateActivity extends BaseCreateCategoryOrActivity {
         iconFabOnClickAction();
         setToolBar();
         setEditTextHint();
-        submitButtonAction();
+        submitButtonOnClickAction();
     }
 
     protected abstract void setDefaultIcon();
@@ -46,37 +42,35 @@ public abstract class BaseCreateActivity extends BaseCreateCategoryOrActivity {
     protected abstract void updateDatabase();
 
     @Override
-    public void submitButtonAction() {
-        getSubmitFab().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mNewActivity = getValuesForDatabaseActivity();
-                if (mNewActivity != null) {
-                    updateDatabase();
+    public void submitButtonOnClickAction() {
+        getSubmitFab().setOnClickListener(v ->
+                {
+                    mNewActivity = extractValuesForDatabaseSubmission();
+                    if (mNewActivity != null) {
+                        updateDatabase();
+                    }
+                    closeToMain(1);
                 }
-                closeToMain(1);
-            }
-        });
+        );
     }
 
-    private Activity getValuesForDatabaseActivity() {
+    private Activity extractValuesForDatabaseSubmission() {
         final String activity = getEditTextNameOfItem().getText().toString();
         final String category = getCategoryButton().getText().toString();
         final Integer icon = (Integer) getIconFab().getTag();
-        final String color;
         final int colorRaw = Objects.requireNonNull(getColorFab().getBackgroundTintList()).getDefaultColor();
-        color = Integer.toHexString(colorRaw);
+        final String color = Integer.toHexString(colorRaw);
 
         if (isValidName(activity) && isValidCategoryType(category) && isValidIcon(icon)) {
             return new Activity(activity, category, icon, color);
         }
         else {
-            toastInvalidMessage(activity, category, icon);
+            toastMessageForInvalidSubmission(activity, category, icon);
             return null;
         }
     }
 
-    private void toastInvalidMessage(String activity, String category, Integer icon) {
+    private void toastMessageForInvalidSubmission(String activity, String category, Integer icon) {
         if (!isValidName(activity)) {
             Toast.makeText(this, "Invalid Name!", Toast.LENGTH_SHORT).show();
         }
@@ -89,11 +83,11 @@ public abstract class BaseCreateActivity extends BaseCreateCategoryOrActivity {
     }
 
     private void categoryButtonOnClickAction() {
-        getCategoryButton().setOnClickListener(v ->
-                launchSelectCategoryActivity());
+        getCategoryButton().setOnClickListener(v -> launchSelectCategoryFragment()
+        );
     }
 
-    private void launchSelectCategoryActivity() {
+    private void launchSelectCategoryFragment() {
         final String[] newCategory = new String[1];
         FragmentTransaction fragmentTransaction = this.fragmentManager.beginTransaction();
 
@@ -116,53 +110,37 @@ public abstract class BaseCreateActivity extends BaseCreateCategoryOrActivity {
     }
 
     private void iconFabOnClickAction() {
-        getIconFab().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createIconDialog();
-            }
-        });
+        getIconFab().setOnClickListener(v -> createIconDialog());
     }
 
     private boolean isValidCategoryType(String categorySelected) {
-        if (categorySelected == null || categorySelected.equals(getString(R.string.create_edit_category_button_title))) {
-            return false;
-        }
-        return true;
+        return categorySelected != null && !categorySelected.equals(getString(R.string.create_edit_category_button_title));
     }
 
     private boolean isValidIcon(@Nullable Integer icon) {
-        if (icon == null) {
-            return false;
-        }
-        return true;
+        return icon != null;
     }
 
     private void createIconDialog() {
         GridView gridView = new GridView(this);
-        ArrayAdapter adapter;
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        adapter = new IconDialogAdapter(this, android.R.layout.simple_list_item_1, iconList, getIconFab());
+        IconDialogAdapter adapter = new IconDialogAdapter(this,
+                android.R.layout.simple_list_item_1,
+                iconList,
+                getIconFab()
+        );
         gridView.setAdapter(adapter);
         setIconOnClick(gridView);
 
         gridView.setNumColumns(5);
         gridView.setHorizontalSpacing(1);
         builder.setView(gridView)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
                 .show();
     }
 
     private void setIconOnClick(GridView gridView) {
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            }
+        gridView.setOnItemClickListener((parent, view, position, id) -> {
         });
     }
 
@@ -176,16 +154,13 @@ public abstract class BaseCreateActivity extends BaseCreateCategoryOrActivity {
     }
 
     private void getAllIconsForAdapter() {
-        getActivityViewModel().getAllIcons().observe(this, new Observer<List<Icon>>() {
-            @Override
-            public void onChanged(List<Icon> icons) {
-                if (icons != null) {
-                    List<String> strList = new ArrayList<>();
-                    for (Icon icon : icons) {
-                        strList.add(String.valueOf(icon.getIcon()));
-                    }
-                    iconList = strList;
+        getActivityViewModel().getAllIcons().observe(this, icons -> {
+            if (icons != null) {
+                List<String> strList = new ArrayList<>();
+                for (Icon icon : icons) {
+                    strList.add(String.valueOf(icon.getIcon()));
                 }
+                iconList = strList;
             }
         });
     }
@@ -197,7 +172,6 @@ public abstract class BaseCreateActivity extends BaseCreateCategoryOrActivity {
     }
 
     // getters
-
     public Activity getNewActivity() {
         return mNewActivity;
     }
