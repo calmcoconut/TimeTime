@@ -23,6 +23,11 @@ public abstract class BaseCategoryFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        observeChangesInCategories();
+        observeChangesInActivities();
+    }
+
+    private void observeChangesInCategories() {
         mCategoryViewModel.getAllCategories().observe(getViewLifecycleOwner(),
                 new Observer<List<Category>>() {
                     @Override
@@ -30,6 +35,9 @@ public abstract class BaseCategoryFragment extends Fragment {
                         adapter.setCategories(categories);
                     }
                 });
+    }
+
+    private void observeChangesInActivities() {
         mCategoryViewModel.getAllActivities().observe(getViewLifecycleOwner(),
                 new Observer<List<Activity>>() {
                     @Override

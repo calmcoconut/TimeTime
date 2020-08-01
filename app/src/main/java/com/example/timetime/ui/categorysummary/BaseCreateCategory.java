@@ -35,15 +35,12 @@ public abstract class BaseCreateCategory extends BaseCreateAnAction {
 
     @Override
     public void submitButtonOnClickAction() {
-        getSubmitFab().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mNewCategory = getValuesForDatabaseCategory();
-                if (mNewCategory != null) {
-                    updateDatabase();
-                }
-                closeToMain(2);
+        getSubmitFab().setOnClickListener(v -> {
+            mNewCategory = getValuesForDatabaseCategory();
+            if (mNewCategory != null) {
+                updateDatabase();
             }
+            closeToMain(2);
         });
     }
 
