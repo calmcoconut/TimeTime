@@ -56,7 +56,7 @@ public abstract class BaseActivityButton {
     }
 
     private void createActivityButton(GridLayout gridLayout, Activity activity) {
-        MaterialButton materialButton = new NewActivityMaterialButton(activity, context)
+        MaterialButton materialButton = new ActivityMaterialButton(activity, context)
                 .getActivityMaterialButton();
         setMaterialButtonOnClickAction(materialButton);
         gridLayout.addView(materialButton);
@@ -76,36 +76,24 @@ public abstract class BaseActivityButton {
     }
 
 
-    private class NewActivityMaterialButton {
+    private class ActivityMaterialButton {
         private Activity mActivity;
         private MaterialButton mMaterialButton;
         private Context mContext;
 
-        public NewActivityMaterialButton(Activity mActivity, Context mContext) {
+        public ActivityMaterialButton(Activity mActivity, Context mContext) {
             ViewGroup.LayoutParams params = TEMPLATE_BUTTON.getLayoutParams();
+
             this.mMaterialButton = new MaterialButton(new ContextThemeWrapper(mContext, R.style.activity_log_button),
                     null,
                     R.style.activity_log_button);
             this.mActivity = mActivity;
             this.mMaterialButton.setLayoutParams(params);
             this.mContext = mContext;
+
             setUpMaterialActivityButtonBasicAttributes();
             setUpMaterialActivityButtonIcon();
             setTags();
-        }
-
-        private void setTags() {
-            mMaterialButton.setTag(ICON_KEY, this.mActivity.getIcon());
-            mMaterialButton.setTag(CAT_KEY, this.mActivity.getCategory());
-            mMaterialButton.setTag(COLOR_KEY, this.mActivity.getColor());
-        }
-
-        // TODO check icons for compatibility
-        private void setUpMaterialActivityButtonIcon() {
-            Drawable icon = this.mContext.getDrawable(this.mActivity.getIcon());
-            this.mMaterialButton.setCompoundDrawablesRelativeWithIntrinsicBounds(null, icon, null,
-                    null);
-            icon.setTint(Color.WHITE);
         }
 
         private void setUpMaterialActivityButtonBasicAttributes() {
@@ -115,6 +103,20 @@ public abstract class BaseActivityButton {
             this.mMaterialButton.setVisibility(View.VISIBLE);
             this.mMaterialButton.setTag(mActivity);
             this.mMaterialButton.setBackgroundColor(Color.parseColor(("#" + this.mActivity.getColor())));
+        }
+
+        private void setUpMaterialActivityButtonIcon() {
+            Drawable icon = this.mContext.getDrawable(this.mActivity.getIcon());
+            this.mMaterialButton
+                    .setCompoundDrawablesRelativeWithIntrinsicBounds(null, icon, null,null);
+            assert icon != null;
+            icon.setTint(Color.WHITE);
+        }
+
+        private void setTags() {
+            mMaterialButton.setTag(ICON_KEY, this.mActivity.getIcon());
+            mMaterialButton.setTag(CAT_KEY, this.mActivity.getCategory());
+            mMaterialButton.setTag(COLOR_KEY, this.mActivity.getColor());
         }
 
         public MaterialButton getActivityMaterialButton() {
