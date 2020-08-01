@@ -3,8 +3,6 @@ package com.example.timetime.ui.buttons;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Toast;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import com.example.timetime.MainActivity;
 import com.example.timetime.database.TimeLogic;
 import com.example.timetime.database.entity.Activity;
@@ -16,12 +14,7 @@ public class LogTimeToActivityButton extends BaseActivityButton {
 
     @Override
     public void setMaterialButtonOnClickAction(MaterialButton materialButton) {
-        materialButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                submitTimeLogForActivity(v);
-            }
-        });
+        materialButton.setOnClickListener(this::submitTimeLogForActivity);
     }
 
     @Override
@@ -57,17 +50,17 @@ public class LogTimeToActivityButton extends BaseActivityButton {
         TimeLogic timeLogic = TimeLogic.newInstance();
         Long modifiedTimeStamp = timeLogic.getDateTimeForDatabaseStorage();
         final Long[] createdTimeStamp = new Long[1];
-        getActivityViewModel().getLastSinceModified().observe(getOwner(), new Observer<Long>() {
-            @Override
-            public void onChanged(@Nullable final Long latestModifiedTime) {
-                if (latestModifiedTime == null) {
+        getActivityViewModel().getLastSinceModified().observe(getOwner(), latestModifiedTime -> {
+                    if (latestModifiedTime != null) {
+                        createdTimeStamp[0] = latestModifiedTime;
+                    }
                 }
-                else {
-                    createdTimeStamp[0] = latestModifiedTime;
-                }
-            }
-        });
-        return new TimeLog(createdTimeStamp[0], modifiedTimeStamp, activity.getActivity(), activity.getColor(),
-                activity.getIcon(), activity.getCategory());
+        );
+        return new TimeLog(createdTimeStamp[0],
+                modifiedTimeStamp,
+                activity.getActivity(),
+                activity.getColor(),
+                activity.getIcon(),
+                activity.getCategory());
     }
 }

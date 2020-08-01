@@ -1,7 +1,6 @@
 package com.example.timetime.ui.buttons;
 
 import android.content.Intent;
-import android.view.View;
 import com.example.timetime.ui.activitySummary.EditActivityActivity;
 import com.google.android.material.button.MaterialButton;
 
@@ -12,12 +11,7 @@ public class EditActivityButton extends BaseActivityButton {
     public static final String EXTRA_ACTIVITY_CATEGORY = "activityCategory";
     @Override
     public void setMaterialButtonOnClickAction(MaterialButton materialButton) {
-        materialButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchEditActivity(materialButton);
-            }
-        });
+        materialButton.setOnClickListener(v -> launchEditActivity(materialButton));
     }
 
     private void launchEditActivity(MaterialButton materialButton) {
