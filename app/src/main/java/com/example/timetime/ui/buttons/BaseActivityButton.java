@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.GridLayout;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 import com.example.timetime.R;
 import com.example.timetime.database.entity.Activity;
 import com.example.timetime.viewmodels.ActivityViewModel;
@@ -18,18 +17,18 @@ import com.google.android.material.button.MaterialButton;
 import java.util.List;
 
 public abstract class BaseActivityButton {
-    public static int ICON_KEY = 821478213;
-    public static int CAT_KEY = 196534123;
-    public static int COLOR_KEY = 532453552;
+    public static final int ICON_KEY = 821478213;
+    public static final int CAT_KEY = 196534123;
+    public static final int COLOR_KEY = 532453552;
     private ActivityViewModel activityViewModel;
     private LifecycleOwner owner;
     private Context context;
     private MaterialButton TEMPLATE_BUTTON;
     private List<Activity> activitiesList;
 
-    public abstract void setMaterialButtonOnClick(MaterialButton materialButton);
+    public abstract void setMaterialButtonOnClickAction(MaterialButton materialButton);
 
-    public abstract void setMaterialButtonOnLongClick(MaterialButton materialButton);
+    public abstract void setMaterialButtonOnLongClickAction(MaterialButton materialButton);
 
     public void setUpActivityButtons(LifecycleOwner lifecycleOwner, ActivityViewModel activityViewModel,
                                      Context gridContext, GridLayout gridLayout, MaterialButton TEMPLATE_BUTTON) {
@@ -38,27 +37,21 @@ public abstract class BaseActivityButton {
         this.owner = lifecycleOwner;
         this.activityViewModel = activityViewModel;
         this.context = gridContext;
-        activityViewModel.getAllActivities().observe(lifecycleOwner, new Observer<List<Activity>>() {
-            @Override
-            public void onChanged(List<Activity> activities) {
-                activitiesList = activities;
-                if (activitiesList == null) {
-                    setUpActivityButtons(lifecycleOwner, activityViewModel, gridContext, gridLayout, TEMPLATE_BUTTON);
-                }
-                else {
-                    for (Activity activity : activities) {
-                        MaterialButton materialButton =
-                                new NewActivityMaterialButton(activity, context).getActivityMaterialButton();
-                        setMaterialButtonOnClick(materialButton);
-                        gridLayout.addView(materialButton);
+        activityViewModel.getAllActivities().observe(lifecycleOwner, activities -> {
+                    activitiesList = activities;
+                    if (activitiesList == null) {
+                        setUpActivityButtons(lifecycleOwner, activityViewModel, gridContext, gridLayout, TEMPLATE_BUTTON);
+                    }
+                    else {
+                        for (Activity activity : activities) {
+                            MaterialButton materialButton =
+                                    new NewActivityMaterialButton(activity, context).getActivityMaterialButton();
+                            setMaterialButtonOnClickAction(materialButton);
+                            gridLayout.addView(materialButton);
+                        }
                     }
                 }
-            }
-        });
-    }
-
-    public Context getContext() {
-        return context;
+        );
     }
 
     public ActivityViewModel getActivityViewModel() {
@@ -70,6 +63,7 @@ public abstract class BaseActivityButton {
     }
 
     private class NewActivityMaterialButton {
+
         private Activity mActivity;
         private MaterialButton mMaterialButton;
         private Context mContext;
@@ -88,16 +82,18 @@ public abstract class BaseActivityButton {
         }
 
         private void setTags() {
-            mMaterialButton.setTag(ICON_KEY,this.mActivity.getIcon());
-            mMaterialButton.setTag(CAT_KEY,this.mActivity.getCategory());
+            mMaterialButton.setTag(ICON_KEY, this.mActivity.getIcon());
+            mMaterialButton.setTag(CAT_KEY, this.mActivity.getCategory());
             mMaterialButton.setTag(COLOR_KEY, this.mActivity.getColor());
         }
 
         // TODO check icons for compatibility
+
         private void setUpMaterialActivityButtonIcon() {
             Drawable icon = this.mContext.getDrawable(this.mActivity.getIcon());
             this.mMaterialButton.setCompoundDrawablesRelativeWithIntrinsicBounds(null, icon, null,
                     null);
+            assert icon != null;
             icon.setTint(Color.WHITE);
         }
 
@@ -110,8 +106,13 @@ public abstract class BaseActivityButton {
             this.mMaterialButton.setBackgroundColor(Color.parseColor(("#" + this.mActivity.getColor())));
         }
 
+        // getters
         public MaterialButton getActivityMaterialButton() {
             return mMaterialButton;
+        }
+
+        public Context getContext() {
+            return context;
         }
     }
 }

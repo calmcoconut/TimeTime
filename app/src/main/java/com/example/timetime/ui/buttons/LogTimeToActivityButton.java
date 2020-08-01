@@ -15,7 +15,7 @@ import com.google.android.material.button.MaterialButton;
 public class LogTimeToActivityButton extends BaseActivityButton {
 
     @Override
-    public void setMaterialButtonOnClick(MaterialButton materialButton) {
+    public void setMaterialButtonOnClickAction(MaterialButton materialButton) {
         materialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -25,7 +25,7 @@ public class LogTimeToActivityButton extends BaseActivityButton {
     }
 
     @Override
-    public void setMaterialButtonOnLongClick(MaterialButton materialButton) {
+    public void setMaterialButtonOnLongClickAction(MaterialButton materialButton) {
     }
 
     private void submitTimeLogForActivity(View v) {

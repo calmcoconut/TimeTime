@@ -130,7 +130,7 @@ public abstract class BaseCreateActivity extends BaseCreateAnAction {
                 getIconFab()
         );
         gridView.setAdapter(adapter);
-        setIconOnClick(gridView);
+        setIconOnClickAction(gridView);
 
         gridView.setNumColumns(5);
         gridView.setHorizontalSpacing(1);
@@ -139,7 +139,7 @@ public abstract class BaseCreateActivity extends BaseCreateAnAction {
                 .show();
     }
 
-    private void setIconOnClick(GridView gridView) {
+    private void setIconOnClickAction(GridView gridView) {
         gridView.setOnItemClickListener((parent, view, position, id) -> {
         });
     }

@@ -20,14 +20,18 @@ public class EditActivityActivity extends BaseCreateActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getActivityToEditExtras();
         setToPreviousActivityAttributes();
         mOldActivity = new Activity(mOldActivityName, mOldCategoryName, mOldIcon, mOldColor);
     }
 
-    private void setToPreviousActivityAttributes() {
+    private void getActivityToEditExtras() {
         mOldActivityName = getIntent().getStringExtra(EditActivityButton.EXTRA_ACTIVITY_NAME);
         mOldCategoryName = getIntent().getStringExtra(EditActivityButton.EXTRA_ACTIVITY_CATEGORY);
         mOldColor = getIntent().getStringExtra(EditActivityButton.EXTRA_ACTIVITY_COLOR);
+    }
+
+    private void setToPreviousActivityAttributes() {
         int color = Color.parseColor("#" + mOldColor);
 
         setDefaultIcon();

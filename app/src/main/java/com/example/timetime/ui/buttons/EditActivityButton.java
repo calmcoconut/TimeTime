@@ -11,7 +11,7 @@ public class EditActivityButton extends BaseActivityButton {
     public static final String EXTRA_ACTIVITY_ICON = "activityIcon";
     public static final String EXTRA_ACTIVITY_CATEGORY = "activityCategory";
     @Override
-    public void setMaterialButtonOnClick(MaterialButton materialButton) {
+    public void setMaterialButtonOnClickAction(MaterialButton materialButton) {
         materialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -35,7 +35,7 @@ public class EditActivityButton extends BaseActivityButton {
     }
 
     @Override
-    public void setMaterialButtonOnLongClick(MaterialButton materialButton) {
+    public void setMaterialButtonOnLongClickAction(MaterialButton materialButton) {
 
     }
 }
