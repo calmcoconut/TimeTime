@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager = findViewById(R.id.view_pager);
         tabLayout = findViewById(R.id.tab_layout);
-
         fab = findViewById(R.id.main_fab);
 
         // tab logic
@@ -47,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         adapter = new MainViewPagerAdapter(this, fragmentManager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         viewPager.setAdapter(adapter);
+
         // if started by another activity, update tab
         viewPager.setCurrentItem(getIntent().getIntExtra("tab", 0));
         NotificationBroadcastReceiver.TimeTimeNotificationSetUp.createRepeatingNotification(this);

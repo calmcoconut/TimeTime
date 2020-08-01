@@ -47,12 +47,9 @@ public class ColorDialogAdapter extends ArrayAdapter<String> {
     }
 
     private void setCurrentColorOnClick(FloatingActionButton currentItem, int color) {
-        currentItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                colorFab.setBackgroundTintList(ColorStateList.valueOf(color));
-                iconFab.setBackgroundTintList(ColorStateList.valueOf(color));
-            }
+        currentItem.setOnClickListener(v -> {
+            colorFab.setBackgroundTintList(ColorStateList.valueOf(color));
+            iconFab.setBackgroundTintList(ColorStateList.valueOf(color));
         });
     }
 }

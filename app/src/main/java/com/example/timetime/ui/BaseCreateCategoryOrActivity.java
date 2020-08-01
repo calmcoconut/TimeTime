@@ -42,6 +42,8 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_edit_object);
 
         assignAllViews();
+        this.mActivityViewModel = new ViewModelProvider(this).get(ActivityViewModel.class);
+        getAllColorsForAdapter();
         setUpColorFab();
     }
 
@@ -65,9 +67,6 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
         categoryButton = findViewById(R.id.create_edit_category_button);
         submitFab = findViewById(R.id.create_edit_submit_fab);
         categoryFragmentView = findViewById(R.id.create_edit_category_fragment);
-        mActivityViewModel = new ViewModelProvider(this).get(ActivityViewModel.class);
-        getAllColorsForAdapter();
-        setUpColorFab();
     }
 
     public void setUpColorFab() {
@@ -81,10 +80,13 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
 
     private void createColorDialog() {
         GridView gridView = new GridView(this);
-        ArrayAdapter adapter;
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
 
-        adapter = new ColorDialogAdapter(this, android.R.layout.simple_list_item_1, colorsList, colorFab, iconFab);
+        ArrayAdapter adapter = new ColorDialogAdapter(this,
+                                                        android.R.layout.simple_list_item_1,
+                                                        colorsList,
+                                                        colorFab,
+                                                        iconFab);
         gridView.setAdapter(adapter);
         setColorOnClick(gridView);
 
