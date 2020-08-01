@@ -33,9 +33,9 @@ public abstract class BaseCreateActivity extends BaseCreateCategoryOrActivity {
 
         this.fragmentManager = getSupportFragmentManager();
 
-        setUpCategoryButton();
+        categoryButtonOnClickAction();
         getAllIconsForAdapter();
-        setUpIconFab();
+        iconFabOnClickAction();
         setToolBar();
         setEditTextHint();
         submitButtonAction();
@@ -70,30 +70,52 @@ public abstract class BaseCreateActivity extends BaseCreateCategoryOrActivity {
         if (isValidName(activity) && isValidCategoryType(category) && isValidIcon(icon)) {
             return new Activity(activity, category, icon, color);
         }
-        else if (!isValidName(activity)) {
+        else {
+            toastInvalidMessage(activity, category, icon);
+            return null;
+        }
+    }
+
+    private void toastInvalidMessage(String activity, String category, Integer icon) {
+        if (!isValidName(activity)) {
             Toast.makeText(this, "Invalid Name!", Toast.LENGTH_SHORT).show();
         }
         else if (!isValidCategoryType(category)) {
             Toast.makeText(this, "Invalid Category!", Toast.LENGTH_SHORT).show();
         }
-
         else if (!isValidIcon(icon)) {
             Toast.makeText(this, "Invalid Icon!", Toast.LENGTH_SHORT).show();
         }
-
-        return null;
     }
 
-    private void setUpCategoryButton() {
-        getCategoryButton().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchCategoryActivity();
-            }
+    private void categoryButtonOnClickAction() {
+        getCategoryButton().setOnClickListener(v ->
+                launchSelectCategoryActivity());
+    }
+
+    private void launchSelectCategoryActivity() {
+        final String[] newCategory = new String[1];
+        FragmentTransaction fragmentTransaction = this.fragmentManager.beginTransaction();
+
+        SelectCategoryFragment fragment = SelectCategoryFragment.newInstance(v ->
+        {
+            newCategory[0] = (String) v.getTag();
+            getCategoryButton().setText(newCategory[0]);
+            getCategoryFragmentView().setVisibility(View.GONE);
+
+            setToolBar();
+            fragmentManager.popBackStack();
         });
+        setSelectCategoryToolBar();
+        getCategoryFragmentView().setVisibility(View.VISIBLE);
+        fragmentTransaction.add(getCategoryFragmentView().getId(), fragment).addToBackStack("categorySelect").commit();
     }
 
-    private void setUpIconFab() {
+    private void setSelectCategoryToolBar() {
+        getToolbar().setTitle("Select Category");
+    }
+
+    private void iconFabOnClickAction() {
         getIconFab().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,36 +158,12 @@ public abstract class BaseCreateActivity extends BaseCreateCategoryOrActivity {
                 .show();
     }
 
-    private void launchCategoryActivity() {
-        final String[] newCategory = new String[1];
-        FragmentTransaction fragmentTransaction = this.fragmentManager.beginTransaction();
-
-        SelectCategoryFragment fragment = SelectCategoryFragment.newInstance(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                newCategory[0] = (String) v.getTag();
-                getCategoryButton().setText(newCategory[0]);
-                getCategoryFragmentView().setVisibility(View.GONE);
-
-                setToolBar();
-                fragmentManager.popBackStack();
-            }
-        });
-        setSelectCategoryToolBar();
-        getCategoryFragmentView().setVisibility(View.VISIBLE);
-        fragmentTransaction.add(getCategoryFragmentView().getId(), fragment).addToBackStack("categorySelect").commit();
-    }
-
     private void setIconOnClick(GridView gridView) {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             }
         });
-    }
-
-    private void setSelectCategoryToolBar() {
-        getToolbar().setTitle("Select Category");
     }
 
     @Override

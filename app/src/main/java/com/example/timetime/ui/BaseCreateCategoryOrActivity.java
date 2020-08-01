@@ -126,10 +126,6 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
         });
     }
 
-
-    /**
-     * @param position choose where to close to... 0 is Home, 1 is Activity, 2 is Category
-     */
     public void closeToMain(Integer position) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("tab", position);
@@ -139,14 +135,10 @@ public abstract class BaseCreateCategoryOrActivity extends AppCompatActivity {
     }
 
     public boolean isValidName(String name) {
-        if (name == null || name.isEmpty()) {
-            return false;
-        }
-        return true;
+        return name != null && !name.isEmpty();
     }
 
     // getters
-
     public Toolbar getToolbar() {
         return toolbar;
     }

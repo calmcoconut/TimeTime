@@ -49,12 +49,9 @@ public class IconDialogAdapter extends ArrayAdapter<String> {
     }
 
     private void setCurrentIconOnClick(FloatingActionButton currentFab, int iconId, Drawable icon) {
-        currentFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                iconFab.setImageDrawable(icon);
-                iconFab.setTag(iconId);
-            }
+        currentFab.setOnClickListener(v -> {
+            iconFab.setImageDrawable(icon);
+            iconFab.setTag(iconId);
         });
     }
 }
