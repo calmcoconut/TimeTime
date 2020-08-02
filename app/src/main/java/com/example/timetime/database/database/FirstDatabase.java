@@ -1,6 +1,7 @@
 package com.example.timetime.database.database;
 
 import android.util.Log;
+import com.example.timetime.DevProperties;
 import com.example.timetime.R;
 import com.example.timetime.database.TimeLogic;
 import com.example.timetime.database.entity.*;
@@ -26,8 +27,7 @@ public class FirstDatabase {
         this.mColorArray = createDefaultColorArray();
         this.mCategoryArray = createDefaultCategoryArray();
         this.mActivityArray = createDefaultActivityArray();
-        // TODO REMOVE TEST
-        this.mTimeLog = createTestingTimeLog(mIconArray);
+        this.mTimeLog = DevProperties.IS_DEV_DB ? createTestingTimeLog() : createDefaultTimeLog();
     }
 
     // object arrays for populating the database
@@ -135,21 +135,29 @@ public class FirstDatabase {
 
     private TimeLog createDefaultTimeLog() {
         TimeLogic timeLogic = TimeLogic.newInstance();
-        Long timeStamp = timeLogic.getCurrentDateTimeForDatabaseStorage();
-        return new TimeLog(timeStamp, timeStamp, "myFirstActivity", "ff5252", 1, "klsdf");
+        Long timeStampNow = timeLogic.getCurrentDateTimeForDatabaseStorage();
+        Long previousTimeStamp = timeStampNow - (MINUTE_SECONDS + 1L);
+        return new TimeLog(previousTimeStamp
+                , timeStampNow
+                , "Welcome to TimeTime"
+                , "ff5252"
+                , this.mIconArray[0].getIcon()
+                , "welcome");
     }
 
-    private TimeLog createTestingTimeLog(Icon[] mIconArray) {
+    private TimeLog createTestingTimeLog() {
         TimeLogic timeLogic = TimeLogic.newInstance();
         Long timeStampNow = timeLogic.getCurrentDateTimeForDatabaseStorage();
 
         Long previousTimeStamp = timeStampNow - 90060L * 3; // one day, one hour, one minute ago
         timeStampNow = timeStampNow - 3600 - HOUR_SECONDS - (HOUR_SECONDS / 2); // make now() - 01:30
 
-        return new TimeLog(previousTimeStamp, timeStampNow, "Welcome to TimeTime"
+        return new TimeLog(previousTimeStamp
+                , timeStampNow
+                , "Welcome to TimeTime"
                 , "ff5252"
-                , mIconArray[0].getIcon()
-                , "Health");
+                , this.mIconArray[0].getIcon()
+                , "welcome");
     }
 
     public TimeLog getTimeLog() {
