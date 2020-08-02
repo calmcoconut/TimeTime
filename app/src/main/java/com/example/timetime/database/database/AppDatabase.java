@@ -6,7 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
-import com.example.timetime.MainActivity;
+import com.example.timetime.DevProperties;
 import com.example.timetime.database.dao.*;
 import com.example.timetime.database.entity.*;
 
@@ -39,7 +39,7 @@ public abstract class AppDatabase extends RoomDatabase {
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
             databaseWriteExecutor.execute(() -> {
-                if (!MainActivity.IS_DEV_DB) {
+                if (!DevProperties.IS_DEV_DB) {
                     UtilityClass.loadFirstTimeDefaultDatabase();
                 }
             });
@@ -49,7 +49,7 @@ public abstract class AppDatabase extends RoomDatabase {
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
             databaseWriteExecutor.execute(() -> {
-                if (MainActivity.IS_DEV_DB) {
+                if (DevProperties.IS_DEV_DB) {
                     UtilityClass.deleteAllDatabaseRows();
                     UtilityClass.loadFirstTimeDefaultDatabase();
                 }
