@@ -2,7 +2,6 @@ package com.example.timetime;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -35,14 +34,7 @@ public class MainActivity extends AppCompatActivity {
         fab = findViewById(R.id.main_fab);
 
         // tab logic
-        tabLayout.setupWithViewPager(viewPager);
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
-            public void onTabSelected(@NotNull TabLayout.Tab tab) {
-                super.onTabSelected(tab);
-                tabNumber = tab.getPosition();
-                setFabForTab(tabNumber);
-            }
-        });
+        initTabPageViewer();
         FragmentManager fragmentManager = getSupportFragmentManager();
         adapter = new MainViewPagerAdapter(this, fragmentManager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         viewPager.setAdapter(adapter);
@@ -52,33 +44,35 @@ public class MainActivity extends AppCompatActivity {
         NotificationBroadcastReceiver.TimeTimeNotificationSetUp.createRepeatingNotification(this);
     }
 
-    private void setDefaultFabAction() {
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LogTimeToActivity.class);
-                startActivity(intent);
+    private void initTabPageViewer() {
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
+            public void onTabSelected(@NotNull TabLayout.Tab tab) {
+                super.onTabSelected(tab);
+                tabNumber = tab.getPosition();
+                setFabForTab(tabNumber);
             }
+        });
+    }
+
+    private void setDefaultFabAction() {
+        fab.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, LogTimeToActivity.class);
+            startActivity(intent);
         });
     }
 
     private void setLaunchCreateActivityFab() {
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, CreateActivityActivity.class);
-                startActivity(intent);
-            }
+        fab.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, CreateActivityActivity.class);
+            startActivity(intent);
         });
     }
 
     private void setLaunchCreateCategoryFab() {
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, CreateCategoryActivity.class);
-                startActivity(intent);
-            }
+        fab.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, CreateCategoryActivity.class);
+            startActivity(intent);
         });
     }
 
