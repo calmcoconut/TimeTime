@@ -13,8 +13,10 @@ import java.time.temporal.ChronoUnit;
 
 public class TimeLogCard {
 
-    public void setUpTimeCard(TimeLogListAdapter.TimeLogViewHolder holder, TimeLogic timeLogic, TimeLog timeLog,
-                              Context context, int position) {
+    public void setUpTimeCard(TimeLogListAdapter.TimeLogViewHolder holder
+            , TimeLogic timeLogic
+            , TimeLog timeLog
+            , Context context, int position) {
         final String activityString = timeLog.getActivity();
         final Long timeStampCreated = timeLog.getTimestamp_created();
         final Long timestampModified = timeLog.getTimestamp_modified();
@@ -53,13 +55,16 @@ public class TimeLogCard {
                 String humanDate = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).format(currentEntryDate);
                 holder.getTimeLogCardDateHeading().setText(humanDate);
             }
-        } else {
+        }
+        else {
             holder.getTimeLogDivider().setVisibility(View.VISIBLE);
             if (currentEntryDate.equals(previousEntryDate)) {
                 holder.getTimeLogCardDateHeading().setVisibility(View.GONE);
-            } else if (currentEntryDate.equals(yesterday)) {
+            }
+            else if (currentEntryDate.equals(yesterday)) {
                 holder.getTimeLogCardDateHeading().setText("Yesterday");
-            } else {
+            }
+            else {
                 String humanDate = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).format(currentEntryDate);
                 holder.getTimeLogCardDateHeading().setText(humanDate);
             }

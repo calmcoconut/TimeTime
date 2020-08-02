@@ -107,7 +107,9 @@ public abstract class AppDatabase extends RoomDatabase {
             for (Activity activity : firstDatabase.getActivityArray()) {
                 activityDao.insert(activity);
             }
-            timeLogDao.insert(firstDatabase.getTimeLog());
+            for (TimeLog timeLog : firstDatabase.getTimeLogArray()) {
+                timeLogDao.insert(timeLog);
+            }
         }
     }
 }

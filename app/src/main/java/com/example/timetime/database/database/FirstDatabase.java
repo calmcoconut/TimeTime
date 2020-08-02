@@ -19,7 +19,7 @@ public class FirstDatabase {
     private final Color[] mColorArray;
     private final Category[] mCategoryArray;
     private final Activity[] mActivityArray;
-    private final TimeLog mTimeLog;
+    private final TimeLog[] mTimeLog;
 
     public FirstDatabase() {
         this.mIconArray = createDefaultIconArray();
@@ -133,34 +133,39 @@ public class FirstDatabase {
         return activityObjectsArray;
     }
 
-    private TimeLog createDefaultTimeLog() {
+    private TimeLog[] createDefaultTimeLog() {
         TimeLogic timeLogic = TimeLogic.newInstance();
         Long timeStampNow = timeLogic.getCurrentDateTimeForDatabaseStorage();
         Long previousTimeStamp = timeStampNow - (MINUTE_SECONDS + 1L);
-        return new TimeLog(previousTimeStamp
+        return new TimeLog[]{new TimeLog(previousTimeStamp
                 , timeStampNow
                 , "Welcome to TimeTime"
                 , "ff5252"
                 , this.mIconArray[0].getIcon()
-                , "welcome");
+                , "welcome")};
     }
 
-    private TimeLog createTestingTimeLog() {
+    private TimeLog[] createTestingTimeLog() {
         TimeLogic timeLogic = TimeLogic.newInstance();
+        TimeLog[] timeLogs = new TimeLog[10];
         Long timeStampNow = timeLogic.getCurrentDateTimeForDatabaseStorage();
+        Long previousTimeStamp = timeStampNow - (HOUR_SECONDS * 20);
+        Long previousTimeStampNowLag = previousTimeStamp;
+        for (int i = 0; i < timeLogs.length; i++) {
+            timeLogs[i] = new TimeLog(previousTimeStamp
+                    , previousTimeStampNowLag
+                    , mActivityArray[0].getActivity()
+                    , mActivityArray[0].getColor()
+                    , mActivityArray[0].getIcon()
+                    , mActivityArray[0].getCategory());
+            previousTimeStampNowLag = previousTimeStamp;
+            previousTimeStamp += HOUR_SECONDS * 2;
+        }
 
-        Long previousTimeStamp = timeStampNow - 90060L * 3; // one day, one hour, one minute ago
-        timeStampNow = timeStampNow - 3600 - HOUR_SECONDS - (HOUR_SECONDS / 2); // make now() - 01:30
-
-        return new TimeLog(previousTimeStamp
-                , timeStampNow
-                , "Welcome to TimeTime"
-                , "ff5252"
-                , this.mIconArray[0].getIcon()
-                , "welcome");
+        return timeLogs;
     }
 
-    public TimeLog getTimeLog() {
+    public TimeLog[] getTimeLogArray() {
         return mTimeLog;
     }
 
