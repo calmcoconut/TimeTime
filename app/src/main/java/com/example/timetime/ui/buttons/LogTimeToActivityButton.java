@@ -48,7 +48,7 @@ public class LogTimeToActivityButton extends BaseActivityButton {
 
     private TimeLog createNewTimeLog(Activity activity) {
         TimeLogic timeLogic = TimeLogic.newInstance();
-        Long modifiedTimeStamp = timeLogic.getDateTimeForDatabaseStorage();
+        Long modifiedTimeStamp = timeLogic.getCurrentDateTimeForDatabaseStorage();
         final Long[] createdTimeStamp = new Long[1];
         getActivityViewModel().getLastSinceModified().observe(getOwner(), latestModifiedTime -> {
                     if (latestModifiedTime != null) {

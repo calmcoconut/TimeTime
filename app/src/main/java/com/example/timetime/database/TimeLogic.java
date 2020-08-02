@@ -21,7 +21,7 @@ public class TimeLogic {
     public static final int MINUTES_HOUR = 60;
 
 
-    public Long getDateTimeForDatabaseStorage() {
+    public Long getCurrentDateTimeForDatabaseStorage() {
         Instant timeNow = getCurrentInstant();
         return convertInstantToLong(timeNow);
     }

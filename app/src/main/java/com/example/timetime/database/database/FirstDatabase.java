@@ -1,7 +1,6 @@
 package com.example.timetime.database.database;
 
 import android.util.Log;
-import androidx.annotation.NonNull;
 import com.example.timetime.R;
 import com.example.timetime.database.TimeLogic;
 import com.example.timetime.database.entity.*;
@@ -25,17 +24,17 @@ public class FirstDatabase {
         this.mIconArray = createDefaultIconArray();
         INITIAL_ICON = mIconArray[0].getIcon();
         this.mColorArray = createDefaultColorArray();
-        this.mCategoryArray = createDefaultCategoryArray(mColorArray);
-        this.mActivityArray = createDefaultActivityArray(mColorArray,mIconArray,mCategoryArray);
+        this.mCategoryArray = createDefaultCategoryArray();
+        this.mActivityArray = createDefaultActivityArray();
         // TODO REMOVE TEST
         this.mTimeLog = createTestingTimeLog(mIconArray);
     }
 
     // object arrays for populating the database
-    private Icon[] createDefaultIconArray () {
+    private Icon[] createDefaultIconArray() {
         List<Field> iconDrawables = new ArrayList<>();
         Field[] iconHolder = R.drawable.class.getFields();
-        for (int i=0; i < iconHolder.length;i++) {
+        for (int i = 0; i < iconHolder.length; i++) {
             Field field = iconHolder[i];
             if (field.getName().startsWith("icon")) {
                 iconDrawables.add(field);
@@ -43,23 +42,24 @@ public class FirstDatabase {
         }
         Icon[] iconArrayIntAddresses = new Icon[iconDrawables.size()];
 
-        for (int count=0; count < iconDrawables.size(); count++){
+        for (int count = 0; count < iconDrawables.size(); count++) {
             Log.i("Raw Asset: ", iconDrawables.get(count).getName());
+
             int resourceID;
             try {
                 resourceID = iconDrawables.get(count).getInt(null);
                 Icon icon = new Icon(resourceID);
                 iconArrayIntAddresses[count] = icon;
-            }
-            catch (IllegalAccessException e) { // this may cause problems
+            } catch (IllegalAccessException e) { // this may cause problems
                 e.printStackTrace();
             }
         }
         return iconArrayIntAddresses;
     }
-    private Color[] createDefaultColorArray () {
+
+    private Color[] createDefaultColorArray() {
         final String[] defaultColors = {
-                  "ff5252", "ff1744", "d50000"   // light reds
+                "ff5252", "ff1744", "d50000"   // light reds
                 , "FF4081", "F50057", "C51162"  // reds
                 , "E040FB", "D500F9", "AA00FF"  // pinks
                 , "7C4DFF", "651FFF", "6200EA"  // purples
@@ -75,6 +75,7 @@ public class FirstDatabase {
                 , "FFD740", "FFC400", "FFAB00"  // mellow oranges
                 , "FFAB40", "FF9100", "FF6D00"  // light oranges
                 , "FF6E40", "FF3D00", "DD2C00"  // deep oranges
+                , "CED7DB", "B0BEC5", "9EA7AA"  // grays
         };
         Color[] colorArray = new Color[defaultColors.length];
         for (int count = 0; count < defaultColors.length; count++) {
@@ -82,53 +83,73 @@ public class FirstDatabase {
         }
         return colorArray;
     }
-    private Category[] createDefaultCategoryArray (@NonNull Color[] colorArray) {
-        final String[] defaultCategories = {"Health","Work","Transportation",
-                "Learning","Entertainment",
-                "Family","Hobby","Other"
-        };
-        Category[] categoryArray = new Category[defaultCategories.length];
 
-        int colorIndex = 0;
-        for (int count=0; count<defaultCategories.length; count++) {
-            categoryArray[count] = new Category(defaultCategories[count], colorArray[colorIndex].getColor());
-            colorIndex += 3;
-        }
-        return categoryArray;
-    }
-    private Activity[] createDefaultActivityArray(Color[] colorArray, Icon[] iconArray, Category[] categoryArray) {
-        final String[] defaultActivities = {
-                "Sleep","Working out","Work",
-                "Transportation","Studying",
-                "Having fun","Family","Hobby"
-        };
-        Activity[] activityArray = new Activity[defaultActivities.length];
+    private Category[] createDefaultCategoryArray() {
+        final String[] defaultCategoriesStrings = {"Health", "Work", "Other"};
+        Category[] categoryObjectArray = new Category[defaultCategoriesStrings.length];
 
-        int colorIndex = 0;
-        int iconIndex = 0;
-        for (int count=0; count<defaultActivities.length; count++) {
-            activityArray[count] = new Activity(defaultActivities[count],categoryArray[count].getCategory()
-                    ,iconArray[count].getIcon(),colorArray[count].getColor());
-            iconIndex += 1;
-            colorIndex += 3;
-        }
-        return activityArray;
+        // health, red
+        categoryObjectArray[0] = new Category(defaultCategoriesStrings[0], this.mColorArray[3].getColor());
+        // work, orange
+        categoryObjectArray[1] = new Category(defaultCategoriesStrings[1], this.mColorArray[42].getColor());
+        // other, gray
+        categoryObjectArray[2] = new Category(defaultCategoriesStrings[2], this.mColorArray[49].getColor());
+
+        return categoryObjectArray;
     }
 
-    private TimeLog createDefaultTimeLog () {
+    private Activity[] createDefaultActivityArray() {
+        final String[] defaultActivitiesStrings = {
+                "Sleep", "Food", "Work",
+                "Transportation", "Relaxing"
+        };
+        Activity[] activityObjectsArray = new Activity[defaultActivitiesStrings.length];
+
+        activityObjectsArray[0] = new Activity(         // sleep act
+                defaultActivitiesStrings[0]
+                , this.mCategoryArray[0].getCategory()  // health cat
+                , this.mIconArray[22].getIcon()         // icon_hotel (alphabetical)
+                , this.mColorArray[17].getColor());     // blue
+        activityObjectsArray[1] = new Activity(         // eat act
+                defaultActivitiesStrings[1]
+                , this.mCategoryArray[0].getCategory()  // health cat
+                , this.mIconArray[15].getIcon()         // icon_fastfood_24px
+                , this.mColorArray[29].getColor());     // green
+        activityObjectsArray[2] = new Activity(         // work act
+                defaultActivitiesStrings[2]
+                , this.mCategoryArray[1].getCategory()  // work cat
+                , this.mIconArray[2].getIcon()
+                , this.mColorArray[42].getColor());     // orange
+        activityObjectsArray[3] = new Activity(         // transportation act
+                defaultActivitiesStrings[3]
+                , this.mCategoryArray[2].getCategory()  // cat other
+                , this.mIconArray[9].getIcon()
+                , this.mColorArray[49].getColor());     // grey
+        activityObjectsArray[4] = new Activity(         // relaxing act
+                defaultActivitiesStrings[4]
+                , this.mCategoryArray[0].getCategory()  // health cat
+                , this.mIconArray[8].getIcon()
+                , this.mColorArray[3].getColor());     // red
+        return activityObjectsArray;
+    }
+
+    private TimeLog createDefaultTimeLog() {
         TimeLogic timeLogic = TimeLogic.newInstance();
-        Long timeStamp = timeLogic.getDateTimeForDatabaseStorage();
-        return new TimeLog(timeStamp,timeStamp,"myFirstActivity","ff5252",1,"klsdf" );
+        Long timeStamp = timeLogic.getCurrentDateTimeForDatabaseStorage();
+        return new TimeLog(timeStamp, timeStamp, "myFirstActivity", "ff5252", 1, "klsdf");
     }
 
     private TimeLog createTestingTimeLog(Icon[] mIconArray) {
         TimeLogic timeLogic = TimeLogic.newInstance();
-        Long timeStamp = timeLogic.getDateTimeForDatabaseStorage(); // now
+        Long timeStampNow = timeLogic.getCurrentDateTimeForDatabaseStorage();
 
-        Long previousTimeStamp = timeStamp - 90060L *3; // one day, one hour, one minute ago
-        timeStamp = timeStamp - 3600 - HOUR_SECONDS - (HOUR_SECONDS/2); // make now() - 01:30
+        Long previousTimeStamp = timeStampNow - 90060L * 3; // one day, one hour, one minute ago
+        timeStampNow = timeStampNow - 3600 - HOUR_SECONDS - (HOUR_SECONDS / 2); // make now() - 01:30
 
-        return new TimeLog(previousTimeStamp,timeStamp,"Sleep","ff5252", mIconArray[0].getIcon(),"Health");
+        return new TimeLog(previousTimeStamp, timeStampNow, "Welcome to TimeTime"
+                , "ff5252"
+                , mIconArray[0].getIcon()
+                , "Health");
     }
 
     public TimeLog getTimeLog() {

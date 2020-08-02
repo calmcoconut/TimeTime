@@ -14,7 +14,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Database(entities = {Activity.class, Category.class, Color.class, Icon.class, TimeLog.class}
-        , version = 1, exportSchema = false)
+        , version = 1
+        , exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     // access our respective DAO objects
     public abstract ColorDao colorDao();
