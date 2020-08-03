@@ -10,6 +10,7 @@ import com.example.timetime.R;
 import com.example.timetime.database.TimeLogic;
 import com.example.timetime.ui.buttons.LogTimeToActivityButton;
 import com.example.timetime.viewmodels.ActivityViewModel;
+import com.example.timetime.viewmodels.TimeLogViewModel;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.Objects;
@@ -20,6 +21,7 @@ public class LogTimeToActivity extends AppCompatActivity {
     private GridLayout mGridLayout;
     private Context mGridContext;
     private ActivityViewModel mActivityViewModel;
+    private TimeLogViewModel timeLogViewModel;
     private TimeLogic timeLogic;
     private String mToolBarTime;
 
@@ -33,6 +35,7 @@ public class LogTimeToActivity extends AppCompatActivity {
         TEMPLATE_BUTTON = findViewById(R.id.activity_button_template);
         timeLogic = TimeLogic.newInstance();
         mActivityViewModel = new ViewModelProvider(this).get(ActivityViewModel.class);
+        timeLogViewModel = new ViewModelProvider(this).get(TimeLogViewModel.class);
         toolbar = findViewById(R.id.activity_time_log_toolbar);
 
         LogTimeToActivityButton baseActivityButtons = new LogTimeToActivityButton();
@@ -41,13 +44,14 @@ public class LogTimeToActivity extends AppCompatActivity {
         setUpToolBar(true);
         baseActivityButtons.setUpActivityButtons(LogTimeToActivity.this,
                 mActivityViewModel,
+                timeLogViewModel,
                 mGridContext,
                 mGridLayout,
                 TEMPLATE_BUTTON);
     }
 
     private void ObserveChangeInLastModified() {
-        mActivityViewModel.getLastSinceModified().observe(this, latestModifiedTime -> {
+        timeLogViewModel.getMostRecentTimeLogTimeStamp().observe(this, latestModifiedTime -> {
             if (latestModifiedTime == null) {
                 mToolBarTime = "not working";
             }

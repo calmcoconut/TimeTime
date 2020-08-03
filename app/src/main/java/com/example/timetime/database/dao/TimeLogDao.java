@@ -15,7 +15,7 @@ public interface TimeLogDao {
     @Query("SELECT * FROM timeLog_table ORDER BY timestamp_modified DESC")
     LiveData<List<TimeLog>> getAllTimeLogs();
 
-    @Query("SELECT * FROM timeLog_table WHERE timestamp_modified = (SELECT MAX(timestamp_modified) FROM timeLog_table)")
+    @Query("SELECT * FROM timeLog_table ORDER BY timestamp_modified LIMIT 1")
     LiveData<TimeLog> getMostRecentTimeLogEntry();
 
     // INSERTERS

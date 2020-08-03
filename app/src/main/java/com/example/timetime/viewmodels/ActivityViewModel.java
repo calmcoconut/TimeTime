@@ -8,7 +8,6 @@ import com.example.timetime.database.AppRepository;
 import com.example.timetime.database.entity.Activity;
 import com.example.timetime.database.entity.Color;
 import com.example.timetime.database.entity.Icon;
-import com.example.timetime.database.entity.TimeLog;
 
 import java.util.List;
 
@@ -26,7 +25,7 @@ public class ActivityViewModel extends AndroidViewModel {
         super(application);
         mAppRepository = new AppRepository(application);
         mAllActivities = mAppRepository.getAllActivities();
-        mLatestTimeStamp = mAppRepository.getMostRecentModified();
+        mLatestTimeStamp = mAppRepository.getMostRecentTimeLogTimeStamp();
         mColors = mAppRepository.getAllColors();
         mIcons = mAppRepository.getAllIcons();
     }
@@ -34,10 +33,6 @@ public class ActivityViewModel extends AndroidViewModel {
     // Getters
     public LiveData<List<Activity>> getAllActivities() {
         return mAllActivities;
-    }
-
-    public LiveData<Long> getLastSinceModified() {
-        return mLatestTimeStamp;
     }
 
     public LiveData<List<Color>> getAllColors() {
@@ -51,10 +46,6 @@ public class ActivityViewModel extends AndroidViewModel {
     // Inserters
     public void insert(Activity activity) {
         mAppRepository.insertActivity(activity);
-    }
-
-    public void insertTimeLog(TimeLog timeLog) {
-        mAppRepository.insertTimeLog(timeLog);
     }
 
     // updaters

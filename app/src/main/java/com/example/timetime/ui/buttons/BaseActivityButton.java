@@ -12,6 +12,7 @@ import androidx.lifecycle.LifecycleOwner;
 import com.example.timetime.R;
 import com.example.timetime.database.entity.Activity;
 import com.example.timetime.viewmodels.ActivityViewModel;
+import com.example.timetime.viewmodels.TimeLogViewModel;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public abstract class BaseActivityButton {
     public static final int CAT_KEY = 196534123;
     public static final int COLOR_KEY = 532453552;
     private ActivityViewModel activityViewModel;
+    private TimeLogViewModel timeLogViewModel;
     private LifecycleOwner owner;
     private Context context;
     private MaterialButton TEMPLATE_BUTTON;
@@ -32,11 +34,13 @@ public abstract class BaseActivityButton {
     public abstract void setMaterialButtonOnLongClickAction(MaterialButton materialButton);
 
     public void setUpActivityButtons(LifecycleOwner lifecycleOwner, ActivityViewModel activityViewModel,
+                                     TimeLogViewModel timeLogViewModel,
                                      Context gridContext, GridLayout gridLayout, MaterialButton TEMPLATE_BUTTON) {
         // TODO assure that minimum number of activities in the database is 1 or THIS WILL LOOP FOREVER.
         this.TEMPLATE_BUTTON = TEMPLATE_BUTTON;
         this.owner = lifecycleOwner;
         this.activityViewModel = activityViewModel;
+        this.timeLogViewModel = timeLogViewModel;
         this.context = gridContext;
 
         verifyActivityLoadedWithObservable(gridLayout);
@@ -46,7 +50,12 @@ public abstract class BaseActivityButton {
         this.activityViewModel.getAllActivities().observe(this.owner, activities -> {
                     activitiesList = activities;
                     if (activitiesList == null) {
-                        setUpActivityButtons(this.owner, this.activityViewModel, this.context, gridLayout, this.TEMPLATE_BUTTON);
+                        setUpActivityButtons(this.owner,
+                                this.activityViewModel,
+                                this.timeLogViewModel,
+                                this.context,
+                                gridLayout,
+                                this.TEMPLATE_BUTTON);
                     }
                     for (Activity activity : Objects.requireNonNull(activities)) {
                         createActivityButton(gridLayout, activity);
@@ -69,6 +78,10 @@ public abstract class BaseActivityButton {
 
     public ActivityViewModel getActivityViewModel() {
         return activityViewModel;
+    }
+
+    public TimeLogViewModel getTimeLogViewModel() {
+        return timeLogViewModel;
     }
 
     public LifecycleOwner getOwner() {
@@ -108,7 +121,7 @@ public abstract class BaseActivityButton {
         private void setUpMaterialActivityButtonIcon() {
             Drawable icon = this.mContext.getDrawable(this.mActivity.getIcon());
             this.mMaterialButton
-                    .setCompoundDrawablesRelativeWithIntrinsicBounds(null, icon, null,null);
+                    .setCompoundDrawablesRelativeWithIntrinsicBounds(null, icon, null, null);
             assert icon != null;
             icon.setTint(Color.WHITE);
         }

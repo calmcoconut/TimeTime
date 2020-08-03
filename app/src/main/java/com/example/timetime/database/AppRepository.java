@@ -72,7 +72,7 @@ public class AppRepository {
         return mTimeLogDao.getTimeLogsFromDayToDay(fromDate, toDate);
     }
 
-    public LiveData<Long> getMostRecentModified() {
+    public LiveData<Long> getMostRecentTimeLogTimeStamp() {
         return mMostRecentModified;
     }
 

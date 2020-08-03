@@ -7,7 +7,7 @@ import com.example.timetime.MainActivity;
 import com.example.timetime.database.TimeLogic;
 import com.example.timetime.database.entity.Activity;
 import com.example.timetime.database.entity.TimeLog;
-import com.example.timetime.viewmodels.ActivityViewModel;
+import com.example.timetime.viewmodels.TimeLogViewModel;
 import com.google.android.material.button.MaterialButton;
 
 public class LogTimeToActivityButton extends BaseActivityButton {
@@ -38,19 +38,19 @@ public class LogTimeToActivityButton extends BaseActivityButton {
             Toast.makeText(getContext(), "Wait a minute!", Toast.LENGTH_SHORT).show();
         }
         else {
-            insertTimeLogIntoDataBase(getActivityViewModel(), timeLog);
+            insertTimeLogIntoDataBase(getTimeLogViewModel(), timeLog);
         }
     }
 
-    private void insertTimeLogIntoDataBase(ActivityViewModel activityViewModel, TimeLog timeLog) {
-        activityViewModel.insertTimeLog(timeLog);
+    private void insertTimeLogIntoDataBase(TimeLogViewModel timeLogViewModel, TimeLog timeLog) {
+        timeLogViewModel.insertTimeLog(timeLog);
     }
 
     private TimeLog createNewTimeLog(Activity activity) {
         TimeLogic timeLogic = TimeLogic.newInstance();
         Long modifiedTimeStamp = timeLogic.getCurrentDateTimeForDatabaseStorage();
         final Long[] createdTimeStamp = new Long[1];
-        getActivityViewModel().getLastSinceModified().observe(getOwner(), latestModifiedTime -> {
+        getTimeLogViewModel().getMostRecentTimeLogTimeStamp().observe(getOwner(), latestModifiedTime -> {
                     if (latestModifiedTime != null) {
                         createdTimeStamp[0] = latestModifiedTime;
                     }

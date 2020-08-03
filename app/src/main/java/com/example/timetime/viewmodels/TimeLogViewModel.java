@@ -15,35 +15,42 @@ public class TimeLogViewModel extends AndroidViewModel {
 
     // cached data
     private LiveData<List<TimeLog>> mAllTimeLogs;
+    private LiveData<Long> mostRecentTimeLogTimeStamp;
     private LiveData<TimeLog> mostRecentTimeLog;
 
     public TimeLogViewModel(@NonNull Application application) {
         super(application);
         mAppRepository = new AppRepository(application);
         mAllTimeLogs = mAppRepository.getAllTimeLogs();
+        mostRecentTimeLogTimeStamp = mAppRepository.getMostRecentTimeLogTimeStamp();
         mostRecentTimeLog = mAppRepository.getMostRecentTimeLog();
     }
 
-    // inserters
-    public void insert(TimeLog timeLog) {
-        mAppRepository.insertTimeLog(timeLog);
-    }
-
+    // getters
     public LiveData<List<TimeLog>> getAllTimeLogs() {
         return mAllTimeLogs;
     }
 
-    //updaters
-    public void updateTimeLogById(TimeLog oldTimeLog, TimeLog newTimeLog) {
-        mAppRepository.updateTimeLogById(oldTimeLog, newTimeLog);
-    }
-
-    // getters
     public LiveData<TimeLog> getMostRecentTimeLog() {
         return mostRecentTimeLog;
     }
 
     public LiveData<List<TimeLog>> getTimeLogsFromDayToDay(Long fromDate, Long toDate) {
         return mAppRepository.getTimeLogsFromDayToDay(fromDate, toDate);
+    }
+
+    public LiveData<Long> getMostRecentTimeLogTimeStamp() {
+        return mostRecentTimeLogTimeStamp;
+    }
+
+    // inserters
+
+    public void insertTimeLog(TimeLog timeLog) {
+        mAppRepository.insertTimeLog(timeLog);
+    }
+    //updaters
+
+    public void updateTimeLogById(TimeLog oldTimeLog, TimeLog newTimeLog) {
+        mAppRepository.updateTimeLogById(oldTimeLog, newTimeLog);
     }
 }
