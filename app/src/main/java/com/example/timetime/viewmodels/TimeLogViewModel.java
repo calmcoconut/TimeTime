@@ -24,19 +24,26 @@ public class TimeLogViewModel extends AndroidViewModel {
         mostRecentTimeLog = mAppRepository.getMostRecentTimeLog();
     }
 
+    // inserters
+    public void insert(TimeLog timeLog) {
+        mAppRepository.insertTimeLog(timeLog);
+    }
+
     public LiveData<List<TimeLog>> getAllTimeLogs() {
         return mAllTimeLogs;
     }
 
+    //updaters
+    public void updateTimeLogById(TimeLog oldTimeLog, TimeLog newTimeLog) {
+        mAppRepository.updateTimeLogById(oldTimeLog, newTimeLog);
+    }
+
+    // getters
     public LiveData<TimeLog> getMostRecentTimeLog() {
         return mostRecentTimeLog;
     }
 
     public LiveData<List<TimeLog>> getTimeLogsFromDayToDay(Long fromDate, Long toDate) {
         return mAppRepository.getTimeLogsFromDayToDay(fromDate, toDate);
-    }
-
-    public void insert(TimeLog timeLog) {
-        mAppRepository.insertTimeLog(timeLog);
     }
 }
