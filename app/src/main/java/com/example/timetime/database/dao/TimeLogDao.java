@@ -15,11 +15,11 @@ public interface TimeLogDao {
     LiveData<List<TimeLog>> getAllTimeLogs();
 
 
-    // inserts
+    // INSERTERS
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(TimeLog timeTracker);
 
-    // updaters
+    // UPDATERS
     @Update
     void update(TimeLog timeTracker);
 
@@ -44,7 +44,7 @@ public interface TimeLogDao {
     @Query("UPDATE timeLog_table SET activity_color = :newColor WHERE activity = :activityName")
     void updateActivityColor(String activityName, String newColor);
 
-    // Meta
+    // META
     @Query("UPDATE timeLog_table SET category = :newCategory WHERE activity = :activityName")
     void updateActivityCategory(String activityName, String newCategory);
 
