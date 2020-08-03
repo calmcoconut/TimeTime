@@ -40,7 +40,7 @@ public class AppRepository {
         mAllIcons = mIconDao.getAllIcons();
         mAllTimeTracker = mTimeLogDao.getAllTimeLogs();
         mostRecentTimeLog = mTimeLogDao.getMostRecentTimeLogEntry();
-        mMostRecentModified = mTimeLogDao.metaNewestEntryTimeStamp();
+        mMostRecentModified = mTimeLogDao.getMostRecentTimeStamp();
     }
 
     // getters

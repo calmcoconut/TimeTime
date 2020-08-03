@@ -15,14 +15,17 @@ public interface TimeLogDao {
     @Query("SELECT * FROM timeLog_table ORDER BY timestamp_modified DESC")
     LiveData<List<TimeLog>> getAllTimeLogs();
 
-    @Query("SELECT * FROM timeLog_table ORDER BY timestamp_modified LIMIT 1")
+    @Query("SELECT * FROM timeLog_table ORDER BY timestamp_modified DESC LIMIT 1")
     LiveData<TimeLog> getMostRecentTimeLogEntry();
 
+    @Query("SELECT MAX(timestamp_modified) as newest FROM timeLog_table")
+    LiveData<Long> getMostRecentTimeStamp();
     // INSERTERS
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(TimeLog timeTracker);
-
     // UPDATERS
+
     @Update
     void update(TimeLog timeTracker);
 
@@ -46,8 +49,8 @@ public interface TimeLogDao {
 
     @Query("UPDATE timeLog_table SET activity_color = :newColor WHERE activity = :activityName")
     void updateActivityColor(String activityName, String newColor);
-
     // META
+
     @Query("UPDATE timeLog_table SET category = :newCategory WHERE activity = :activityName")
     void updateActivityCategory(String activityName, String newCategory);
 
@@ -56,9 +59,6 @@ public interface TimeLogDao {
 
     @Query("SELECT MIN(timestamp_created) FROM timeLog_table")
     LiveData<Long> metaOldestEntry();
-
-    @Query("SELECT MAX(timestamp_modified) as newest FROM timeLog_table")
-    LiveData<Long> metaNewestEntryTimeStamp();
 
     @Query("SELECT * FROM TIMELOG_TABLE WHERE (timestamp_created>=:fromDay OR timestamp_modified>=:fromDay) AND " +
             "(timestamp_created<=:toDay OR timestamp_modified<=:toDay)")
