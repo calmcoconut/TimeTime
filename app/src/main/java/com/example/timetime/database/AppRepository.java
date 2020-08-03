@@ -132,4 +132,18 @@ public class AppRepository {
             mTimeLogDao.updateCategory(oldName, newName);
         });
     }
+
+    public void updateTimeLogById(TimeLog oldTimeLog, TimeLog newTimeLog) {
+        AppDatabase.databaseWriteExecutor.execute(() ->
+                {
+                    mTimeLogDao.updateTimeLogUsingID(oldTimeLog.getTimeLogId()
+                            , newTimeLog.getTimestamp_created()
+                            , newTimeLog.getTimestamp_modified()
+                            , newTimeLog.getActivity()
+                            , newTimeLog.getCategory()
+                            , newTimeLog.getActivityIcon()
+                            , newTimeLog.getActivityColor());
+                }
+        );
+    }
 }
