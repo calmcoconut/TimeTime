@@ -17,31 +17,31 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.TimeLogViewHolder> {
-    private final LayoutInflater mInflator;
-    private final Context mContext;
+    private final LayoutInflater inflator;
+    private final Context context;
     private final TimeLogic timeLogic;
-    private final ZonedDateTime mTodaysDay;
+    private final ZonedDateTime zonedDateTime;
     private static ZonedDateTime mPreviousCardDate;
-    private List<TimeLog> mTimeLog; // cached copy of categories
+    private List<TimeLog> timeLogList; // cached copy of categories
 
     TimeLogListAdapter(Context context) {
-        mContext = context;
+        this.context = context;
         this.timeLogic = TimeLogic.newInstance();
-        this.mTodaysDay = timeLogic.getCurrentZonedDateTime().truncatedTo(ChronoUnit.DAYS);
-        mInflator = LayoutInflater.from(context);
+        this.zonedDateTime = timeLogic.getCurrentZonedDateTime().truncatedTo(ChronoUnit.DAYS);
+        this.inflator = LayoutInflater.from(context);
     }
 
     @NonNull
     @Override
     public TimeLogViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = mInflator.inflate(R.layout.time_log_item, parent, false);
+        View itemView = inflator.inflate(R.layout.time_log_item, parent, false);
         return new TimeLogViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull TimeLogViewHolder holder, int position) {
-        if (mTimeLog != null) {
-            TimeLog current = mTimeLog.get(position);
+        if (timeLogList != null) {
+            TimeLog current = timeLogList.get(position);
             setTimeLogCardToCurrent(holder, current, position);
         } else {
             holder.mTimeLogCardTitle.setText("There is an error or no items");
@@ -50,18 +50,18 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
 
     private void setTimeLogCardToCurrent(TimeLogViewHolder holder, TimeLog timeLog, int position) {
         TimeLogCard timeLogCard = new TimeLogCard();
-        timeLogCard.setUpTimeCard(holder, timeLogic, timeLog, mContext, position);
+        timeLogCard.setUpTimeCard(holder, timeLogic, timeLog, context, position);
     }
 
     void setTimeLogs(List<TimeLog> timeLogs) {
-        mTimeLog = timeLogs;
+        timeLogList = timeLogs;
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        if (mTimeLog != null) {
-            return mTimeLog.size();
+        if (timeLogList != null) {
+            return timeLogList.size();
         } else return 0;
     }
 
@@ -118,7 +118,7 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
         }
 
         public ZonedDateTime getToday() {
-            return mTodaysDay;
+            return zonedDateTime;
         }
     }
 }

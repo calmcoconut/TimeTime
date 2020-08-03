@@ -9,8 +9,7 @@ import androidx.room.PrimaryKey;
 public class TimeLog {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name="id")
-    @NonNull
-    private Long mId;
+    private Long timeLogId;
 
     @ColumnInfo(name = "timestamp_created")
     @NonNull
@@ -48,12 +47,12 @@ public class TimeLog {
     }
 
     @NonNull
-    public Long getId() {
-        return mId;
+    public Long getTimeLogId() {
+        return timeLogId;
     }
 
-    public void setId(@NonNull Long Id) {
-        this.mId = Id;
+    public void setTimeLogId(@NonNull Long Id) {
+        this.timeLogId = Id;
     }
 
     @NonNull

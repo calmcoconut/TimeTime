@@ -1,11 +1,9 @@
 package com.example.timetime.database.dao;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.Dao;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
-import androidx.room.Query;
+import androidx.room.*;
 import com.example.timetime.database.entity.Category;
+import com.example.timetime.database.relations.CategoryToTimeLog;
 
 import java.util.List;
 
@@ -26,4 +24,8 @@ public interface CategoryDao {
             "category = " +
             ":oldCategoryName")
     void updateCategory(String oldCategoryName, String newCategoryName, String newColor);
+
+    @Transaction
+    @Query("SELECT * FROM category_table")
+    public List<CategoryToTimeLog> getCategoriesToTimeLogs();
 }
