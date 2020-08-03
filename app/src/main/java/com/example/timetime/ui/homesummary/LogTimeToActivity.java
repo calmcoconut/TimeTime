@@ -39,7 +39,8 @@ public class LogTimeToActivity extends AppCompatActivity {
 
         ObserveChangeInLastModified();
         setUpToolBar(true);
-        baseActivityButtons.setUpActivityButtons(LogTimeToActivity.this, mActivityViewModel,
+        baseActivityButtons.setUpActivityButtons(LogTimeToActivity.this,
+                mActivityViewModel,
                 mGridContext,
                 mGridLayout,
                 TEMPLATE_BUTTON);

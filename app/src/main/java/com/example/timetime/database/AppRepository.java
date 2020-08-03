@@ -38,7 +38,7 @@ public class AppRepository {
         mAllColors = mColorDao.getAllColors();
         mAllIcons = mIconDao.getAllIcons();
         mAllTimeTracker = mTimeLogDao.getAllTimeLogs();
-        mMostRecentModified = mTimeLogDao.metaNewestEntry();
+        mMostRecentModified = mTimeLogDao.metaNewestEntryTimeStamp();
     }
 
     // getters

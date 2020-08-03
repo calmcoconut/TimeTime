@@ -11,9 +11,12 @@ public interface TimeLogDao {
     @Query("DELETE FROM timeLog_table")
     void deleteAll();
 
+    // getters
     @Query("SELECT * FROM timeLog_table ORDER BY timestamp_modified DESC")
     LiveData<List<TimeLog>> getAllTimeLogs();
 
+    @Query("SELECT * FROM timeLog_table WHERE timestamp_modified = (SELECT MAX(timestamp_modified) FROM timeLog_table)")
+    LiveData<TimeLog> mostRecentTimeLogEntry();
 
     // INSERTERS
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -55,7 +58,7 @@ public interface TimeLogDao {
     LiveData<Long> metaOldestEntry();
 
     @Query("SELECT MAX(timestamp_modified) as newest FROM timeLog_table")
-    LiveData<Long> metaNewestEntry();
+    LiveData<Long> metaNewestEntryTimeStamp();
 
     @Query("SELECT * FROM TIMELOG_TABLE WHERE (timestamp_created>=:fromDay OR timestamp_modified>=:fromDay) AND " +
             "(timestamp_created<=:toDay OR timestamp_modified<=:toDay)")
