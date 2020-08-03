@@ -16,7 +16,7 @@ public interface TimeLogDao {
     LiveData<List<TimeLog>> getAllTimeLogs();
 
     @Query("SELECT * FROM timeLog_table WHERE timestamp_modified = (SELECT MAX(timestamp_modified) FROM timeLog_table)")
-    LiveData<TimeLog> mostRecentTimeLogEntry();
+    LiveData<TimeLog> getMostRecentTimeLogEntry();
 
     // INSERTERS
     @Insert(onConflict = OnConflictStrategy.REPLACE)
