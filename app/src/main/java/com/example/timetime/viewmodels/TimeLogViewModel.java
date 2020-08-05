@@ -23,7 +23,7 @@ public class TimeLogViewModel extends AndroidViewModel {
         mAppRepository = new AppRepository(application);
         mAllTimeLogs = mAppRepository.getAllTimeLogs();
         mostRecentTimeLogTimeStamp = mAppRepository.getMostRecentTimeLogTimeStamp();
-        mostRecentTimeLog = mAppRepository.getMostRecentTimeLog();
+        mostRecentTimeLog = mAppRepository.getMostRecentTimeLogTimeStamp();
     }
 
     // getters
