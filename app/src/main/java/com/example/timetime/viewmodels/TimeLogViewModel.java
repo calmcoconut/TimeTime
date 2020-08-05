@@ -16,23 +16,17 @@ public class TimeLogViewModel extends AndroidViewModel {
     // cached data
     private LiveData<List<TimeLog>> mAllTimeLogs;
     private LiveData<Long> mostRecentTimeLogTimeStamp;
-    private LiveData<TimeLog> mostRecentTimeLog;
 
     public TimeLogViewModel(@NonNull Application application) {
         super(application);
         mAppRepository = new AppRepository(application);
         mAllTimeLogs = mAppRepository.getAllTimeLogs();
         mostRecentTimeLogTimeStamp = mAppRepository.getMostRecentTimeLogTimeStamp();
-        mostRecentTimeLog = mAppRepository.getMostRecentTimeLogTimeStamp();
     }
 
     // getters
     public LiveData<List<TimeLog>> getAllTimeLogs() {
         return mAllTimeLogs;
-    }
-
-    public LiveData<TimeLog> getMostRecentTimeLog() {
-        return mostRecentTimeLog;
     }
 
     public LiveData<List<TimeLog>> getTimeLogsFromDayToDay(Long fromDate, Long toDate) {

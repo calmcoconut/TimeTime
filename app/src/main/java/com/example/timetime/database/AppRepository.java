@@ -22,7 +22,6 @@ public class AppRepository {
     private LiveData<List<Color>> mAllColors;
     private LiveData<List<Icon>> mAllIcons;
     private LiveData<List<TimeLog>> mAllTimeTracker;
-    private LiveData<TimeLog> mostRecentTimeLogTimeStamp;
     private LiveData<Long> mMostRecentModified;
 
     public AppRepository(Application application) {
