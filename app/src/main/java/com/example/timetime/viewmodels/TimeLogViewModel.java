@@ -8,6 +8,7 @@ import com.example.timetime.database.AppRepository;
 import com.example.timetime.database.entity.TimeLog;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class TimeLogViewModel extends AndroidViewModel {
 
@@ -37,8 +38,8 @@ public class TimeLogViewModel extends AndroidViewModel {
         return mostRecentTimeLogTimeStamp;
     }
 
-    public TimeLog getMostRecentTimeLog() {
-
+    public TimeLog getMostRecentTimeLog() throws ExecutionException, InterruptedException {
+        return mAppRepository.getMostRecentTimeLog();
     }
 
     // inserters

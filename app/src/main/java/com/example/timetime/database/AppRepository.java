@@ -44,8 +44,26 @@ public class AppRepository {
     }
 
     // TIME LOG
+    public void insertTimeLog(final TimeLog timeLog) {
+        AppDatabase.databaseWriteExecutor.execute(() ->
+                mTimeLogDao.insert(timeLog));
+    }
+
     public LiveData<List<TimeLog>> getAllTimeLogs() {
         return mAllTimeTracker;
+    }
+
+    public TimeLog getMostRecentTimeLog() throws InterruptedException, ExecutionException {
+        final TimeLog[] t = new TimeLog[1];
+        Future future = AppDatabase.databaseWriteExecutor.submit(() ->
+                t[0] = mTimeLogDao.getMostRecentTimeLogEntry()
+        );
+
+        while (future.get() != null) {
+            Thread.sleep(500);
+        }
+
+        return t[0];
     }
 
     public LiveData<Long> getMostRecentTimeLogTimeStamp() {
@@ -54,11 +72,6 @@ public class AppRepository {
 
     public LiveData<List<TimeLog>> getTimeLogsFromDayToDay(Long fromDate, Long toDate) {
         return mTimeLogDao.getTimeLogsFromDayToDay(fromDate, toDate);
-    }
-
-    public void insertTimeLog(final TimeLog timeLog) {
-        AppDatabase.databaseWriteExecutor.execute(() ->
-                mTimeLogDao.insert(timeLog));
     }
 
     public void updateTimeLogById(TimeLog oldTimeLog, TimeLog newTimeLog) {
@@ -112,7 +125,7 @@ public class AppRepository {
         Future future = AppDatabase.databaseWriteExecutor.submit(() ->
                 c[0] = mCategoryDao.getCategoryByName(category));
         while (future.get() != null) {
-            Thread.sleep(100);
+            Thread.sleep(500);
         }
 
         return c[0];
