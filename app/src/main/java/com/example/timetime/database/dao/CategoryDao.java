@@ -21,7 +21,7 @@ public interface CategoryDao {
     LiveData<List<Category>> getAllCategories();
 
     @Query("SELECT * FROM category_table WHERE category = :category LIMIT 1")
-    LiveData<Category> getCategoryByName(String category);
+    Category getCategoryByName(String category);
 
     @Query("UPDATE category_table SET category = :newCategoryName, category =:newCategoryName,  " +
             "color = :newColor" +

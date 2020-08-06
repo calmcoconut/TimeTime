@@ -7,6 +7,8 @@ import com.example.timetime.database.database.AppDatabase;
 import com.example.timetime.database.entity.*;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 public class AppRepository {
     // all DAOs
@@ -41,90 +43,22 @@ public class AppRepository {
         mMostRecentModified = mTimeLogDao.getMostRecentTimeStamp();
     }
 
-    // getters
-    public LiveData<List<Activity>> getAllActivities() {
-        return mAllActivities;
-    }
-
-    public LiveData<List<Category>> getAllCategories() {
-        return mAllCategories;
-    }
-
-    public LiveData<List<Color>> getAllColors() {
-        return mAllColors;
-    }
-
-    public LiveData<List<Icon>> getAllIcons() {
-        return mAllIcons;
-    }
-
+    // TIME LOG
     public LiveData<List<TimeLog>> getAllTimeLogs() {
         return mAllTimeTracker;
-    }
-
-    public LiveData<List<TimeLog>> getTimeLogsFromDayToDay(Long fromDate, Long toDate) {
-        return mTimeLogDao.getTimeLogsFromDayToDay(fromDate, toDate);
     }
 
     public LiveData<Long> getMostRecentTimeLogTimeStamp() {
         return mMostRecentModified;
     }
 
-    public LiveData<Activity> findActivityByName(String activityName) {
-        return mActivityDao.getActivityByName(activityName);
-    }
-
-    // insert into database methods
-    public void insertActivity(final Activity activity) {
-        AppDatabase.databaseWriteExecutor.execute(() ->
-                mActivityDao.insert(activity));
-    }
-
-    public void insertCategory(final Category category) {
-        AppDatabase.databaseWriteExecutor.execute(() ->
-                mCategoryDao.insert(category));
-    }
-
-    public void insertColor(final Color color) {
-        AppDatabase.databaseWriteExecutor.execute(() ->
-                mColorDao.insert(color));
-    }
-
-    public void insertIcon(final Icon icon) {
-        AppDatabase.databaseWriteExecutor.execute(() ->
-                mIconDao.insert(icon));
+    public LiveData<List<TimeLog>> getTimeLogsFromDayToDay(Long fromDate, Long toDate) {
+        return mTimeLogDao.getTimeLogsFromDayToDay(fromDate, toDate);
     }
 
     public void insertTimeLog(final TimeLog timeLog) {
         AppDatabase.databaseWriteExecutor.execute(() ->
                 mTimeLogDao.insert(timeLog));
-    }
-
-    // update methods for database
-
-    public void updateActivity(Activity oldActivity, Activity newActivity) {
-        AppDatabase.databaseWriteExecutor.execute(() -> {
-            String oldName = oldActivity.getActivity();
-            String newName = newActivity.getActivity();
-            String newCategory = newActivity.getCategory();
-            int newIcon = newActivity.getIcon();
-            String newColor = newActivity.getColor();
-
-            mActivityDao.updateActivity(oldName, newName, newCategory, newIcon, newColor);
-            mTimeLogDao.updateActivity(oldName, newName, newCategory, newIcon, newColor);
-        });
-    }
-
-    public void updateCategory(Category oldCategory, Category newCategory) {
-        AppDatabase.databaseWriteExecutor.execute(() -> {
-            String oldName = oldCategory.getCategory();
-            String newName = newCategory.getCategory();
-            String newColor = newCategory.getColor();
-
-            mCategoryDao.updateCategory(oldName, newName, newColor);
-            mActivityDao.updateCategory(oldName, newName);
-            mTimeLogDao.updateCategory(oldName, newName);
-        });
     }
 
     public void updateTimeLogById(TimeLog oldTimeLog, TimeLog newTimeLog) {
@@ -140,4 +74,91 @@ public class AppRepository {
                 }
         );
     }
+
+    // ACTIVITY
+    public LiveData<List<Activity>> getAllActivities() {
+        return mAllActivities;
+    }
+
+    public LiveData<Activity> getActivityByName(String activityName) {
+        return mActivityDao.getActivityByName(activityName);
+    }
+
+    public void insertActivity(final Activity activity) {
+        AppDatabase.databaseWriteExecutor.execute(() ->
+                mActivityDao.insert(activity));
+    }
+
+    public void updateActivity(Activity oldActivity, Activity newActivity) {
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            String oldName = oldActivity.getActivity();
+            String newName = newActivity.getActivity();
+            String newCategory = newActivity.getCategory();
+            int newIcon = newActivity.getIcon();
+            String newColor = newActivity.getColor();
+
+            mActivityDao.updateActivity(oldName, newName, newCategory, newIcon, newColor);
+            mTimeLogDao.updateActivity(oldName, newName, newCategory, newIcon, newColor);
+        });
+    }
+
+    // CATEGORY
+    public LiveData<List<Category>> getAllCategories() {
+        return mAllCategories;
+    }
+
+    public Category getCategoryByName(String category) throws InterruptedException, ExecutionException {
+        final Category[] c = new Category[1];
+        Future future = AppDatabase.databaseWriteExecutor.submit(() ->
+                c[0] = mCategoryDao.getCategoryByName(category));
+        while (future.get() != null) {
+            Thread.sleep(100);
+        }
+
+        return c[0];
+    }
+
+    public void updateCategory(Category oldCategory, Category newCategory) {
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            String oldName = oldCategory.getCategory();
+            String newName = newCategory.getCategory();
+            String newColor = newCategory.getColor();
+
+            mCategoryDao.updateCategory(oldName, newName, newColor);
+            mActivityDao.updateCategory(oldName, newName);
+            mTimeLogDao.updateCategory(oldName, newName);
+        });
+    }
+
+    public void insertCategory(final Category category) {
+        AppDatabase.databaseWriteExecutor.execute(() ->
+                mCategoryDao.insert(category));
+    }
+
+    public void deleteCategory(String category) {
+        AppDatabase.databaseWriteExecutor.execute(() ->
+                mCategoryDao.deleteCategory(category));
+    }
+
+
+    // OTHER
+    public LiveData<List<Color>> getAllColors() {
+        return mAllColors;
+    }
+
+    public LiveData<List<Icon>> getAllIcons() {
+        return mAllIcons;
+    }
+
+
+    public void insertColor(final Color color) {
+        AppDatabase.databaseWriteExecutor.execute(() ->
+                mColorDao.insert(color));
+    }
+
+    public void insertIcon(final Icon icon) {
+        AppDatabase.databaseWriteExecutor.execute(() ->
+                mIconDao.insert(icon));
+    }
+
 }

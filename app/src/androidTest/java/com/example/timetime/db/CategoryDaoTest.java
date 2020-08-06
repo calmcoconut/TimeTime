@@ -61,24 +61,24 @@ public class CategoryDaoTest {
     }
 
     @Test
-    public void getCategoryByName() throws InterruptedException {
+    public void getCategoryByName() {
         for (Category category : CATEGORIES_LIST) {
             categoryDao.insert(category);
         }
-        Category category = LiveDataTestUtil.getValue(categoryDao.getCategoryByName(CATEGORY_ENTITY1.getCategory()));
+        Category category = categoryDao.getCategoryByName(CATEGORY_ENTITY1.getCategory());
 
         assertThat(category.getCategory(), is(CATEGORY_ENTITY1.getCategory()));
         assertThat(category.getColor(), is(CATEGORY_ENTITY1.getColor()));
     }
 
     @Test
-    public void updateCategory() throws InterruptedException {
+    public void updateCategory() {
         for (Category category : CATEGORIES_LIST) {
             categoryDao.insert(category);
         }
         categoryDao.updateCategory(CATEGORY_ENTITY2.getCategory(), "UPDATED", "UPDATED");
 
-        Category category = LiveDataTestUtil.getValue(categoryDao.getCategoryByName("UPDATED"));
+        Category category = categoryDao.getCategoryByName("UPDATED");
         assertThat(category.getCategory(), is("UPDATED"));
         assertThat(category.getColor(), is("UPDATED"));
     }

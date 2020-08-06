@@ -37,11 +37,15 @@ public class TimeLogViewModel extends AndroidViewModel {
         return mostRecentTimeLogTimeStamp;
     }
 
-    // inserters
+    public TimeLog getMostRecentTimeLog() {
 
+    }
+
+    // inserters
     public void insertTimeLog(TimeLog timeLog) {
         mAppRepository.insertTimeLog(timeLog);
     }
+
     //updaters
 
     public void updateTimeLogById(TimeLog oldTimeLog, TimeLog newTimeLog) {
