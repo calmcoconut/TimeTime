@@ -18,8 +18,12 @@ public interface TimeLogDao {
     @Query("SELECT * FROM timeLog_table ORDER BY timestamp_modified DESC LIMIT 1")
     TimeLog getMostRecentTimeLogEntry();
 
+    @Query("SELECT * FROM timeLog_table WHERE id =:timeLogId LIMIT 1")
+    TimeLog getTimeLogById(Long timeLogId);
+
     @Query("SELECT MAX(timestamp_modified) as newest FROM timeLog_table")
     LiveData<Long> getMostRecentTimeStamp();
+
     // INSERTERS
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
