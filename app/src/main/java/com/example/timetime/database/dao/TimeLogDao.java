@@ -1,7 +1,10 @@
 package com.example.timetime.database.dao;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.*;
+import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
 import com.example.timetime.database.entity.TimeLog;
 
 import java.util.List;
@@ -28,10 +31,8 @@ public interface TimeLogDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(TimeLog timeTracker);
-    // UPDATERS
 
-    @Update
-    void update(TimeLog timeTracker);
+    // UPDATERS
 
     @Query("UPDATE timeLog_table " +
             "set timestamp_created = :timeStampCreated, timestamp_modified=:timeStampModified," +
@@ -46,23 +47,21 @@ public interface TimeLogDao {
                         String newColor);
 
     @Query("UPDATE timeLog_table SET activity_icon = :newIcon WHERE activity = :activityName")
-    void updateActivityColor(String activityName, int newIcon);
+    void updateActivityIcon(String activityName, int newIcon);
 
     @Query("UPDATE timeLog_table set category = :newCategoryName WHERE category = :oldCategoryName")
     void updateCategory(String oldCategoryName, String newCategoryName);
 
     @Query("UPDATE timeLog_table SET activity_color = :newColor WHERE activity = :activityName")
     void updateActivityColor(String activityName, String newColor);
-    // META
 
     @Query("UPDATE timeLog_table SET category = :newCategory WHERE activity = :activityName")
     void updateActivityCategory(String activityName, String newCategory);
 
-    @Query("SELECT COUNT(id) FROM timeLog_table")
-    int metaEntryCount();
+    // META
 
     @Query("SELECT MIN(timestamp_created) FROM timeLog_table")
-    LiveData<Long> metaOldestEntry();
+    LiveData<Long> getOldestTimeStamp();
 
     @Query("SELECT * FROM TIMELOG_TABLE WHERE (timestamp_created>=:fromDay OR timestamp_modified>=:fromDay) AND " +
             "(timestamp_created<=:toDay OR timestamp_modified<=:toDay)")
