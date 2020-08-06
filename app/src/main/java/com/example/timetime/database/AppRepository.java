@@ -71,7 +71,7 @@ public class AppRepository {
     }
 
     public LiveData<Activity> findActivityByName(String activityName) {
-        return mActivityDao.findActivityByName(activityName);
+        return mActivityDao.getActivityByName(activityName);
     }
 
     // insert into database methods

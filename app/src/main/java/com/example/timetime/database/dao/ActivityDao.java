@@ -19,7 +19,7 @@ public interface ActivityDao {
     LiveData<List<Activity>> getAllActivity();
 
     @Query("SELECT *  FROM activity_table WHERE activity = :activityName")
-    LiveData<Activity> findActivityByName(String activityName);
+    LiveData<Activity> getActivityByName(String activityName);
 
     // updaters
     @Query("UPDATE activity_table SET activity = :newActivityName, category =:newCategoryName, icon = :newIcon, " +
@@ -32,6 +32,10 @@ public interface ActivityDao {
 
     @Query("UPDATE activity_table SET category=:newName WHERE category=:oldName")
     void updateCategory(String oldName, String newName);
+
+    // other
+    @Query("DELETE FROM activity_table WHERE activity = :activity")
+    public void deleteActivity(String activity);
 
     @Transaction
     @Query("SELECT * FROM activity_table")
