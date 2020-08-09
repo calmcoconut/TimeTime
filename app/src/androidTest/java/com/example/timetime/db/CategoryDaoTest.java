@@ -90,7 +90,7 @@ public class CategoryDaoTest {
         }
         categoryDao.deleteCategory(CATEGORY_ENTITY1.getCategory());
 
-        Category category = LiveDataTestUtil.getValue(categoryDao.getCategoryByName(CATEGORY_ENTITY1.getCategory()));
+        Category category = categoryDao.getCategoryByName(CATEGORY_ENTITY1.getCategory());
         assertNull(category);
     }
 

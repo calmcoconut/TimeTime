@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import com.example.timetime.database.dao.*;
 import com.example.timetime.database.database.AppDatabase;
 import com.example.timetime.database.entity.*;
+import io.reactivex.Single;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -45,25 +46,36 @@ public class AppRepository {
 
     // TIME LOG
     public void insertTimeLog(final TimeLog timeLog) {
-        AppDatabase.databaseWriteExecutor.execute(() ->
-                mTimeLogDao.insert(timeLog));
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+                    Single<TimeLog> timeLogSingle = getMostRecentTimeLogSingle();
+                    final TimeLog[] oldTimeLog = new TimeLog[1];
+                    timeLogSingle.subscribe(t -> {
+                        oldTimeLog[0] = t;
+                    });
+                    while (oldTimeLog[0] == null) {
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (oldTimeLog[0].getActivity().equals(timeLog.getActivity())) {
+                        timeLog.setTimestamp_created(oldTimeLog[0].getTimestamp_created());
+                        updateTimeLogById(oldTimeLog[0], timeLog);
+                    }
+                    else {
+                        mTimeLogDao.insert(timeLog);
+                    }
+                }
+        );
     }
 
     public LiveData<List<TimeLog>> getAllTimeLogs() {
         return mAllTimeTracker;
     }
 
-    public TimeLog getMostRecentTimeLog() throws InterruptedException, ExecutionException {
-        final TimeLog[] t = new TimeLog[1];
-        Future future = AppDatabase.databaseWriteExecutor.submit(() ->
-                t[0] = mTimeLogDao.getMostRecentTimeLogEntry()
-        );
-
-        while (future.get() != null) {
-            Thread.sleep(500);
-        }
-
-        return t[0];
+    public Single<TimeLog> getMostRecentTimeLogSingle() {
+        return mTimeLogDao.getMostRecentSingleTimeLogEntry();
     }
 
     public LiveData<Long> getMostRecentTimeLogTimeStamp() {

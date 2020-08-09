@@ -6,6 +6,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import com.example.timetime.database.entity.TimeLog;
+import io.reactivex.Single;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public interface TimeLogDao {
     LiveData<List<TimeLog>> getAllTimeLogs();
 
     @Query("SELECT * FROM timeLog_table ORDER BY timestamp_modified DESC LIMIT 1")
-    TimeLog getMostRecentTimeLogEntry();
+    Single<TimeLog> getMostRecentSingleTimeLogEntry();
 
     @Query("SELECT * FROM timeLog_table WHERE id =:timeLogId LIMIT 1")
     TimeLog getTimeLogById(Long timeLogId);

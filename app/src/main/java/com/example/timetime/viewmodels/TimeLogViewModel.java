@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import com.example.timetime.database.AppRepository;
 import com.example.timetime.database.entity.TimeLog;
+import io.reactivex.Single;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -42,8 +43,12 @@ public class TimeLogViewModel extends AndroidViewModel {
         return mAppRepository.getMostRecentTimeLog();
     }
 
+    public Single<TimeLog> getMostRecentTimeLogSingle() {
+        return mAppRepository.getMostRecentTimeLogSingle();
+    }
+
     // inserters
-    public void insertTimeLog(TimeLog timeLog) {
+    public void insertTimeLog(TimeLog timeLog) throws ExecutionException, InterruptedException {
         mAppRepository.insertTimeLog(timeLog);
     }
 

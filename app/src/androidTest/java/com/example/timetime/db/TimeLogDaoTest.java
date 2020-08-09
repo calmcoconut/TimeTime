@@ -7,6 +7,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.example.timetime.database.dao.TimeLogDao;
 import com.example.timetime.database.database.AppDatabase;
 import com.example.timetime.database.entity.TimeLog;
+import io.reactivex.functions.Predicate;
+import org.jetbrains.annotations.NotNull;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -62,23 +64,6 @@ public class TimeLogDaoTest {
     }
 
     @Test
-    public void getMostRecentTimeLog() {
-        for (TimeLog timeLog : TIME_LOG_LIST) {
-            timeLogDao.insert(timeLog);
-        }
-        TimeLog timeLog = timeLogDao.getMostRecentTimeLogEntry();
-        assertNotNull(timeLog);
-        assertThat(timeLog.getActivity(), is(TIME_LOG_ENTITY3.getActivity()));
-        assertThat(timeLog.getActivityColor(), is(TIME_LOG_ENTITY3.getActivityColor()));
-        assertThat(timeLog.getActivityIcon(), is(TIME_LOG_ENTITY3.getActivityIcon()));
-        assertThat(timeLog.getCategory(), is(TIME_LOG_ENTITY3.getCategory()));
-        TIME_LOG_ENTITY3.setTimeLogId(timeLog.getTimeLogId());
-        assertThat(timeLog.getTimeLogId(), is(TIME_LOG_ENTITY3.getTimeLogId()));
-        assertThat(timeLog.getTimestamp_created(), is(TIME_LOG_ENTITY3.getTimestamp_created()));
-        assertThat(timeLog.getTimestamp_modified(), is(TIME_LOG_ENTITY3.getTimestamp_modified()));
-    }
-
-    @Test
     public void getTimeLogById() {
         for (TimeLog timeLog : TIME_LOG_LIST) {
             timeLogDao.insert(timeLog);
@@ -105,6 +90,21 @@ public class TimeLogDaoTest {
         Long oldestTimeStamp = LiveDataTestUtil.getValue(timeLogDao.getOldestTimeStamp());
         assertNotNull(oldestTimeStamp);
         assertThat(oldestTimeStamp, is(TIME_LOG_ENTITY1.getTimestamp_created()));
+    }
+
+
+    @Test
+    public void getMostRecentSingleTimeLog() {
+        for (TimeLog timeLog : TIME_LOG_LIST) {
+            timeLogDao.insert(timeLog);
+        }
+        timeLogDao.getMostRecentSingleTimeLogEntry().test().assertValue(new Predicate<TimeLog>() {
+            @Override
+            public boolean test(@NotNull TimeLog timeLog) throws Exception {
+                return timeLog.getActivity().equals(TIME_LOG_ENTITY3.getActivity())
+                        && timeLog.getCategory().equals(TIME_LOG_ENTITY3.getCategory());
+            }
+        });
     }
 
     @Test

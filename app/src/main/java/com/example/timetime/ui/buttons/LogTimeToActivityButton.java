@@ -10,6 +10,8 @@ import com.example.timetime.database.entity.TimeLog;
 import com.example.timetime.viewmodels.TimeLogViewModel;
 import com.google.android.material.button.MaterialButton;
 
+import java.util.concurrent.ExecutionException;
+
 public class LogTimeToActivityButton extends BaseActivityButton {
 
     @Override
@@ -43,7 +45,11 @@ public class LogTimeToActivityButton extends BaseActivityButton {
     }
 
     private void insertTimeLogIntoDataBase(TimeLogViewModel timeLogViewModel, TimeLog timeLog) {
-        timeLogViewModel.insertTimeLog(timeLog);
+        try {
+            timeLogViewModel.insertTimeLog(timeLog);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private TimeLog createNewTimeLog(Activity activity) {
