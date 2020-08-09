@@ -17,6 +17,7 @@ public class TimeLogCard {
             , TimeLogic timeLogic
             , TimeLog timeLog
             , Context context, int position) {
+
         final String activityString = timeLog.getActivity();
         final Long timeStampCreated = timeLog.getTimestamp_created();
         final Long timestampModified = timeLog.getTimestamp_modified();
@@ -70,6 +71,10 @@ public class TimeLogCard {
             }
         }
         holder.setPreviousCardDate(currentEntryDate);
+    }
+
+    private void determineTittle() {
+
     }
 
     public TimeLogCard() {

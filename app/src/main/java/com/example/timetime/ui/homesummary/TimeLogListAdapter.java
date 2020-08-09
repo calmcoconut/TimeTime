@@ -28,6 +28,7 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
         this.context = context;
         this.timeLogic = TimeLogic.newInstance();
         this.zonedDateTime = timeLogic.getCurrentZonedDateTime().truncatedTo(ChronoUnit.DAYS);
+        setHasStableIds(true);
         this.inflator = LayoutInflater.from(context);
     }
 
@@ -59,10 +60,22 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
     }
 
     @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
     public int getItemCount() {
         if (timeLogList != null) {
             return timeLogList.size();
         } else return 0;
+
+
     }
 
     class TimeLogViewHolder extends RecyclerView.ViewHolder {
@@ -83,6 +96,7 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
             mTimeLogDivider = itemView.findViewById(R.id.time_log_divider);
             mTimeLogCardThumbnail = itemView.findViewById(R.id.time_log_card_thumbnail);
         }
+
 
         // getters
         public TextView getTimeLogCardTitle() {
