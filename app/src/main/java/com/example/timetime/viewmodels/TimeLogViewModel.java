@@ -39,10 +39,6 @@ public class TimeLogViewModel extends AndroidViewModel {
         return mostRecentTimeLogTimeStamp;
     }
 
-    public TimeLog getMostRecentTimeLog() throws ExecutionException, InterruptedException {
-        return mAppRepository.getMostRecentTimeLog();
-    }
-
     public Single<TimeLog> getMostRecentTimeLogSingle() {
         return mAppRepository.getMostRecentTimeLogSingle();
     }
