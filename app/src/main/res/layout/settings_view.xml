@@ -84,9 +84,9 @@
                 android:id="@+id/help_fragment_change_commitment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="18dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginEnd="75dp"
+                android:layout_marginEnd="200dp"
                 style="@style/TextAppearance.MaterialComponents.Caption"
                 android:textSize="12sp"
                 android:text="@string/settings_summary" />

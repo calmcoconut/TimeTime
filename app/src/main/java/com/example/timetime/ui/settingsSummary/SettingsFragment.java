@@ -1,4 +1,4 @@
-package com.example.timetime.ui.helpSummary;
+package com.example.timetime.ui.settingsSummary;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import com.example.timetime.MainActivity;
 import com.example.timetime.R;
 
 public class SettingsFragment extends Fragment {
@@ -23,5 +24,11 @@ public class SettingsFragment extends Fragment {
     }
     // empty constructor
     public SettingsFragment() {
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        MainActivity.setViewVisibleCallBack();
     }
 }

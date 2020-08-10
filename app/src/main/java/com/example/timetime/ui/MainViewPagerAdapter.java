@@ -9,8 +9,8 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.example.timetime.R;
 import com.example.timetime.ui.activitySummary.ActivityFragment;
 import com.example.timetime.ui.categorysummary.HomeCategoryFragment;
-import com.example.timetime.ui.helpSummary.SettingsFragment;
 import com.example.timetime.ui.homesummary.HomeFragment;
+import com.example.timetime.ui.settingsSummary.SettingsFragment;
 import com.example.timetime.ui.statsSummary.StatsFragment;
 
 import java.util.ArrayList;
