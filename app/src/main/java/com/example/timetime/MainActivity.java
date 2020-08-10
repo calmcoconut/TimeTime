@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import com.example.timetime.notifications.NotificationBroadcastReceiver;
+import com.example.timetime.notifications.PushNotification;
 import com.example.timetime.ui.MainViewPagerAdapter;
 import com.example.timetime.ui.activitySummary.CreateActivityActivity;
 import com.example.timetime.ui.categorysummary.CreateCategoryActivity;
@@ -40,7 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
         // if started by another activity, update tab
         viewPager.setCurrentItem(getIntent().getIntExtra("tab", 0));
-        NotificationBroadcastReceiver.TimeTimeNotificationSetUp.createRepeatingNotification(this);
+
+        // init notification
+        PushNotification.createRepeatingNotification(this);
     }
 
     private void initTabPageViewer() {

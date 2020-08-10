@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         
-        <receiver android:name=".notifications.NotificationBroadcastReceiver" />
+        <receiver android:name=".notifications.BroadCastNotificationReceiver" />
         
         <meta-data
             android:name="preloaded_fonts"
