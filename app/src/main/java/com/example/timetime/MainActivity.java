@@ -42,7 +42,9 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setCurrentItem(getIntent().getIntExtra("tab", 0));
 
         // init notification
-        PushNotification.createRepeatingNotification(this);
+        if (DevProperties.IS_PUSH_NOTIFICATION_ENABLED) {
+            PushNotification.createRepeatingNotification(this);
+        }
     }
 
     private void initTabPageViewer() {

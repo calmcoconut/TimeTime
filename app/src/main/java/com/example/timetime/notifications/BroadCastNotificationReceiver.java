@@ -8,7 +8,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 public class BroadCastNotificationReceiver extends BroadcastReceiver {
     public static final String NOTIFICATION_REPEATING = "repeating_interval_notification";
-    public static final int NOTIFICATION_REPEATING_ID = 256;
+    public static final int NOTIFICATION_REPEATING_ID = 1;
 
     @Override
     public void onReceive(Context context, Intent intent) {
