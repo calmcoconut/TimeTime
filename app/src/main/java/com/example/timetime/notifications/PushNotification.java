@@ -21,7 +21,6 @@ public class PushNotification {
     }
 
     private static Notification createNotification(Context context) {
-//            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
         Intent activityIntent = new Intent(context, LogTimeToActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, activityIntent, 0);
@@ -34,7 +33,6 @@ public class PushNotification {
                 .setCategory(NotificationCompat.CATEGORY_EVENT)
                 .setContentIntent(pendingIntent)
                 .build();
-//            notificationManager.notify(NOTIFICATION_REPEATING_ID, notification);
         return notification;
     }
 
@@ -51,6 +49,5 @@ public class PushNotification {
         assert alarmManager != null;
         alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, (SystemClock.elapsedRealtime() +
                 delay), delay, pendingIntent);
-//            alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, delay, pendingIntent);
     }
 }

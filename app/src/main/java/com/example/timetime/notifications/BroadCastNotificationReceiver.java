@@ -15,8 +15,9 @@ public class BroadCastNotificationReceiver extends BroadcastReceiver {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         Notification notification = intent.getParcelableExtra(NOTIFICATION_REPEATING);
 
-        assert notification != null;
-        notificationManager.notify(NOTIFICATION_REPEATING_ID, notification);
+        if (notification != null) {
+            notificationManager.notify(NOTIFICATION_REPEATING_ID, notification);
+        }
     }
 
 }
