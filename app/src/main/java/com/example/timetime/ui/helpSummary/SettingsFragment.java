@@ -9,19 +9,19 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.example.timetime.R;
 
-public class HelpFragment extends Fragment {
+public class SettingsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_help, container, false);
+        final View rootView = inflater.inflate(R.layout.settings_view, container, false);
         return rootView;
     }
 
     // factory method for returning an instance of the class
-    public static HelpFragment newInstance() {
-        return new HelpFragment();
+    public static SettingsFragment newInstance() {
+        return new SettingsFragment();
     }
     // empty constructor
-    public HelpFragment() {
+    public SettingsFragment() {
     }
 }

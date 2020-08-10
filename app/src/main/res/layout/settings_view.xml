@@ -26,9 +26,10 @@
                 android:id="@+id/help_fragment_heading3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="18dp"
                 android:paddingTop="18dp"
                 android:layout_margin="8dp"
+                android:layout_gravity="center_horizontal"
+                android:textStyle="bold"
                 android:text="Designed and Created by"
                 style="@style/TextAppearance.MaterialComponents.Headline6" />
 
@@ -46,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="4dp"
+                android:autoLink="web"
                 style="@style/TextAppearance.MaterialComponents.Body2"
                 android:text="@string/help_fragment_credits" />
 
@@ -63,19 +65,31 @@
                 android:id="@+id/help_fragment_change_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingStart="2dp"
                 android:layout_marginStart="24dp"
                 style="@style/TextAppearance.MaterialComponents.Body2"
-                android:text=" change to html" />
+                android:text="@string/settings_comingFeatures" />
 
             <TextView
                 android:id="@+id/help_fragment_change_patreon"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginStart="24dp"
                 android:textStyle="bold|italic"
                 style="@style/TextAppearance.MaterialComponents.Body2"
                 android:text="@string/fragment_help_patreon" />
+
+            <TextView
+                android:id="@+id/help_fragment_change_commitment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="75dp"
+                style="@style/TextAppearance.MaterialComponents.Caption"
+                android:textSize="12sp"
+                android:text="@string/settings_summary" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

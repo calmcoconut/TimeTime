@@ -6,6 +6,10 @@
     <string name="create_edit_submit_button">SUBMIT</string>
     <string name="create_edit_category_button_title">Categories</string>
     <string name="default_category_item_subHeading">None</string>
-    <string name="help_fragment_credits"><b>Alejandro Diaz</b> \nmore information about me can be found </string>
+    <string name="help_fragment_credits"><b>Alejandro Diaz</b> \nmore information about me can be found at\nhttps://calmcoconut.github.io/Alejandro-Diaz-Portfolio/</string>
     <string name="fragment_help_patreon">Show your support! \nFree and full feature, Always.</string>
+    <string name="settings_comingFeatures">
+        \u2022 Create and set weekly, monthly, and yearly goals\n\u2022 Updated and improved Stats page\n
+    </string>
+    <string name="settings_summary">This app is committed to user privacy and stores all data locally. To export your data please open the advance settings page.</string>
 </resources>

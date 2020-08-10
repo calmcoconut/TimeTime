@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.example.timetime.R;
 import com.example.timetime.ui.activitySummary.ActivityFragment;
 import com.example.timetime.ui.categorysummary.HomeCategoryFragment;
-import com.example.timetime.ui.helpSummary.HelpFragment;
+import com.example.timetime.ui.helpSummary.SettingsFragment;
 import com.example.timetime.ui.homesummary.HomeFragment;
 import com.example.timetime.ui.statsSummary.StatsFragment;
 
@@ -50,7 +50,7 @@ public class MainViewPagerAdapter extends FragmentStatePagerAdapter {
             case 3:
                 return StatsFragment.newInstance();
             case 4:
-                return HelpFragment.newInstance();
+                return SettingsFragment.newInstance();
             default:
                 return HomeFragment.newInstance();
         }
