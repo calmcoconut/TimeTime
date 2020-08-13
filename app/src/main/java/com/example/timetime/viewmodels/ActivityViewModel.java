@@ -55,4 +55,9 @@ public class ActivityViewModel extends AndroidViewModel {
         }
     }
 
+    // deletion
+    public void deleteActivity(Activity activity) {
+        mAppRepository.deleteActivity(activity);
+    }
+
 }

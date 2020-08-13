@@ -127,6 +127,10 @@ public class AppRepository {
         });
     }
 
+    public void deleteActivity(Activity activity) {
+        AppDatabase.databaseWriteExecutor.execute(() -> mActivityDao.deleteActivity(activity.getActivity()));
+    }
+
     // CATEGORY
     public LiveData<List<Category>> getAllCategories() {
         return mAllCategories;

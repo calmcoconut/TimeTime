@@ -4,9 +4,16 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import com.example.timetime.R;
 import com.example.timetime.database.entity.Activity;
 import com.example.timetime.ui.buttons.EditActivityButton;
+import org.jetbrains.annotations.NotNull;
 
 public class EditActivityActivity extends BaseCreateActivity {
     private String mOldActivityName;
@@ -57,7 +64,31 @@ public class EditActivityActivity extends BaseCreateActivity {
         if (toolbar != null) {
             toolbar.setTitle("Edit Activity");
         }
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.delete_action, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_delete:
+                deleteActivity();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void deleteActivity() {
+        getActivityViewModel().deleteActivity(mOldActivity);
+        closeToMain(1);
+        Toast.makeText(this, mOldActivityName + " deleted successfully!", Toast.LENGTH_SHORT).show();
     }
 
     protected void updateDatabase() {
