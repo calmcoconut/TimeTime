@@ -4,10 +4,9 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import androidx.appcompat.app.ActionBar;
 import com.example.timetime.database.entity.Activity;
 import com.example.timetime.ui.buttons.EditActivityButton;
-
-import java.util.Objects;
 
 public class EditActivityActivity extends BaseCreateActivity {
     private String mOldActivityName;
@@ -54,7 +53,11 @@ public class EditActivityActivity extends BaseCreateActivity {
 
     @Override
     public void setToolBar() {
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Edit Activity");
+        ActionBar toolbar = getSupportActionBar();
+        if (toolbar != null) {
+            toolbar.setTitle("Edit Activity");
+        }
+
     }
 
     protected void updateDatabase() {
