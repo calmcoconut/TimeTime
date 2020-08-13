@@ -73,10 +73,6 @@ public class TimeLogCard {
         holder.setPreviousCardDate(currentEntryDate);
     }
 
-    private void determineTittle() {
-
-    }
-
     public TimeLogCard() {
     }
 }

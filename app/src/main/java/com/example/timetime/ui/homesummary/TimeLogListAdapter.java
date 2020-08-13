@@ -22,21 +22,23 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
     private final TimeLogic timeLogic;
     private final ZonedDateTime zonedDateTime;
     private static ZonedDateTime mPreviousCardDate;
+    private TimeLogCardListener timeLogCardListener;
     private List<TimeLog> timeLogList; // cached copy of categories
 
-    TimeLogListAdapter(Context context) {
+    TimeLogListAdapter(Context context, TimeLogCardListener timeLogCardListener) {
         this.context = context;
         this.timeLogic = TimeLogic.newInstance();
         this.zonedDateTime = timeLogic.getCurrentZonedDateTime().truncatedTo(ChronoUnit.DAYS);
         setHasStableIds(true);
         this.inflator = LayoutInflater.from(context);
+        this.timeLogCardListener = timeLogCardListener;
     }
 
     @NonNull
     @Override
     public TimeLogViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = inflator.inflate(R.layout.time_log_item, parent, false);
-        return new TimeLogViewHolder(itemView);
+        return new TimeLogViewHolder(itemView, timeLogCardListener);
     }
 
     @Override
@@ -78,7 +80,7 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
 
     }
 
-    class TimeLogViewHolder extends RecyclerView.ViewHolder {
+    class TimeLogViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final TextView mTimeLogCardTitle;
         private final TextView mTimeLogCardTimeSpent;
@@ -86,8 +88,10 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
         private final TextView mTimeLogCardDateHeading;
         private final ImageView mTimeLogCardThumbnail;
         private final View mTimeLogDivider;
+        private TimeLogCardListener timeLogCardListener;
 
-        private TimeLogViewHolder(View itemView) {
+        private TimeLogViewHolder(@NonNull View itemView, @NonNull TimeLogCardListener timeLogCardListener) {
+
             super(itemView);
             mTimeLogCardTitle = itemView.findViewById(R.id.time_card_log_title);
             mTimeLogCardTimeSpent = itemView.findViewById(R.id.time_card_log_time_spent);
@@ -95,10 +99,18 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
             mTimeLogCardDateHeading = itemView.findViewById(R.id.time_log_day_heading);
             mTimeLogDivider = itemView.findViewById(R.id.time_log_divider);
             mTimeLogCardThumbnail = itemView.findViewById(R.id.time_log_card_thumbnail);
+            this.timeLogCardListener = timeLogCardListener;
+
+            itemView.setOnClickListener(this);
         }
 
 
+        @Override
+        public void onClick(View v) {
+            timeLogCardListener.onTimeLogClick(getAdapterPosition());
+        }
         // getters
+
         public TextView getTimeLogCardTitle() {
             return mTimeLogCardTitle;
         }
@@ -134,5 +146,9 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
         public ZonedDateTime getToday() {
             return zonedDateTime;
         }
+    }
+
+    public interface TimeLogCardListener {
+        void onTimeLogClick(int position);
     }
 }

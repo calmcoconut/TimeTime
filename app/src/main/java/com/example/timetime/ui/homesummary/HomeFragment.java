@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -13,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.timetime.R;
 import com.example.timetime.viewmodels.TimeLogViewModel;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements TimeLogListAdapter.TimeLogCardListener {
 
     private TimeLogViewModel mTimeLogViewModel;
 
@@ -30,7 +31,7 @@ public class HomeFragment extends Fragment {
     private void startRecyclerForTimeLogs(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_root);
 
-        final TimeLogListAdapter adapter = new TimeLogListAdapter(getContext());
+        final TimeLogListAdapter adapter = new TimeLogListAdapter(getContext(), this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -45,5 +46,11 @@ public class HomeFragment extends Fragment {
 
     // empty constructor needed for fragment
     public HomeFragment() {
+    }
+
+    @Override
+    public void onTimeLogClick(int position) {
+        // callback for item clicked in the recycler
+        Toast.makeText(getContext(),"item pos is " + position, Toast.LENGTH_SHORT).show();
     }
 }
