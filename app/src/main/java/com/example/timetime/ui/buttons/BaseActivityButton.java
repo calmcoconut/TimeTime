@@ -15,6 +15,7 @@ import com.example.timetime.viewmodels.ActivityViewModel;
 import com.example.timetime.viewmodels.TimeLogViewModel;
 import com.google.android.material.button.MaterialButton;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,7 +28,7 @@ public abstract class BaseActivityButton {
     private LifecycleOwner owner;
     private Context context;
     private MaterialButton TEMPLATE_BUTTON;
-    private List<Activity> activitiesList;
+    private List<MaterialButton> buttonList;
 
     public abstract void setMaterialButtonOnClickAction(MaterialButton materialButton);
 
@@ -43,13 +44,13 @@ public abstract class BaseActivityButton {
         this.timeLogViewModel = timeLogViewModel;
         this.context = gridContext;
 
+        buttonList = new ArrayList<>();
         verifyActivityLoadedWithObservable(gridLayout);
     }
 
     private void verifyActivityLoadedWithObservable(GridLayout gridLayout) {
         this.activityViewModel.getAllActivities().observe(this.owner, activities -> {
-                    activitiesList = activities;
-                    if (activitiesList == null) {
+                    if (activities == null) {
                         setUpActivityButtons(this.owner,
                                 this.activityViewModel,
                                 this.timeLogViewModel,
@@ -69,9 +70,15 @@ public abstract class BaseActivityButton {
                 .getActivityMaterialButton();
         setMaterialButtonOnClickAction(materialButton);
         gridLayout.addView(materialButton);
+        buttonList.add(materialButton);
     }
 
     // getters
+
+    public List<MaterialButton> getButtonList() {
+        return buttonList;
+    }
+
     public Context getContext() {
         return context;
     }
