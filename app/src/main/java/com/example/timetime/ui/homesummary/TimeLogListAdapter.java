@@ -19,16 +19,16 @@ import java.util.List;
 public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.TimeLogViewHolder> {
     private final LayoutInflater inflator;
     private final Context context;
-    private final TimeLogic timeLogic;
-    private final ZonedDateTime zonedDateTime;
+    private static final TimeLogic timeLogic = TimeLogic.newInstance();
+    ;
+    private static ZonedDateTime zonedDateTime;
     private static ZonedDateTime mPreviousCardDate;
     private TimeLogCardListener timeLogCardListener;
     private List<TimeLog> timeLogList; // cached copy of categories
 
     TimeLogListAdapter(Context context, TimeLogCardListener timeLogCardListener) {
         this.context = context;
-        this.timeLogic = TimeLogic.newInstance();
-        this.zonedDateTime = timeLogic.getCurrentZonedDateTime().truncatedTo(ChronoUnit.DAYS);
+        zonedDateTime = timeLogic.getCurrentZonedDateTime().truncatedTo(ChronoUnit.DAYS);
         setHasStableIds(true);
         this.inflator = LayoutInflater.from(context);
         this.timeLogCardListener = timeLogCardListener;
@@ -46,7 +46,8 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
         if (timeLogList != null) {
             TimeLog current = timeLogList.get(position);
             setTimeLogCardToCurrent(holder, current, position);
-        } else {
+        }
+        else {
             holder.mTimeLogCardTitle.setText("There is an error or no items");
         }
     }
@@ -59,6 +60,10 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
     void setTimeLogs(List<TimeLog> timeLogs) {
         timeLogList = timeLogs;
         notifyDataSetChanged();
+    }
+
+    public TimeLog getTimeCard(int position) {
+        return timeLogList.get(position);
     }
 
     @Override
@@ -75,12 +80,13 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
     public int getItemCount() {
         if (timeLogList != null) {
             return timeLogList.size();
-        } else return 0;
+        }
+        else return 0;
 
 
     }
 
-    class TimeLogViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    static class TimeLogViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final TextView mTimeLogCardTitle;
         private final TextView mTimeLogCardTimeSpent;

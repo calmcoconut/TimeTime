@@ -26,6 +26,9 @@
             android:name=".ui.homesummary.LogTimeToActivity"
             android:parentActivityName=".MainActivity" />
         <activity
+            android:name=".ui.homesummary.EditTimeLogActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".MainActivity"
             android:launchMode="singleTop">
             <intent-filter>
@@ -33,9 +36,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
+
         <receiver android:name=".notifications.BroadCastNotificationReceiver" />
-        
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

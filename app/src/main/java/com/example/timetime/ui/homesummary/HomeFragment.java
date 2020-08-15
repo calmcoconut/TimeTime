@@ -1,5 +1,6 @@
 package com.example.timetime.ui.homesummary;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,17 +13,16 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.timetime.R;
+import com.example.timetime.database.entity.TimeLog;
 import com.example.timetime.viewmodels.TimeLogViewModel;
 
 public class HomeFragment extends Fragment implements TimeLogListAdapter.TimeLogCardListener {
-
     private TimeLogViewModel mTimeLogViewModel;
-
+    private TimeLogListAdapter adapter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         final View rootView = inflater.inflate(R.layout.recycler_view, container, false);
         startRecyclerForTimeLogs(rootView);
         return rootView;
@@ -31,7 +31,7 @@ public class HomeFragment extends Fragment implements TimeLogListAdapter.TimeLog
     private void startRecyclerForTimeLogs(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_root);
 
-        final TimeLogListAdapter adapter = new TimeLogListAdapter(getContext(), this);
+        adapter = new TimeLogListAdapter(getContext(), this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -51,6 +51,14 @@ public class HomeFragment extends Fragment implements TimeLogListAdapter.TimeLog
     @Override
     public void onTimeLogClick(int position) {
         // callback for item clicked in the recycler
-        Toast.makeText(getContext(),"item pos is " + position, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "timeLog activity is " + adapter.getTimeCard(position).getActivity(),
+                Toast.LENGTH_SHORT).show();
+        TimeLog timeLog = adapter.getTimeCard(position);
+        Intent intent = new Intent(getContext(), EditTimeLogActivity.class);
+        intent.putExtra("old_time_log_id", timeLog.getTimeLogId());
+        intent.putExtra("old_time_log_created_time", timeLog.getTimestamp_created());
+        intent.putExtra("old_time_log_modified_time", timeLog.getTimestamp_modified());
+        intent.putExtra("old_time_log_activity", timeLog.getActivity());
+        startActivity(intent);
     }
 }
