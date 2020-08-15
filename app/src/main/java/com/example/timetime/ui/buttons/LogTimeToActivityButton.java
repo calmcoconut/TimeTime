@@ -10,20 +10,33 @@ import com.example.timetime.database.entity.TimeLog;
 import com.example.timetime.viewmodels.TimeLogViewModel;
 import com.google.android.material.button.MaterialButton;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class LogTimeToActivityButton extends BaseActivityButton {
+    private OnLongPressActivityButtonListener listener;
+
+    public LogTimeToActivityButton(OnLongPressActivityButtonListener onLongPressActivityButtonListener) {
+        this.listener = onLongPressActivityButtonListener;
+    }
 
     @Override
     public void setMaterialButtonOnClickAction(MaterialButton materialButton) {
-        materialButton.setOnClickListener(this::submitTimeLogForActivity);
+//        materialButton.setOnClickListener(this::submitTimeLogForActivity);
+        materialButton.setOnClickListener(v -> {
+            listener.onShortPressOfActivity(v);
+        });
     }
 
     @Override
     public void setMaterialButtonOnLongClickAction(MaterialButton materialButton) {
+        materialButton.setOnLongClickListener(v -> {
+            listener.onLongPressOfActivity(v.getId(), getButtonList());
+            return true;
+        });
     }
 
-    private void submitTimeLogForActivity(View v) {
+    public void submitTimeLogForActivity(View v) {
         Activity activity = (Activity) v.getTag();
         TimeLog timeLog = createNewTimeLog(activity);
         checkAndSubmitTimeLog(timeLog);
@@ -68,5 +81,11 @@ public class LogTimeToActivityButton extends BaseActivityButton {
                 activity.getColor(),
                 activity.getIcon(),
                 activity.getCategory());
+    }
+
+    public interface OnLongPressActivityButtonListener {
+        void onLongPressOfActivity(int viewId, List<MaterialButton> buttonList);
+
+        void onShortPressOfActivity(View view);
     }
 }
