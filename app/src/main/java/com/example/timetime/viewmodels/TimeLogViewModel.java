@@ -53,4 +53,10 @@ public class TimeLogViewModel extends AndroidViewModel {
     public void updateTimeLogById(TimeLog oldTimeLog, TimeLog newTimeLog) {
         mAppRepository.updateTimeLogById(oldTimeLog, newTimeLog);
     }
+
+    // deletion
+
+    public void deleteTimeLog(Long timeLogId) {
+        mAppRepository.deleteTimeLog(timeLogId);
+    }
 }

@@ -40,7 +40,7 @@ public class LogTimeToActivity extends AppCompatActivity {
 
         LogTimeToActivityButton baseActivityButtons = new LogTimeToActivityButton();
 
-        ObserveChangeInLastModified();
+        getTimeToDisplayOnToolBar();
         setUpToolBar(true);
         baseActivityButtons.setUpActivityButtons(LogTimeToActivity.this,
                 mActivityViewModel,
@@ -50,7 +50,7 @@ public class LogTimeToActivity extends AppCompatActivity {
                 TEMPLATE_BUTTON);
     }
 
-    private void ObserveChangeInLastModified() {
+    public void getTimeToDisplayOnToolBar() {
         timeLogViewModel.getMostRecentTimeLogTimeStamp().observe(this, latestModifiedTime -> {
             if (latestModifiedTime == null) {
                 mToolBarTime = "not working";
@@ -62,7 +62,7 @@ public class LogTimeToActivity extends AppCompatActivity {
         });
     }
 
-    private void setUpToolBar(boolean initialSetUp) {
+    public void setUpToolBar(boolean initialSetUp) {
         if (initialSetUp) {
             toolbar = findViewById(R.id.activity_time_log_toolbar);
             setSupportActionBar(toolbar);
@@ -74,5 +74,25 @@ public class LogTimeToActivity extends AppCompatActivity {
         else {
             setTitle("Last Log: " + mToolBarTime.toUpperCase());
         }
+    }
+
+    public TimeLogic getTimeLogic() {
+        return this.timeLogic;
+    }
+
+    public Toolbar getToolbar() {
+        return this.toolbar;
+    }
+
+    public String getToolBarTime() {
+        return this.mToolBarTime;
+    }
+
+    public TimeLogViewModel getTimeLogViewModel() {
+        return this.timeLogViewModel;
+    }
+
+    public void setToolBarTime(String toolBarTime) {
+        this.mToolBarTime = toolBarTime;
     }
 }

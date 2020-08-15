@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -51,8 +50,6 @@ public class HomeFragment extends Fragment implements TimeLogListAdapter.TimeLog
     @Override
     public void onTimeLogClick(int position) {
         // callback for item clicked in the recycler
-        Toast.makeText(getContext(), "timeLog activity is " + adapter.getTimeCard(position).getActivity(),
-                Toast.LENGTH_SHORT).show();
         TimeLog timeLog = adapter.getTimeCard(position);
         Intent intent = new Intent(getContext(), EditTimeLogActivity.class);
         intent.putExtra("old_time_log_id", timeLog.getTimeLogId());

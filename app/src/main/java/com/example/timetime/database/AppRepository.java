@@ -6,6 +6,7 @@ import com.example.timetime.database.dao.*;
 import com.example.timetime.database.database.AppDatabase;
 import com.example.timetime.database.entity.*;
 import io.reactivex.Single;
+import io.reactivex.disposables.Disposable;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -49,7 +50,7 @@ public class AppRepository {
         AppDatabase.databaseWriteExecutor.execute(() -> {
                     Single<TimeLog> timeLogSingle = getMostRecentTimeLogSingle();
                     final TimeLog[] oldTimeLog = new TimeLog[1];
-                    timeLogSingle.subscribe(t -> {
+                    Disposable d = timeLogSingle.subscribe(t -> {
                         oldTimeLog[0] = t;
                     });
                     while (oldTimeLog[0] == null) {
@@ -65,6 +66,9 @@ public class AppRepository {
                     }
                     else {
                         mTimeLogDao.insert(timeLog);
+                    }
+                    if (!d.isDisposed()) {
+                        d.dispose();
                     }
                 }
         );
@@ -98,6 +102,10 @@ public class AppRepository {
                             , newTimeLog.getActivityColor());
                 }
         );
+    }
+
+    public void deleteTimeLog(Long timeLogId) {
+        AppDatabase.databaseWriteExecutor.execute(() -> mTimeLogDao.deleteTimeLog(timeLogId));
     }
 
     // ACTIVITY

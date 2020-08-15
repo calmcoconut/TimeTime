@@ -12,8 +12,6 @@ import java.util.List;
 
 @Dao
 public interface TimeLogDao {
-    @Query("DELETE FROM timeLog_table")
-    void deleteAll();
 
     // getters
     @Query("SELECT * FROM timeLog_table ORDER BY timestamp_modified DESC")
@@ -58,6 +56,13 @@ public interface TimeLogDao {
 
     @Query("UPDATE timeLog_table SET category = :newCategory WHERE activity = :activityName")
     void updateActivityCategory(String activityName, String newCategory);
+
+    // DELETION
+    @Query("DELETE FROM timeLog_table")
+    void deleteAll();
+
+    @Query("DELETE FROM timeLog_table WHERE id = :id")
+    void deleteTimeLog(Long id);
 
     // META
 
