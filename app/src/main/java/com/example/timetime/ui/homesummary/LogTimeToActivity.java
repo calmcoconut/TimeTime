@@ -31,6 +31,8 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
     private ActivityViewModel mActivityViewModel;
     private TimeLogViewModel timeLogViewModel;
     private TimeLogic timeLogic;
+    private MaterialButton leftButton;
+    private MaterialButton rightButton;
     private String mToolBarTime;
     LogTimeToActivityButton baseActivityButtons;
     List<Activity> multipleSelectedActivesList;
@@ -48,6 +50,8 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
         mActivityViewModel = new ViewModelProvider(this).get(ActivityViewModel.class);
         timeLogViewModel = new ViewModelProvider(this).get(TimeLogViewModel.class);
         toolbar = findViewById(R.id.activity_time_log_toolbar);
+        leftButton = findViewById(R.id.activity_time_log_button_left);
+        rightButton = findViewById(R.id.activity_time_log_button_left);
 
         baseActivityButtons = new LogTimeToActivityButton(this);
 

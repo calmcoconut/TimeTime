@@ -12,4 +12,6 @@
         \u2022 Create and set weekly, monthly, and yearly goals\n\u2022 Updated and improved Stats page\n
     </string>
     <string name="settings_summary">This app is committed to user privacy and stores all data locally. To export your data please open the advance settings page.</string>
+    <string name="time_log_button_left_action">numerous</string>
+    <string name="time_log_button_right_action">snooze</string>
 </resources>

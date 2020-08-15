@@ -88,7 +88,7 @@
                 android:id="@+id/activity_time_log_button_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="left"
+                android:text="@string/time_log_button_left_action"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_alignParentStart="true" />
 
@@ -97,7 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="0dp"
-                android:text="right"
+                android:text="@string/time_log_button_right_action"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_alignParentEnd="true" />
         </RelativeLayout>
