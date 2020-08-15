@@ -69,6 +69,7 @@ public abstract class BaseActivityButton {
         MaterialButton materialButton = new ActivityMaterialButton(activity, context)
                 .getActivityMaterialButton();
         setMaterialButtonOnClickAction(materialButton);
+        setMaterialButtonOnLongClickAction(materialButton);
         gridLayout.addView(materialButton);
         buttonList.add(materialButton);
     }
