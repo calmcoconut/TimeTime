@@ -59,22 +59,6 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
                 mGridContext,
                 mGridLayout,
                 TEMPLATE_BUTTON);
-
-        initActionButtons();
-    }
-
-    private void initActionButtons() {
-//        LinearLayout ll = findViewById(R.id.activity_time_log_linear_root);
-//        MaterialButton leftButton = new MaterialButton(this);
-//        MaterialButton rightButton = new MaterialButton(this);
-//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-//                LinearLayout.LayoutParams.WRAP_CONTENT);
-//        leftButton.setLayoutParams(params);
-//        leftButton.setText("test");
-//        leftButton.setLayoutParams(params);
-//        leftButton.setId(555);
-//        leftButton.setGravity(Gravity.BOTTOM);
-//        ll.addView(leftButton);
     }
 
     public void getTimeToDisplayOnToolBar() {
