@@ -2,8 +2,10 @@ package com.example.timetime.ui.homesummary;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.View;
@@ -15,15 +17,20 @@ import com.example.timetime.R;
 import com.example.timetime.database.TimeLogic;
 import com.example.timetime.database.entity.Activity;
 import com.example.timetime.ui.buttons.LogTimeToActivityButton;
+import com.example.timetime.utils.ParcelableActivity;
 import com.example.timetime.viewmodels.ActivityViewModel;
 import com.example.timetime.viewmodels.TimeLogViewModel;
 import com.google.android.material.button.MaterialButton;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class LogTimeToActivity extends AppCompatActivity implements LogTimeToActivityButton.OnLongPressActivityButtonListener {
+    public static final String ACTIVITY_LIST_KEY = "activities_list";
+    public static final String IS_UPDATE_KEY = "is_an_update";
     private MaterialButton TEMPLATE_BUTTON;
     Toolbar toolbar;
     private GridLayout mGridLayout;
@@ -37,6 +44,7 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
     LogTimeToActivityButton baseActivityButtons;
     List<Activity> multipleSelectedActivesList;
     private boolean isTap = true;
+    private boolean isUpdate = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +59,10 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
         timeLogViewModel = new ViewModelProvider(this).get(TimeLogViewModel.class);
         toolbar = findViewById(R.id.activity_time_log_toolbar);
         leftButton = findViewById(R.id.activity_time_log_button_left);
-        rightButton = findViewById(R.id.activity_time_log_button_left);
+        rightButton = findViewById(R.id.activity_time_log_button_right);
+
+        setLeftButtonOnClick();
+        setRightButtonOnClick();
 
         baseActivityButtons = new LogTimeToActivityButton(this);
 
@@ -68,7 +79,7 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
     public void getTimeToDisplayOnToolBar() {
         timeLogViewModel.getMostRecentTimeLogTimeStamp().observe(this, latestModifiedTime -> {
             if (latestModifiedTime == null) {
-                mToolBarTime = "not working";
+                mToolBarTime = "error";
             }
             else {
                 mToolBarTime = timeLogic.getHumanFormattedTimeBetweenDbValueAndNow(latestModifiedTime);
@@ -79,7 +90,6 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
 
     public void setUpToolBar(boolean initialSetUp) {
         if (initialSetUp) {
-            toolbar = findViewById(R.id.activity_time_log_toolbar);
             setSupportActionBar(toolbar);
             Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         }
@@ -91,10 +101,68 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
         }
     }
 
+    public void setRightButtonOnClick() {
+        rightButton.setOnClickListener(v -> {
+            if (isTap) {
+                finish();
+            }
+            else {
+                launchSubmitMultipleTimeLogsActivity();
+            }
+        });
+    }
+
+    public void launchSubmitMultipleTimeLogsActivity() {
+        Bundle bundle = getBundleForMultipleSubmission();
+        Intent intent = new Intent(this, SubmitMultipleTimeLogs.class);
+        intent.putExtra("BUNDLE", bundle);
+        startActivity(intent);
+    }
+
+    @NotNull
+    private Bundle getBundleForMultipleSubmission() {
+        List<ParcelableActivity> serializableActivities = this.multipleSelectedActivesList
+                .stream().map(ParcelableActivity::new).collect(Collectors.toList());
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(ACTIVITY_LIST_KEY, (ArrayList<? extends Parcelable>) serializableActivities);
+        bundle.putBoolean(IS_UPDATE_KEY, this.isUpdate);
+        return bundle;
+    }
+
+    public void setLeftButtonOnClick() {
+        leftButton.setOnClickListener(v -> {
+            // toggles button behavior between default and multiple selection
+            if (isTap) {
+                defaultButtonBehavior();
+            }
+            else {
+                multipleSelectionButtonBehavior();
+            }
+        });
+    }
+
+    private void multipleSelectionButtonBehavior() {
+        leftButton.setText(R.string.time_log_button_left_action);
+        rightButton.setText(R.string.time_log_button_right_action);
+        multipleSelectionResetButtonColors(baseActivityButtons.getButtonList());
+        isTap = true;
+    }
+
+    private void defaultButtonBehavior() {
+        leftButton.setText("cancel");
+        rightButton.setText("submit");
+        onLongPressOfActivity(-1, baseActivityButtons.getButtonList());
+    }
+
     @Override
     public void onLongPressOfActivity(int viewId, List<MaterialButton> buttonList) {
         isTap = false;
         hapticFeedBackOnLongClick();
+        initMultipleSelectionBehavior(viewId, buttonList);
+    }
+
+    private void initMultipleSelectionBehavior(int viewId, List<MaterialButton> buttonList) {
         multipleSelectedActivesList = new ArrayList<>();
         for (MaterialButton button : buttonList) {
             if (button.getId() == viewId) {
@@ -114,13 +182,28 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
         else {
             Activity a = (Activity) view.getTag();
             if (multipleSelectedActivesList.contains(a)) {
-                multipleSelectedActivesList.remove(a);
-                view.setBackgroundColor(Color.GRAY);
+                multipleSelectionRemoveActivity(view, a);
             }
             else {
-                multipleSelectedActivesList.add(a);
-                view.setBackgroundColor(Color.parseColor("#" + a.getColor()));
+                multipleSelectionAddActivity(view, a);
             }
+        }
+    }
+
+    private void multipleSelectionAddActivity(View view, Activity a) {
+        multipleSelectedActivesList.add(a);
+        view.setBackgroundColor(Color.parseColor("#" + a.getColor()));
+    }
+
+    private void multipleSelectionRemoveActivity(View view, Activity a) {
+        multipleSelectedActivesList.remove(a);
+        view.setBackgroundColor(Color.GRAY);
+    }
+
+    private void multipleSelectionResetButtonColors(List<MaterialButton> buttonList) {
+        for (MaterialButton button : buttonList) {
+            Activity a = (Activity) button.getTag();
+            button.setBackgroundColor(Color.parseColor("#" + a.getColor()));
         }
     }
 
@@ -132,7 +215,7 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
     }
 
 
-    // getters
+    // Getters
     public TimeLogic getTimeLogic() {
         return this.timeLogic;
     }
@@ -152,4 +235,10 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
     public void setToolBarTime(String toolBarTime) {
         this.mToolBarTime = toolBarTime;
     }
+
+    // Setters
+    public void setUpdate(boolean update) {
+        isUpdate = update;
+    }
+
 }
