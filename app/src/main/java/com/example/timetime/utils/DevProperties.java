@@ -1,4 +1,4 @@
-package com.example.timetime;
+package com.example.timetime.utils;
 
 public final class DevProperties {
     public static final boolean IS_DEV_DB = true;

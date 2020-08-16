@@ -17,6 +17,7 @@ import com.example.timetime.ui.activitySummary.CreateActivityActivity;
 import com.example.timetime.ui.categorysummary.CreateCategoryActivity;
 import com.example.timetime.ui.homesummary.LogTimeToActivity;
 import com.example.timetime.ui.settingsSummary.AdvanceSettings;
+import com.example.timetime.utils.DevProperties;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import org.jetbrains.annotations.NotNull;

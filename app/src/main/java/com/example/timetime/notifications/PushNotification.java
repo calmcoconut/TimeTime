@@ -9,9 +9,9 @@ import android.os.SystemClock;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import com.example.timetime.AppStart;
-import com.example.timetime.DevProperties;
 import com.example.timetime.R;
 import com.example.timetime.ui.homesummary.LogTimeToActivity;
+import com.example.timetime.utils.DevProperties;
 
 public class PushNotification {
     private static AlarmManager alarmManager;

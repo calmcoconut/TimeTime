@@ -6,9 +6,9 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
-import com.example.timetime.DevProperties;
 import com.example.timetime.database.dao.*;
 import com.example.timetime.database.entity.*;
+import com.example.timetime.utils.DevProperties;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

@@ -86,7 +86,7 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
 
     }
 
-    static class TimeLogViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class TimeLogViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final TextView mTimeLogCardTitle;
         private final TextView mTimeLogCardTimeSpent;

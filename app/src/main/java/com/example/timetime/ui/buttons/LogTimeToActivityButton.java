@@ -43,7 +43,7 @@ public class LogTimeToActivityButton extends BaseActivityButton {
         launchHomeView();
     }
 
-    private void launchHomeView() {
+    public void launchHomeView() {
         Intent intent = new Intent(getContext(), MainActivity.class);
         getContext().startActivity(intent);
     }

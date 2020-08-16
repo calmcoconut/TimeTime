@@ -1,10 +1,10 @@
 package com.example.timetime.database.database;
 
 import android.util.Log;
-import com.example.timetime.DevProperties;
 import com.example.timetime.R;
 import com.example.timetime.database.TimeLogic;
 import com.example.timetime.database.entity.*;
+import com.example.timetime.utils.DevProperties;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
