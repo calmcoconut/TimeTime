@@ -10,6 +10,7 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.GridLayout;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
@@ -26,11 +27,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class LogTimeToActivity extends AppCompatActivity implements LogTimeToActivityButton.OnLongPressActivityButtonListener {
     public static final String ACTIVITY_LIST_KEY = "activities_list";
     public static final String IS_UPDATE_KEY = "is_an_update";
+    public static final String FROM_TIME_KEY = "from_time";
+    public static final String TO_TIME_KEY = "to_time";
     private MaterialButton TEMPLATE_BUTTON;
     Toolbar toolbar;
     private GridLayout mGridLayout;
@@ -42,9 +46,11 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
     private MaterialButton rightButton;
     private String mToolBarTime;
     LogTimeToActivityButton baseActivityButtons;
-    List<Activity> multipleSelectedActivesList;
+    private Long fromTime;
+    private Long toTime;
     private boolean isTap = true;
     private boolean isUpdate = false;
+    List<Activity> multipleSelectedActivesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,9 +120,14 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
 
     public void launchSubmitMultipleTimeLogsActivity() {
         Bundle bundle = getBundleForMultipleSubmission();
-        Intent intent = new Intent(this, SubmitMultipleTimeLogs.class);
-        intent.putExtra("BUNDLE", bundle);
-        startActivity(intent);
+        if (bundle == null) {
+            Toast.makeText(LogTimeToActivity.this, "Wait a minute!",Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Intent intent = new Intent(this, SubmitMultipleTimeLogs.class);
+            intent.putExtra("BUNDLE", bundle);
+            startActivity(intent);
+        }
     }
 
     @NotNull
@@ -127,7 +138,32 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(ACTIVITY_LIST_KEY, (ArrayList<? extends Parcelable>) serializableActivities);
         bundle.putBoolean(IS_UPDATE_KEY, this.isUpdate);
-        return bundle;
+        toTime = timeLogic.getCurrentDateTimeForDatabaseStorage();
+        if (checkMultipleSelectionHasValidTimeFrame()) {
+            bundle.putLong(TO_TIME_KEY, timeLogic.getCurrentDateTimeForDatabaseStorage());
+            bundle.putLong(FROM_TIME_KEY, fromTime);
+            return bundle;
+        }
+        else {
+            return null;
+        }
+    }
+
+    private boolean checkMultipleSelectionHasValidTimeFrame() {
+        final Long[] createdTimeStamp = new Long[1];
+        getTimeLogViewModel().getMostRecentTimeLogTimeStamp().observe(LogTimeToActivity.this, latestModifiedTime -> {
+                    if (latestModifiedTime != null) {
+                        createdTimeStamp[0] = latestModifiedTime;
+                    }
+                }
+        );
+        if (toTime.equals(createdTimeStamp[0]) || toTime.equals(createdTimeStamp[0] - TimeUnit.MINUTES.toMillis(1L))) {
+            return false;
+        }
+        else {
+            fromTime = createdTimeStamp[0];
+            return true;
+        }
     }
 
     public void setLeftButtonOnClick() {

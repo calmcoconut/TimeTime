@@ -10,7 +10,7 @@ public class EditActivityButton extends BaseActivityButton {
     public static final String EXTRA_ACTIVITY_ICON = "activityIcon";
     public static final String EXTRA_ACTIVITY_CATEGORY = "activityCategory";
     @Override
-    public void setMaterialButtonOnClickAction(MaterialButton materialButton) {
+    public void setMaterialActivityButtonOnClickAction(MaterialButton materialButton) {
         materialButton.setOnClickListener(v -> launchEditActivity(materialButton));
     }
 

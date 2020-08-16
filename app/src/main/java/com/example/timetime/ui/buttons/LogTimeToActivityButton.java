@@ -9,23 +9,21 @@ import com.example.timetime.database.entity.Activity;
 import com.example.timetime.database.entity.TimeLog;
 import com.example.timetime.viewmodels.TimeLogViewModel;
 import com.google.android.material.button.MaterialButton;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class LogTimeToActivityButton extends BaseActivityButton {
-    private OnLongPressActivityButtonListener listener;
+    private final OnLongPressActivityButtonListener listener;
 
     public LogTimeToActivityButton(OnLongPressActivityButtonListener onLongPressActivityButtonListener) {
         this.listener = onLongPressActivityButtonListener;
     }
 
     @Override
-    public void setMaterialButtonOnClickAction(MaterialButton materialButton) {
-//        materialButton.setOnClickListener(this::submitTimeLogForActivity);
-        materialButton.setOnClickListener(v -> {
-            listener.onShortPressOfActivity(v);
-        });
+    public void setMaterialActivityButtonOnClickAction(MaterialButton materialButton) {
+        materialButton.setOnClickListener(listener::onShortPressOfActivity);
     }
 
     @Override
@@ -37,10 +35,15 @@ public class LogTimeToActivityButton extends BaseActivityButton {
     }
 
     public void submitTimeLogForActivity(View v) {
-        Activity activity = (Activity) v.getTag();
-        TimeLog timeLog = createNewTimeLog(activity);
+        TimeLog timeLog = getTimeLog(v);
         checkAndSubmitTimeLog(timeLog);
         launchHomeView();
+    }
+
+    @NotNull
+    private TimeLog getTimeLog(View v) {
+        Activity activity = (Activity) v.getTag();
+        return createNewTimeLog(activity);
     }
 
     public void launchHomeView() {

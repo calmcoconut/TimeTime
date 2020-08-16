@@ -30,7 +30,7 @@ public abstract class BaseActivityButton {
     private MaterialButton TEMPLATE_BUTTON;
     private List<MaterialButton> buttonList;
 
-    public abstract void setMaterialButtonOnClickAction(MaterialButton materialButton);
+    public abstract void setMaterialActivityButtonOnClickAction(MaterialButton materialButton);
 
     public abstract void setMaterialButtonOnLongClickAction(MaterialButton materialButton);
 
@@ -68,7 +68,7 @@ public abstract class BaseActivityButton {
     private void createActivityButton(GridLayout gridLayout, Activity activity) {
         MaterialButton materialButton = new ActivityMaterialButton(activity, context)
                 .getActivityMaterialButton();
-        setMaterialButtonOnClickAction(materialButton);
+        setMaterialActivityButtonOnClickAction(materialButton);
         setMaterialButtonOnLongClickAction(materialButton);
         gridLayout.addView(materialButton);
         buttonList.add(materialButton);
