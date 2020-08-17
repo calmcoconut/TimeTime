@@ -222,9 +222,10 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
     private TimeLog[] createTimeLogs() {
         TimeLog[] timeLogs = new TimeLog[allProgress.length];
         Long currentFromTime = fromTime;
+        Long currentToTime;
         for (int i = 0; i < allProgress.length; i++) {
-            ParcelableActivity currentActivity = parcelableActivityList.get(i);
-            Long currentToTime = (long) seekBarList.get(i).getProgress();
+            ParcelableActivity currentActivity = parcelableActivityList.get(parcelableActivityList.size() - i - 1);
+            currentToTime = currentFromTime + (allProgress[i] - fromTime);
             timeLogs[i] = new TimeLog(currentFromTime,
                     currentToTime,
                     currentActivity.getActivityName(),
