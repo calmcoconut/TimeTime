@@ -131,16 +131,15 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
         bundle.putParcelableArrayList(ACTIVITY_LIST_KEY, (ArrayList<? extends Parcelable>) serializableActivities);
         bundle.putBoolean(IS_UPDATE_KEY, this.isUpdate);
         toTime = timeLogic.getCurrentDateTimeForDatabaseStorage();
-        if (validateMultipleSelectionTimeFrame()) {
-            if (isUpdate) {
-                bundle.putLong(TO_TIME_KEY, this.oldModifiedTime);
-                bundle.putLong(FROM_TIME_KEY, this.oldCreatedTime);
-                bundle.putLong(IS_UPDATE_KEY_ID, this.oldTimeLogId);
-            }
-            else {
-                bundle.putLong(TO_TIME_KEY, toTime);
-                bundle.putLong(FROM_TIME_KEY, fromTime);
-            }
+        if (isUpdate) {
+            bundle.putLong(TO_TIME_KEY, this.oldModifiedTime);
+            bundle.putLong(FROM_TIME_KEY, this.oldCreatedTime);
+            bundle.putLong(IS_UPDATE_KEY_ID, this.oldTimeLogId);
+            return bundle;
+        }
+        else if (validateMultipleSelectionTimeFrame()) {
+            bundle.putLong(TO_TIME_KEY, toTime);
+            bundle.putLong(FROM_TIME_KEY, fromTime);
             return bundle;
         }
         else {
