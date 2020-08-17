@@ -39,14 +39,16 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
     private AppCompatTextView activesTextMessage;
     private Long fromTime;
     private Long toTime;
-    private Long allocatedTime;
+    private int allocatedTime;
     private Long oldRange;
+    private int newMin;
+    private int newMax;
     private int newRange;
     private boolean isSubmittable;
     private boolean isUpdate;
     private List<ParcelableActivity> parcelableActivityList;
     private List<SeekBar> seekBarList;
-    private long[] allProgress;
+    private int[] allProgress;
 
     @Override
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -63,12 +65,15 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
         linearLayout.setVisibility(View.VISIBLE);
         timeLogic = TimeLogic.newInstance();
 
-        allocatedTime = 0L;
+        extractIntentBundle();
+
+        allocatedTime = 0;
         newRange = 100;
         oldRange = toTime - fromTime;
+        newMin = 0;
+        newMax = 100;
         isSubmittable = false;
 
-        extractIntentBundle();
         setRightButtonOnClick();
         setLeftButtonOnClick();
 
@@ -92,7 +97,7 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
     }
 
     private void setTimeAvailableText() {
-        Long afterAllocatedTime = toTime - allocatedTime;
+        Long afterAllocatedTime = toTime - getLongFromStandardizedScale(allocatedTime);
         String messageTImeString = timeLogic.getHumanFormattedTimeBetweenTwoTimeSpans(fromTime, afterAllocatedTime);
         activesTextMessage.setText(messageTImeString + " left to split between " + parcelableActivityList.size() +
                 " activities");
@@ -128,8 +133,8 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
             linearLayout.addView(textView);
             AppCompatSeekBar seekBar = getPrefabbedSeekbar(params);
             seekBarList.add(seekBar);
-            allProgress = new long[seekBarList.size()];
-            Arrays.fill(allProgress, fromTime);
+            allProgress = new int[seekBarList.size()];
+            Arrays.fill(allProgress, newMin);
             setSliderListeners(activity, textView, seekBar);
             linearLayout.addView(seekBar);
         }
@@ -139,23 +144,21 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
     private AppCompatSeekBar getPrefabbedSeekbar(LinearLayout.LayoutParams params) {
         AppCompatSeekBar seekBar = new AppCompatSeekBar(this);
         seekBar.setLayoutParams(params);
-        seekBar.setMax(Math.toIntExact(toTime));
-        seekBar.setMin(Math.toIntExact(fromTime));
+        seekBar.setMin(newMin);
+        seekBar.setMax(newMax);
         return seekBar;
     }
 
     private void setSliderListeners(ParcelableActivity activity, AppCompatTextView textView, AppCompatSeekBar seekBar) {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            final int range = Math.toIntExact(toTime) - Math.toIntExact(fromTime);
-
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int whichIndex = seekBarList.indexOf(seekBar);
-                long storedProgress = allProgress[whichIndex];
-                long remaining = determineRemainingRoom();
+                int storedProgress = allProgress[whichIndex];
+                int remaining = determineRemainingRoom();
                 if (progress > storedProgress) {
                     if (remaining == 0) {
-                        seekBar.setProgress(Math.toIntExact(storedProgress));
+                        seekBar.setProgress(storedProgress);
                         isSubmittable = true;
                     }
                     else {
@@ -168,7 +171,7 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
                     isSubmittable = false;
                 }
 
-                textView.setText(activity.getActivityName() + "     " + timeLogic.getHumanFormattedTimeBetweenTwoTimeSpans(fromTime, allProgress[whichIndex]));
+                textView.setText(activity.getActivityName() + "     " + timeLogic.getHumanFormattedTimeBetweenTwoTimeSpans(fromTime, getLongFromStandardizedScale(allProgress[whichIndex])));
                 setTimeAvailableText();
             }
 
@@ -180,14 +183,14 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
 
-            private final long determineRemainingRoom() {
-                long remainingRoom = 0L;
-                allocatedTime = 0L;
-                for (long current : allProgress) {
-                    allocatedTime += current - fromTime;
-                    remainingRoom = remainingRoom + (current - fromTime);
+            private final int determineRemainingRoom() {
+                int remainingRoom = 0;
+                allocatedTime = 0;
+                for (int current : allProgress) {
+                    allocatedTime += current - newMin;
+                    remainingRoom = remainingRoom + (current - newMin);
                 }
-                return range - remainingRoom;
+                return newRange - remainingRoom;
             }
         });
     }
@@ -197,7 +200,7 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
         AppCompatTextView textView = new AppCompatTextView(this);
         textView.setLayoutParams(params);
         textView.setText(activity.getActivityName() + "     0min");
-        textView.setTextColor(Color.parseColor("#" + activity.getActivityColor());
+        textView.setTextColor(Color.parseColor("#" + activity.getActivityColor()));
         return textView;
     }
 
@@ -241,6 +244,24 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
         });
     }
 
+    private TimeLog[] createTimeLogs() {
+        TimeLog[] timeLogs = new TimeLog[allProgress.length];
+        Long currentFromTime = fromTime;
+        Long currentToTime;
+        for (int i = 0; i < allProgress.length; i++) {
+            ParcelableActivity currentActivity = parcelableActivityList.get(i);
+            currentToTime = currentFromTime + (getLongFromStandardizedScale(allProgress[i]) - fromTime);
+            timeLogs[i] = new TimeLog(currentFromTime,
+                    currentToTime,
+                    currentActivity.getActivityName(),
+                    currentActivity.getActivityColor(),
+                    currentActivity.getActivityIcon(),
+                    currentActivity.getCategoryName());
+            currentFromTime = currentToTime;
+        }
+        return timeLogs;
+    }
+
     private void submitTimeLog(TimeLog timeLog) {
         if (isUpdate) {
         }
@@ -251,23 +272,5 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-    }
-
-    private TimeLog[] createTimeLogs() {
-        TimeLog[] timeLogs = new TimeLog[allProgress.length];
-        Long currentFromTime = fromTime;
-        Long currentToTime;
-        for (int i = 0; i < allProgress.length; i++) {
-            ParcelableActivity currentActivity = parcelableActivityList.get(i);
-            currentToTime = currentFromTime + (allProgress[i] - fromTime);
-            timeLogs[i] = new TimeLog(currentFromTime,
-                    currentToTime,
-                    currentActivity.getActivityName(),
-                    currentActivity.getActivityColor(),
-                    currentActivity.getActivityIcon(),
-                    currentActivity.getCategoryName());
-            currentFromTime = currentToTime;
-        }
-        return timeLogs;
     }
 }
