@@ -68,11 +68,11 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
         setRightButtonOnClick();
         setLeftButtonOnClick();
 
-        initText();
+        initTimeAvailableText();
         initSliders();
     }
 
-    private void initText() {
+    private void initTimeAvailableText() {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         activesTextMessage = new AppCompatTextView(this);
@@ -83,15 +83,23 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
         activesTextMessage.setLayoutParams(params);
         activesTextMessage.setGravity(Gravity.CENTER);
         activesTextMessage.setTextColor(Color.BLACK);
-        setText();
+        setTimeAvailableText();
         linearLayout.addView(activesTextMessage);
     }
 
-    private void setText() {
+    private void setTimeAvailableText() {
         Long afterAllocatedTime = toTime - allocatedTime;
         String messageTImeString = timeLogic.getHumanFormattedTimeBetweenTwoTimeSpans(fromTime, afterAllocatedTime);
         activesTextMessage.setText(messageTImeString + " left to split between " + parcelableActivityList.size() +
                 " activities");
+    }
+
+
+    private int standardizeScaleForSliders(long valueToStandardize) {
+        oldRange =
+    }
+
+    private long getLongFromStandardizedScale(int standardizedValue) {
     }
 
     private void initSliders() {
@@ -110,18 +118,27 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
         seekBarList = new ArrayList<>();
 
         for (ParcelableActivity activity : parcelableActivityList) {
-            AppCompatTextView textView = getAppCompatTextViewForSlider(params, activity);
+            AppCompatTextView textView = getPrefabbedTextForSlider(params, activity);
             linearLayout.addView(textView);
-            AppCompatSeekBar seekBar = getAppCompatSeekBarForActivity(params);
+            AppCompatSeekBar seekBar = getPrefabbedSeekbar(params);
             seekBarList.add(seekBar);
             allProgress = new long[seekBarList.size()];
             Arrays.fill(allProgress, fromTime);
-            setSeekBarListener(activity, textView, seekBar);
+            setSliderListeners(activity, textView, seekBar);
             linearLayout.addView(seekBar);
         }
     }
 
-    private void setSeekBarListener(ParcelableActivity activity, AppCompatTextView textView, AppCompatSeekBar seekBar) {
+    @NotNull
+    private AppCompatSeekBar getPrefabbedSeekbar(LinearLayout.LayoutParams params) {
+        AppCompatSeekBar seekBar = new AppCompatSeekBar(this);
+        seekBar.setLayoutParams(params);
+        seekBar.setMax(Math.toIntExact(toTime));
+        seekBar.setMin(Math.toIntExact(fromTime));
+        return seekBar;
+    }
+
+    private void setSliderListeners(ParcelableActivity activity, AppCompatTextView textView, AppCompatSeekBar seekBar) {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             final int range = Math.toIntExact(toTime) - Math.toIntExact(fromTime);
 
@@ -146,7 +163,7 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
                 }
 
                 textView.setText(activity.getActivityName() + "     " + timeLogic.getHumanFormattedTimeBetweenTwoTimeSpans(fromTime, allProgress[whichIndex]));
-                setText();
+                setTimeAvailableText();
             }
 
             @Override
@@ -170,19 +187,11 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
     }
 
     @NotNull
-    private AppCompatSeekBar getAppCompatSeekBarForActivity(LinearLayout.LayoutParams params) {
-        AppCompatSeekBar seekBar = new AppCompatSeekBar(this);
-        seekBar.setLayoutParams(params);
-        seekBar.setMax(Math.toIntExact(toTime));
-        seekBar.setMin(Math.toIntExact(fromTime));
-        return seekBar;
-    }
-
-    @NotNull
-    private AppCompatTextView getAppCompatTextViewForSlider(LinearLayout.LayoutParams params, ParcelableActivity activity) {
+    private AppCompatTextView getPrefabbedTextForSlider(LinearLayout.LayoutParams params, ParcelableActivity activity) {
         AppCompatTextView textView = new AppCompatTextView(this);
         textView.setLayoutParams(params);
         textView.setText(activity.getActivityName() + "     0min");
+        textView.setTextColor(Color.parseColor("#" + activity.getActivityColor());
         return textView;
     }
 
@@ -198,6 +207,13 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
         else {
             finish();
         }
+    }
+
+    private void setLeftButtonOnClick() {
+        leftButton.setText("cancel");
+        leftButton.setOnClickListener(v -> {
+            finish();
+        });
     }
 
     private void setRightButtonOnClick() {
@@ -219,6 +235,18 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
         });
     }
 
+    private void submitTimeLog(TimeLog timeLog) {
+        if (isUpdate) {
+        }
+        else {
+            try {
+                timeLogViewModel.insertTimeLog(timeLog);
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private TimeLog[] createTimeLogs() {
         TimeLog[] timeLogs = new TimeLog[allProgress.length];
         Long currentFromTime = fromTime;
@@ -235,24 +263,5 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
             currentFromTime = currentToTime;
         }
         return timeLogs;
-    }
-
-    private void submitTimeLog(TimeLog timeLog) {
-        if (isUpdate) {
-        }
-        else {
-            try {
-                timeLogViewModel.insertTimeLog(timeLog);
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void setLeftButtonOnClick() {
-        leftButton.setText("cancel");
-        leftButton.setOnClickListener(v -> {
-            finish();
-        });
     }
 }
