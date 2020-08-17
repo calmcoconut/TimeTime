@@ -106,11 +106,11 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
 
     private final int standardizeScaleForSliders(long valueToStandardize) {
         // using NewValue = (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax - OldMin)) + NewMin
-        return Math.toIntExact(((valueToStandardize - fromTime) * newRange / oldRange));
+        return Math.toIntExact(((valueToStandardize - fromTime) * newRange / oldRange)) + newMin;
     }
 
     private final long getLongFromStandardizedScale(int standardizedValue) {
-        return (((standardizedValue * oldRange) / newRange) + fromTime);
+        return ((((standardizedValue - newMin) * oldRange) / newRange) + fromTime);
     }
 
     private void initSliders() {
