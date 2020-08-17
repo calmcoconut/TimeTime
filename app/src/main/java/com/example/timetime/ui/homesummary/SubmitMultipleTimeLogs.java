@@ -39,12 +39,12 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
     private AppCompatTextView activesTextMessage;
     private Long fromTime;
     private Long toTime;
-    private Integer allocatedTime;
+    private Long allocatedTime;
     private boolean isSubmittable;
     private boolean isUpdate;
     private List<ParcelableActivity> parcelableActivityList;
     private List<SeekBar> seekBarList;
-    private int[] allProgress;
+    private long[] allProgress;
 
     @Override
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
         linearLayout.setVisibility(View.VISIBLE);
         timeLogic = TimeLogic.newInstance();
 
-        allocatedTime = 0;
+        allocatedTime = 0L;
         isSubmittable = false;
 
         extractIntentBundle();
@@ -114,8 +114,8 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
             linearLayout.addView(textView);
             AppCompatSeekBar seekBar = getAppCompatSeekBarForActivity(params);
             seekBarList.add(seekBar);
-            allProgress = new int[seekBarList.size()];
-            Arrays.fill(allProgress, Math.toIntExact(fromTime));
+            allProgress = new long[seekBarList.size()];
+            Arrays.fill(allProgress, fromTime);
             setSeekBarListener(activity, textView, seekBar);
             linearLayout.addView(seekBar);
         }
@@ -128,11 +128,11 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int whichIndex = seekBarList.indexOf(seekBar);
-                int storedProgress = allProgress[whichIndex];
-                int remaining = determineRemainingRoom();
+                long storedProgress = allProgress[whichIndex];
+                long remaining = determineRemainingRoom();
                 if (progress > storedProgress) {
                     if (remaining == 0) {
-                        seekBar.setProgress(storedProgress);
+                        seekBar.setProgress(Math.toIntExact(storedProgress));
                         isSubmittable = true;
                     }
                     else {
@@ -145,7 +145,7 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
                     isSubmittable = false;
                 }
 
-                textView.setText(activity.getActivityName() + "     " + timeLogic.getHumanFormattedTimeBetweenTwoTimeSpans(fromTime, (long) allProgress[whichIndex]));
+                textView.setText(activity.getActivityName() + "     " + timeLogic.getHumanFormattedTimeBetweenTwoTimeSpans(fromTime, allProgress[whichIndex]));
                 setText();
             }
 
@@ -157,12 +157,12 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
 
-            private final Integer determineRemainingRoom() {
-                int remainingRoom = 0;
-                allocatedTime = 0;
-                for (int current : allProgress) {
-                    allocatedTime += Math.toIntExact(current - fromTime);
-                    remainingRoom = Math.toIntExact(remainingRoom + (current - fromTime));
+            private final long determineRemainingRoom() {
+                long remainingRoom = 0L;
+                allocatedTime = 0L;
+                for (long current : allProgress) {
+                    allocatedTime += current - fromTime;
+                    remainingRoom = remainingRoom + (current - fromTime);
                 }
                 return range - remainingRoom;
             }
@@ -224,7 +224,7 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
         Long currentFromTime = fromTime;
         Long currentToTime;
         for (int i = 0; i < allProgress.length; i++) {
-            ParcelableActivity currentActivity = parcelableActivityList.get(parcelableActivityList.size() - i - 1);
+            ParcelableActivity currentActivity = parcelableActivityList.get(i);
             currentToTime = currentFromTime + (allProgress[i] - fromTime);
             timeLogs[i] = new TimeLog(currentFromTime,
                     currentToTime,
