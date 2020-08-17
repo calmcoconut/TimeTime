@@ -28,7 +28,7 @@
             android:name=".ui.homesummary.LogTimeToActivity"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".ui.homesummary.EditTimeLogActivity"
+            android:name=".ui.homesummary.LogTimeLogEditActivity"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ui.homesummary.SubmitMultipleTimeLogs"

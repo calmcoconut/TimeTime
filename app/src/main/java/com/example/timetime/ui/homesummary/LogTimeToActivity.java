@@ -49,6 +49,9 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
     private Long toTime;
     private boolean isTap = true;
     private boolean isUpdate = false;
+    private Long oldTimeLogId;
+    private Long oldCreatedTime;
+    private Long oldModifiedTime;
     List<Activity> multipleSelectedActivesList;
 
     @Override
@@ -145,7 +148,7 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
                     }
                 }
         );
-        if (createdTimeStamp[0] == null || toTime == null){
+        if (createdTimeStamp[0] == null || toTime == null) {
             return false;
         }
 
@@ -216,7 +219,12 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
     @Override
     public void onShortPressOfActivity(View view) {
         if (isTap) {
-            baseActivityButtons.submitTimeLogForActivity(view);
+            if (isUpdate) {
+                baseActivityButtons.submitTimeLogForActivityUpdate(view, this.oldTimeLogId, oldCreatedTime, oldModifiedTime);
+            }
+            else {
+                baseActivityButtons.submitTimeLogForActivity(view);
+            }
         }
         else {
             Activity a = (Activity) view.getTag();
@@ -276,8 +284,11 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
     }
 
     // Setters
-    public void setUpdate(boolean update) {
+    public void setUpdate(boolean update, long oldTimeLogId, long oldCreatedTime, long oldModifiedTime) {
         isUpdate = update;
+        this.oldTimeLogId = oldTimeLogId;
+        this.oldCreatedTime =oldCreatedTime;
+        this.oldModifiedTime = oldModifiedTime;
     }
 
 }

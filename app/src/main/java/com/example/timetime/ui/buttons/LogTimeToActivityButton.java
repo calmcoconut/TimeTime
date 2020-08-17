@@ -68,6 +68,25 @@ public class LogTimeToActivityButton extends BaseActivityButton {
         }
     }
 
+    public void submitTimeLogForActivityUpdate(View v, long oldTimeLogId, long oldCreatedTime, long oldModifiedTime) {
+        TimeLog timeLog = getTimeLog(v, oldTimeLogId, oldCreatedTime, oldModifiedTime);
+        timeLog.setTimeLogId(oldTimeLogId);
+        submitUpdatedTimeLog(timeLog);
+        launchHomeView();
+    }
+
+    private TimeLog getTimeLog(View v, long oldTimeLogId, long oldCreatedTime, long oldModifiedTime) {
+        Activity activity = (Activity) v.getTag();
+        TimeLog timeLog = new TimeLog(oldCreatedTime,oldModifiedTime,activity.getActivity(),activity.getColor(),
+                activity.getIcon(), activity.getCategory());
+        timeLog.setTimeLogId(oldTimeLogId);
+        return timeLog;
+    }
+
+    private void submitUpdatedTimeLog(TimeLog timeLog) {
+        getTimeLogViewModel().updateTimeLogById(timeLog, timeLog);
+    }
+
     private TimeLog createNewTimeLog(Activity activity) {
         TimeLogic timeLogic = TimeLogic.newInstance();
         Long modifiedTimeStamp = timeLogic.getCurrentDateTimeForDatabaseStorage();

@@ -2,6 +2,7 @@ package com.example.timetime.ui.homesummary;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -10,15 +11,23 @@ import com.example.timetime.MainActivity;
 import com.example.timetime.R;
 import org.jetbrains.annotations.NotNull;
 
-public class EditTimeLogActivity extends LogTimeToActivity {
+public class LogTimeLogEditActivity extends LogTimeToActivity {
     private Long timeLogId;
+    private Long oldCreatedTime;
+    private Long oldModifiedTime;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        Intent intent = getIntent();
+        this.timeLogId = intent.getLongExtra("old_time_log_id", 0);
+        oldCreatedTime = intent.getLongExtra("old_time_log_created_time", 0L);
+        oldModifiedTime = intent.getLongExtra("old_time_log_modified_time", 0L);
+        this.setUpdate(true, this.timeLogId, oldCreatedTime, oldModifiedTime);
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public void getTimeToDisplayOnToolBar() {
-        Intent intent = getIntent();
-        this.timeLogId = intent.getLongExtra("old_time_log_id", 0);
-        Long oldCreatedTime = intent.getLongExtra("old_time_log_created_time", 0L);
-        Long oldModifiedTime = intent.getLongExtra("old_time_log_modified_time", 0L);
         setToolBarTime(getTimeLogic().getHumanFormattedTimeBetweenTwoTimeSpans(oldCreatedTime, oldModifiedTime));
     }
 
@@ -65,7 +74,7 @@ public class EditTimeLogActivity extends LogTimeToActivity {
         }
     }
 
-    public EditTimeLogActivity() {
+    public LogTimeLogEditActivity() {
         super();
     }
 }
