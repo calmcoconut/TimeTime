@@ -106,17 +106,6 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
         }
     }
 
-    public void setRightButtonOnClick() {
-        rightButton.setOnClickListener(v -> {
-            if (isTap) {
-                finish();
-            }
-            else {
-                launchSubmitMultipleTimeLogsActivity();
-            }
-        });
-    }
-
     public void launchSubmitMultipleTimeLogsActivity() {
         Bundle bundle = getBundleForMultipleSubmission();
         if (bundle == null) {
@@ -177,6 +166,17 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
             }
             else {
                 multipleSelectionButtonBehavior();
+            }
+        });
+    }
+
+    public void setRightButtonOnClick() {
+        rightButton.setOnClickListener(v -> {
+            if (isTap) {
+                finish();
+            }
+            else {
+                launchSubmitMultipleTimeLogsActivity();
             }
         });
     }

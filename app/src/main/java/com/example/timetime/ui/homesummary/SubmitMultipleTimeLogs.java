@@ -14,35 +14,44 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSeekBar;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.lifecycle.ViewModelProvider;
+import com.example.timetime.MainActivity;
 import com.example.timetime.R;
 import com.example.timetime.database.TimeLogic;
+import com.example.timetime.database.entity.TimeLog;
 import com.example.timetime.utils.ParcelableActivity;
+import com.example.timetime.viewmodels.TimeLogViewModel;
 import com.google.android.material.button.MaterialButton;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class SubmitMultipleTimeLogs extends AppCompatActivity {
+    private TimeLogViewModel timeLogViewModel;
+    private TimeLogic timeLogic;
     private GridLayout gridLayout;
     private LinearLayout linearLayout;
     private MaterialButton leftButton;
     private MaterialButton rightButton;
-    private TimeLogic timeLogic;
-    private boolean isUpdate;
+    private AppCompatTextView activesTextMessage;
     private Long fromTime;
     private Long toTime;
     private Integer allocatedTime;
+    private boolean isSubmittable;
+    private boolean isUpdate;
     private List<ParcelableActivity> parcelableActivityList;
     private List<SeekBar> seekBarList;
     private int[] allProgress;
-    private AppCompatTextView activiesTextMessage;
 
     @Override
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_log);
+
+        timeLogViewModel = new ViewModelProvider(this).get(TimeLogViewModel.class);
 
         leftButton = findViewById(R.id.activity_time_log_button_left);
         rightButton = findViewById(R.id.activity_time_log_button_right);
@@ -53,6 +62,7 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
         timeLogic = TimeLogic.newInstance();
 
         allocatedTime = 0;
+        isSubmittable = false;
 
         extractIntentBundle();
         setRightButtonOnClick();
@@ -65,22 +75,22 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
     private void initText() {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        activiesTextMessage = new AppCompatTextView(this);
+        activesTextMessage = new AppCompatTextView(this);
         params.setMarginEnd((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8,
                 getResources().getDisplayMetrics()));
         params.setMarginStart((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8,
                 getResources().getDisplayMetrics()));
-        activiesTextMessage.setLayoutParams(params);
-        activiesTextMessage.setGravity(Gravity.CENTER);
-        activiesTextMessage.setTextColor(Color.BLACK);
+        activesTextMessage.setLayoutParams(params);
+        activesTextMessage.setGravity(Gravity.CENTER);
+        activesTextMessage.setTextColor(Color.BLACK);
         setText();
-        linearLayout.addView(activiesTextMessage);
+        linearLayout.addView(activesTextMessage);
     }
 
     private void setText() {
         Long afterAllocatedTime = toTime - allocatedTime;
         String messageTImeString = timeLogic.getHumanFormattedTimeBetweenTwoTimeSpans(fromTime, afterAllocatedTime);
-        activiesTextMessage.setText(messageTImeString + " left to split between " + parcelableActivityList.size() +
+        activesTextMessage.setText(messageTImeString + " left to split between " + parcelableActivityList.size() +
                 " activities");
     }
 
@@ -123,13 +133,16 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
                 if (progress > storedProgress) {
                     if (remaining == 0) {
                         seekBar.setProgress(storedProgress);
+                        isSubmittable = true;
                     }
                     else {
                         allProgress[whichIndex] = Math.min(storedProgress + remaining, progress);
+                        isSubmittable = false;
                     }
                 }
                 else {
                     allProgress[whichIndex] = progress;
+                    isSubmittable = false;
                 }
 
                 textView.setText(activity.getActivityName() + "     " + timeLogic.getHumanFormattedTimeBetweenTwoTimeSpans(fromTime, (long) allProgress[whichIndex]));
@@ -188,16 +201,57 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
     }
 
     private void setRightButtonOnClick() {
+        rightButton.setText("submit");
         rightButton.setOnClickListener(v -> {
-            Toast.makeText(this, "first activity is " + parcelableActivityList.get(0).getActivityName(),
-                    Toast.LENGTH_SHORT).show();
+            if (isSubmittable) {
+                TimeLog[] timeLogs = createTimeLogs();
+                for (TimeLog t : timeLogs) {
+                    submitTimeLog(t);
+                }
+                Intent intent = new Intent(this, MainActivity.class);
+                this.startActivity(intent);
+            }
+            else {
+                Toast.makeText(this,
+                        "Allocate all available time before submitting",
+                        Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
+    private TimeLog[] createTimeLogs() {
+        TimeLog[] timeLogs = new TimeLog[allProgress.length];
+        Long currentFromTime = fromTime;
+        for (int i = 0; i < allProgress.length; i++) {
+            ParcelableActivity currentActivity = parcelableActivityList.get(i);
+            Long currentToTime = (long) seekBarList.get(i).getProgress();
+            timeLogs[i] = new TimeLog(currentFromTime,
+                    currentToTime,
+                    currentActivity.getActivityName(),
+                    currentActivity.getActivityColor(),
+                    currentActivity.getActivityIcon(),
+                    currentActivity.getCategoryName());
+            currentFromTime = currentToTime;
+        }
+        return timeLogs;
+    }
+
+    private void submitTimeLog(TimeLog timeLog) {
+        if (isUpdate) {
+        }
+        else {
+            try {
+                timeLogViewModel.insertTimeLog(timeLog);
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void setLeftButtonOnClick() {
+        leftButton.setText("cancel");
         leftButton.setOnClickListener(v -> {
-            Toast.makeText(this, "first activity is " + parcelableActivityList.get(0).getActivityName(),
-                    Toast.LENGTH_SHORT).show();
+            finish();
         });
     }
 }
