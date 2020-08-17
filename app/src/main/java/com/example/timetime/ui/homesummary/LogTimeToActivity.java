@@ -27,7 +27,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class LogTimeToActivity extends AppCompatActivity implements LogTimeToActivityButton.OnLongPressActivityButtonListener {
@@ -121,7 +120,7 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
     public void launchSubmitMultipleTimeLogsActivity() {
         Bundle bundle = getBundleForMultipleSubmission();
         if (bundle == null) {
-            Toast.makeText(LogTimeToActivity.this, "Wait a minute!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(LogTimeToActivity.this, "Wait a minute!", Toast.LENGTH_SHORT).show();
         }
         else {
             Intent intent = new Intent(this, SubmitMultipleTimeLogs.class);
@@ -139,8 +138,8 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
         bundle.putParcelableArrayList(ACTIVITY_LIST_KEY, (ArrayList<? extends Parcelable>) serializableActivities);
         bundle.putBoolean(IS_UPDATE_KEY, this.isUpdate);
         toTime = timeLogic.getCurrentDateTimeForDatabaseStorage();
-        if (checkMultipleSelectionHasValidTimeFrame()) {
-            bundle.putLong(TO_TIME_KEY, timeLogic.getCurrentDateTimeForDatabaseStorage());
+        if (validateMultipleSelectionTimeFrame()) {
+            bundle.putLong(TO_TIME_KEY, toTime);
             bundle.putLong(FROM_TIME_KEY, fromTime);
             return bundle;
         }
@@ -149,7 +148,7 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
         }
     }
 
-    private boolean checkMultipleSelectionHasValidTimeFrame() {
+    private boolean validateMultipleSelectionTimeFrame() {
         final Long[] createdTimeStamp = new Long[1];
         getTimeLogViewModel().getMostRecentTimeLogTimeStamp().observe(LogTimeToActivity.this, latestModifiedTime -> {
                     if (latestModifiedTime != null) {
@@ -157,7 +156,11 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
                     }
                 }
         );
-        if (toTime.equals(createdTimeStamp[0]) || toTime.equals(createdTimeStamp[0] - TimeUnit.MINUTES.toMillis(1L))) {
+        if (createdTimeStamp[0] == null || toTime == null){
+            return false;
+        }
+
+        if (toTime.equals(createdTimeStamp[0])) {
             return false;
         }
         else {
