@@ -40,6 +40,8 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
     private Long fromTime;
     private Long toTime;
     private Long allocatedTime;
+    private Long oldRange;
+    private int newRange;
     private boolean isSubmittable;
     private boolean isUpdate;
     private List<ParcelableActivity> parcelableActivityList;
@@ -62,6 +64,8 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
         timeLogic = TimeLogic.newInstance();
 
         allocatedTime = 0L;
+        newRange = 100;
+        oldRange = toTime - fromTime;
         isSubmittable = false;
 
         extractIntentBundle();
@@ -95,11 +99,13 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
     }
 
 
-    private int standardizeScaleForSliders(long valueToStandardize) {
-        oldRange =
+    private final int standardizeScaleForSliders(long valueToStandardize) {
+        // using NewValue = (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax - OldMin)) + NewMin
+        return Math.toIntExact(((valueToStandardize - fromTime) * newRange / oldRange));
     }
 
-    private long getLongFromStandardizedScale(int standardizedValue) {
+    private final long getLongFromStandardizedScale(int standardizedValue) {
+        return (((standardizedValue * oldRange) / newRange) + fromTime);
     }
 
     private void initSliders() {
