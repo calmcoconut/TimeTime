@@ -67,16 +67,21 @@ public class TimeLogic {
         String hours = "";
         String minutes = "";
         Integer totalMinutes = getMinutesBetweenTwoTimeStamps(databaseValueOlder, databaseValueNewer);
-        if ((totalMinutes / 1440) > 0) {
-            days = (totalMinutes / MINUTES_DAY) + "D ";
-            totalMinutes = totalMinutes % MINUTES_DAY;
+        if (totalMinutes < 1) {
+            minutes = "0 min";
         }
-        if ((totalMinutes / MINUTES_HOUR) > 0) {
-            hours = (totalMinutes / MINUTES_HOUR) + "h ";
-            totalMinutes = totalMinutes % MINUTES_HOUR;
-        }
-        if (totalMinutes > 0) {
-            minutes = totalMinutes + "min";
+        else {
+            if ((totalMinutes / 1440) > 0) {
+                days = (totalMinutes / MINUTES_DAY) + "D ";
+                totalMinutes = totalMinutes % MINUTES_DAY;
+            }
+            if ((totalMinutes / MINUTES_HOUR) > 0) {
+                hours = (totalMinutes / MINUTES_HOUR) + "h ";
+                totalMinutes = totalMinutes % MINUTES_HOUR;
+            }
+            if (totalMinutes > 0) {
+                minutes = totalMinutes + "min";
+            }
         }
         return days + hours + minutes;
     }

@@ -119,9 +119,8 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int whichIndex = seekBarList.indexOf(seekBar);
                 int storedProgress = allProgress[whichIndex];
+                int remaining = determineRemainingRoom();
                 if (progress > storedProgress) {
-                    int remaining = determineRemainingRoom();
-
                     if (remaining == 0) {
                         seekBar.setProgress(storedProgress);
                     }
@@ -134,6 +133,7 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
                 }
 
                 textView.setText(activity.getActivityName() + "     " + timeLogic.getHumanFormattedTimeBetweenTwoTimeSpans(fromTime, (long) allProgress[whichIndex]));
+                setText();
             }
 
             @Override
@@ -148,7 +148,7 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
                 int remainingRoom = 0;
                 allocatedTime = 0;
                 for (int current : allProgress) {
-                    allocatedTime += current;
+                    allocatedTime += Math.toIntExact(current - fromTime);
                     remainingRoom = Math.toIntExact(remainingRoom + (current - fromTime));
                 }
                 return range - remainingRoom;
