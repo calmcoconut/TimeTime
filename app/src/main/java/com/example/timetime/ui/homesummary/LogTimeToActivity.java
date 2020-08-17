@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 public class LogTimeToActivity extends AppCompatActivity implements LogTimeToActivityButton.OnLongPressActivityButtonListener {
     public static final String ACTIVITY_LIST_KEY = "activities_list";
     public static final String IS_UPDATE_KEY = "is_an_update";
+    public static final String IS_UPDATE_KEY_ID = "is_an_update_id";
     public static final String FROM_TIME_KEY = "from_time";
     public static final String TO_TIME_KEY = "to_time";
     private MaterialButton TEMPLATE_BUTTON;
@@ -131,8 +132,15 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
         bundle.putBoolean(IS_UPDATE_KEY, this.isUpdate);
         toTime = timeLogic.getCurrentDateTimeForDatabaseStorage();
         if (validateMultipleSelectionTimeFrame()) {
-            bundle.putLong(TO_TIME_KEY, toTime);
-            bundle.putLong(FROM_TIME_KEY, fromTime);
+            if (isUpdate) {
+                bundle.putLong(TO_TIME_KEY, this.oldModifiedTime);
+                bundle.putLong(FROM_TIME_KEY, this.oldCreatedTime);
+                bundle.putLong(IS_UPDATE_KEY_ID, this.oldTimeLogId);
+            }
+            else {
+                bundle.putLong(TO_TIME_KEY, toTime);
+                bundle.putLong(FROM_TIME_KEY, fromTime);
+            }
             return bundle;
         }
         else {
@@ -165,7 +173,7 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
         leftButton.setOnClickListener(v -> {
             // toggles button behavior between default and multiple selection
             if (isTap) {
-                defaultButtonBehavior();
+                onLongPressOfActivity(-1, baseActivityButtons.getButtonList());
             }
             else {
                 multipleSelectionButtonBehavior();
@@ -191,15 +199,11 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
         isTap = true;
     }
 
-    private void defaultButtonBehavior() {
-        leftButton.setText("cancel");
-        rightButton.setText("submit");
-        onLongPressOfActivity(-1, baseActivityButtons.getButtonList());
-    }
-
     @Override
     public void onLongPressOfActivity(int viewId, List<MaterialButton> buttonList) {
         isTap = false;
+        leftButton.setText("cancel");
+        rightButton.setText("submit");
         hapticFeedBackOnLongClick();
         initMultipleSelectionBehavior(viewId, buttonList);
     }
@@ -287,7 +291,7 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
     public void setUpdate(boolean update, long oldTimeLogId, long oldCreatedTime, long oldModifiedTime) {
         isUpdate = update;
         this.oldTimeLogId = oldTimeLogId;
-        this.oldCreatedTime =oldCreatedTime;
+        this.oldCreatedTime = oldCreatedTime;
         this.oldModifiedTime = oldModifiedTime;
     }
 

@@ -31,10 +31,6 @@ public class LogTimeLogEditActivity extends LogTimeToActivity {
         setToolBarTime(getTimeLogic().getHumanFormattedTimeBetweenTwoTimeSpans(oldCreatedTime, oldModifiedTime));
     }
 
-    private void editTimeLog() {
-
-    }
-
     private void deleteTimeLog() {
         getTimeLogViewModel().deleteTimeLog(this.timeLogId);
         closeToHome();

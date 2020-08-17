@@ -46,6 +46,7 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
     private int newRange;
     private boolean isSubmittable;
     private boolean isUpdate;
+    private Long oldTimeLogId;
     private List<ParcelableActivity> parcelableActivityList;
     private List<SeekBar> seekBarList;
     private int[] allProgress;
@@ -212,6 +213,9 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
             this.parcelableActivityList = bundle.getParcelableArrayList(LogTimeToActivity.ACTIVITY_LIST_KEY);
             this.fromTime = bundle.getLong(LogTimeToActivity.FROM_TIME_KEY);
             this.toTime = bundle.getLong(LogTimeToActivity.TO_TIME_KEY);
+            if (isUpdate) {
+                this.oldTimeLogId = bundle.getLong(LogTimeToActivity.IS_UPDATE_KEY_ID);
+            }
         }
         else {
             finish();
@@ -229,6 +233,9 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
         rightButton.setText("submit");
         rightButton.setOnClickListener(v -> {
             if (isSubmittable) {
+                if (isUpdate) {
+                    timeLogViewModel.deleteTimeLog(oldTimeLogId);
+                }
                 TimeLog[] timeLogs = createTimeLogs();
                 for (TimeLog t : timeLogs) {
                     submitTimeLog(t);
@@ -263,14 +270,10 @@ public class SubmitMultipleTimeLogs extends AppCompatActivity {
     }
 
     private void submitTimeLog(TimeLog timeLog) {
-        if (isUpdate) {
-        }
-        else {
-            try {
-                timeLogViewModel.insertTimeLog(timeLog);
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
+        try {
+            timeLogViewModel.insertTimeLog(timeLog);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
