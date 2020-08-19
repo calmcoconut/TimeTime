@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.timetime.R;
 import com.example.timetime.database.entity.TimeLog;
+import com.example.timetime.utils.DevProperties;
 import com.example.timetime.viewmodels.TimeLogViewModel;
 
 public class HomeFragment extends Fragment implements TimeLogListAdapter.TimeLogCardListener {
@@ -51,11 +52,13 @@ public class HomeFragment extends Fragment implements TimeLogListAdapter.TimeLog
     public void onTimeLogClick(int position) {
         // callback for item clicked in the recycler
         TimeLog timeLog = adapter.getTimeCard(position);
-        Intent intent = new Intent(getContext(), LogTimeLogEditActivity.class);
-        intent.putExtra("old_time_log_id", timeLog.getTimeLogId());
-        intent.putExtra("old_time_log_created_time", timeLog.getTimestamp_created());
-        intent.putExtra("old_time_log_modified_time", timeLog.getTimestamp_modified());
-        intent.putExtra("old_time_log_activity", timeLog.getActivity());
-        startActivity(intent);
+        if (timeLog.getTimeLogId() != DevProperties.WELCOME_TIME_LOG_ID) {
+            Intent intent = new Intent(getContext(), LogTimeLogEditActivity.class);
+            intent.putExtra("old_time_log_id", timeLog.getTimeLogId());
+            intent.putExtra("old_time_log_created_time", timeLog.getTimestamp_created());
+            intent.putExtra("old_time_log_modified_time", timeLog.getTimestamp_modified());
+            intent.putExtra("old_time_log_activity", timeLog.getActivity());
+            startActivity(intent);
+        }
     }
 }

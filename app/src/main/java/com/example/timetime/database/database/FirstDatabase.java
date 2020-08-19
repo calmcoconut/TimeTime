@@ -137,12 +137,15 @@ public class FirstDatabase {
         TimeLogic timeLogic = TimeLogic.newInstance();
         Long timeStampNow = timeLogic.getCurrentDateTimeForDatabaseStorage();
         Long previousTimeStamp = timeStampNow - (MINUTE_SECONDS + 1L);
-        return new TimeLog[]{new TimeLog(previousTimeStamp
+        TimeLog[] timeLogs = new TimeLog[]{new TimeLog(previousTimeStamp
                 , timeStampNow
-                , "Welcome to TimeTime"
+                , DevProperties.WELCOME_TIME_LOG
                 , "ff5252"
                 , this.mIconArray[0].getIcon()
-                , "welcome")};
+                , DevProperties.WELCOME_TIME_LOG)};
+        timeLogs[0].setTimeLogId(DevProperties.WELCOME_TIME_LOG_ID);
+
+        return timeLogs;
     }
 
     private TimeLog[] createTestingTimeLog() {
