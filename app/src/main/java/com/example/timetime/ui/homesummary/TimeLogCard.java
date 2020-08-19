@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.view.View;
 import com.example.timetime.database.TimeLogic;
 import com.example.timetime.database.entity.TimeLog;
+import com.example.timetime.utils.DevProperties;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -21,8 +23,7 @@ public class TimeLogCard {
         final String activityString = timeLog.getActivity();
         final Long timeStampCreated = timeLog.getTimestamp_created();
         final Long timestampModified = timeLog.getTimestamp_modified();
-        final String timeSpan = timeLogic.getLocalTimeFromDatabase(timeStampCreated) + " - " +
-                timeLogic.getLocalTimeFromDatabase(timestampModified);
+        final String timeSpan = getTimeSpan(timeLogic, timeStampCreated, timestampModified);
         String timeSpentValue = timeLogic.getHumanFormattedTimeBetweenTwoTimeSpans(timeStampCreated, timestampModified);
         final int icon = timeLog.getActivityIcon();
         final String color = timeLog.getActivityColor();
@@ -34,6 +35,18 @@ public class TimeLogCard {
         holder.getTimeLogCardThumbnail().setImageDrawable(context.getDrawable(icon));
 
         setupCorrectTitle(holder, timeLogic, timeLog, position);
+    }
+
+    @NotNull
+    private String getTimeSpan(TimeLogic timeLogic, Long timeStampCreated, Long timestampModified) {
+        if (DevProperties.IS_24_HOUR_FORMAT) {
+            return timeLogic.getLocalTimeFromDatabase(timeStampCreated) + " - " +
+                    timeLogic.getLocalTimeFromDatabase(timestampModified);
+        }
+        else {
+            return timeLogic.getLocalTimeFromDatabase12HourFormat(timeStampCreated) + " - " +
+                    timeLogic.getLocalTimeFromDatabase12HourFormat(timestampModified);
+        }
     }
 
     private void setupCorrectTitle(TimeLogListAdapter.TimeLogViewHolder holder, TimeLogic timeLogic, TimeLog timeLog,

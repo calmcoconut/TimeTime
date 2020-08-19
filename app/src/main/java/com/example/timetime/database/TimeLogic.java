@@ -118,6 +118,13 @@ public class TimeLogic {
         return zonedDateTime.format(DateTimeFormatter.ofPattern("HH:mm a"));
     }
 
+    public String getLocalTimeFromDatabase12HourFormat(Long dataBaseValue) {
+        Instant instant = convertLongToInstant(dataBaseValue);
+        ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(instant, getZoneId());
+        return zonedDateTime.format(DateTimeFormatter.ofPattern("h:mm a"));
+    }
+
+
     public String getHumanFormattedLongDateFromDatabase(Long databaseLong) {
         String humanLongDate;
         Instant instant = convertLongToInstant(databaseLong);
