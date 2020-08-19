@@ -60,8 +60,12 @@ public class AppRepository {
                             e.printStackTrace();
                         }
                     }
-                    if (oldTimeLog[0].getActivity().equals(timeLog.getActivity())) {
+                    boolean isRecentTimeLogTheSameAsNewInsertion =
+                            oldTimeLog[0].getActivity().equals(timeLog.getActivity());
+
+                    if (isRecentTimeLogTheSameAsNewInsertion) {
                         timeLog.setTimestamp_created(oldTimeLog[0].getTimestamp_created());
+                        timeLog.setTimesLogged(timeLog.getTimesLogged() + 1);
                         updateTimeLogById(oldTimeLog[0], timeLog);
                     }
                     else {

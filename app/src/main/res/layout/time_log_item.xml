@@ -88,15 +88,14 @@
                         android:textSize="10sp"
                         android:text="test" />
                 </LinearLayout>
-
-
-                <TextView
-                    android:id="@+id/time_card_log_time_span"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="time spent here"
-                    android:textColor="?android:attr/textColorSecondary" />
+                    <TextView
+                        android:id="@+id/time_card_log_time_span"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="time spent here"
+                        android:layout_weight="10"
+                        android:textColor="?android:attr/textColorSecondary" />
 
             </LinearLayout>
         </LinearLayout>

@@ -28,12 +28,15 @@ public class TimeLog {
     private String mActivityColor;
 
     @ColumnInfo(name = "activity_icon")
-    @NonNull
     private int mActivityIcon;
 
     @ColumnInfo(name = "category")
     @NonNull
     private String mCategory;
+
+    @ColumnInfo(name = "number_times_logged")
+    private int timesLogged = 1;
+
 
     public TimeLog(@NonNull Long timestamp_created
             , @NonNull Long timestamp_modified
@@ -105,5 +108,13 @@ public class TimeLog {
 
     public void setActivityIcon(int mActivityIcon) {
         this.mActivityIcon = mActivityIcon;
+    }
+
+    public int getTimesLogged() {
+        return timesLogged;
+    }
+
+    public void setTimesLogged(int timesLogged) {
+        this.timesLogged = timesLogged;
     }
 }

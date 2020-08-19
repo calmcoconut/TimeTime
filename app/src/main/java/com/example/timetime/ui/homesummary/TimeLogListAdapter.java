@@ -94,7 +94,7 @@ public class TimeLogListAdapter extends RecyclerView.Adapter<TimeLogListAdapter.
         private final TextView mTimeLogCardDateHeading;
         private final ImageView mTimeLogCardThumbnail;
         private final View mTimeLogDivider;
-        private TimeLogCardListener timeLogCardListener;
+        private final TimeLogCardListener timeLogCardListener;
 
         private TimeLogViewHolder(@NonNull View itemView, @NonNull TimeLogCardListener timeLogCardListener) {
 
