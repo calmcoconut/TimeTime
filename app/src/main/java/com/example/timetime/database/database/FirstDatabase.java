@@ -147,20 +147,45 @@ public class FirstDatabase {
 
     private TimeLog[] createTestingTimeLog() {
         TimeLogic timeLogic = TimeLogic.newInstance();
-        TimeLog[] timeLogs = new TimeLog[10];
-        Long timeStampNow = timeLogic.getCurrentDateTimeForDatabaseStorage();
-        Long previousTimeStamp = timeStampNow - (HOUR_SECONDS * 20);
-        Long previousTimeStampNowLag = previousTimeStamp;
-        for (int i = 0; i < timeLogs.length; i++) {
-            timeLogs[i] = new TimeLog(previousTimeStamp
-                    , previousTimeStampNowLag
-                    , mActivityArray[0].getActivity()
-                    , mActivityArray[0].getColor()
-                    , mActivityArray[0].getIcon()
-                    , mActivityArray[0].getCategory());
-            previousTimeStampNowLag = previousTimeStamp;
-            previousTimeStamp += HOUR_SECONDS * 2;
-        }
+        TimeLog[] timeLogs = new TimeLog[5];
+
+        Long timeStampAtInstallation = timeLogic.getCurrentDateTimeForDatabaseStorage();
+
+        TimeLog weekBefore = new TimeLog(timeStampAtInstallation - (DAY_SECONDS * 7)
+                , timeStampAtInstallation - (DAY_SECONDS * 5)
+                , mActivityArray[0].getActivity()
+                , mActivityArray[0].getColor()
+                , mActivityArray[0].getIcon()
+                , mActivityArray[0].getCategory());
+        TimeLog twoDaysAgo = new TimeLog(timeStampAtInstallation - (DAY_SECONDS * 2)
+                , timeStampAtInstallation - (DAY_SECONDS * 2) + (HOUR_SECONDS * 6) + 1
+                , mActivityArray[1].getActivity()
+                , mActivityArray[1].getColor()
+                , mActivityArray[1].getIcon()
+                , mActivityArray[1].getCategory());
+        TimeLog oneDayAgo = new TimeLog(timeStampAtInstallation - (DAY_SECONDS * 1)
+                , timeStampAtInstallation - (DAY_SECONDS * 1) + (HOUR_SECONDS * 2) + 1
+                , mActivityArray[2].getActivity()
+                , mActivityArray[2].getColor()
+                , mActivityArray[2].getIcon()
+                , mActivityArray[2].getCategory());
+        TimeLog twoHoursAgo = new TimeLog(timeStampAtInstallation - (HOUR_SECONDS * 2)
+                , timeStampAtInstallation - (HOUR_SECONDS * 1)
+                , mActivityArray[3].getActivity()
+                , mActivityArray[3].getColor()
+                , mActivityArray[3].getIcon()
+                , mActivityArray[3].getCategory());
+        TimeLog halfAnHourAgo = new TimeLog(timeStampAtInstallation - (MINUTE_SECONDS * 30)
+                , timeStampAtInstallation - (MINUTE_SECONDS * 10)
+                , mActivityArray[4].getActivity()
+                , mActivityArray[4].getColor()
+                , mActivityArray[4].getIcon()
+                , mActivityArray[4].getCategory());
+        timeLogs[0] = weekBefore;
+        timeLogs[1] = twoDaysAgo;
+        timeLogs[2] = oneDayAgo;
+        timeLogs[3] = twoHoursAgo;
+        timeLogs[4] = halfAnHourAgo;
 
         return timeLogs;
     }
