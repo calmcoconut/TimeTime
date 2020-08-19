@@ -1,9 +1,9 @@
 package com.example.timetime.ui.statsSummary;
 
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 import com.example.timetime.database.TimeLogic;
 import com.example.timetime.database.entity.TimeLog;
+import com.example.timetime.utils.DevProperties;
 import com.example.timetime.viewmodels.TimeLogViewModel;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
@@ -99,16 +99,18 @@ public class PieChartFactory {
         if (timeLogs != null) {
             for (TimeLog timeLog : timeLogs) {
                 // if the create date is less than the fromDate, modify to only observe time we are interested in
-                if (timeLog.getTimestamp_created() < fromDate) {
-                    timeLog.setTimestamp_created(fromDate);
-                }
-                if (timeLog.getTimestamp_modified() > toDate) {
-                    timeLog.setTimestamp_modified(toDate);
-                }
-                Float totalTimeSpent = (float) timeLogic.getMinutesBetweenTwoTimeStamps(timeLog.getTimestamp_created(),
-                        timeLog.getTimestamp_modified());
+                if (!timeLog.getActivity().equals(DevProperties.WELCOME_TIME_LOG)) {
+                    if (timeLog.getTimestamp_created() < fromDate) {
+                        timeLog.setTimestamp_created(fromDate);
+                    }
+                    if (timeLog.getTimestamp_modified() > toDate) {
+                        timeLog.setTimestamp_modified(toDate);
+                    }
+                    Float totalTimeSpent = (float) timeLogic.getMinutesBetweenTwoTimeStamps(timeLog.getTimestamp_created(),
+                            timeLog.getTimestamp_modified());
 
-                addTimeToMap(timeLog, totalTimeSpent);
+                    addTimeToMap(timeLog, totalTimeSpent);
+                }
             }
         }
     }
@@ -130,15 +132,12 @@ public class PieChartFactory {
     }
 
     private static void getTimeLogs(LifecycleOwner lifecycleOwner, TimeLogViewModel timeLogViewModel) {
-        timeLogViewModel.getTimeLogsFromDayToDay(fromDate, toDate).observe(lifecycleOwner, new Observer<List<TimeLog>>() {
-            @Override
-            public void onChanged(List<TimeLog> timeLogsList) {
-                if (timeLogsList == null) {
-                    getTimeLogs(lifecycleOwner, timeLogViewModel);
-                }
-                else {
-                    timeLogs = timeLogsList;
-                }
+        timeLogViewModel.getTimeLogsFromDayToDay(fromDate, toDate).observe(lifecycleOwner, timeLogsList -> {
+            if (timeLogsList == null) {
+                getTimeLogs(lifecycleOwner, timeLogViewModel);
+            }
+            else {
+                timeLogs = timeLogsList;
             }
         });
     }

@@ -1,11 +1,9 @@
 package com.example.timetime.ui.statsSummary;
 
-import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -64,7 +62,8 @@ public class StatsFragment extends Fragment {
     private boolean isPieAttributesValid() {
         boolean valid = false;
         if (chipActivity.isChecked() || chipCategory.isChecked()) {
-            if (!materialButtonFromSelection.getText().toString().equals(defaultFromLabel) && !materialButtonToSelection.getText().toString().equals(defaultToLabel)) {
+            if (!materialButtonFromSelection.getText().toString().equals(defaultFromLabel)
+                    && !materialButtonToSelection.getText().toString().equals(defaultToLabel)) {
                 valid = true;
             }
         }
@@ -77,25 +76,19 @@ public class StatsFragment extends Fragment {
         int month = timeLogic.getIntMonth() - 1;
         int day = timeLogic.getIntDayOfMonth();
 
-        fromDatePickerDialog = new MaterialStyledDatePickerDialog(inflatedView.getContext(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                fromDate = timeLogic.getLongForDataBaseFromInts(year, month+1, dayOfMonth); // again rectifying month
-                setSelectionButtonText(true);
-                updatePie();
-            }
+        fromDatePickerDialog = new MaterialStyledDatePickerDialog(inflatedView.getContext(), (view, year12, month12, dayOfMonth) -> {
+            fromDate = timeLogic.getLongForDataBaseFromInts(year12, month12 + 1, dayOfMonth); // again rectifying month
+            setSelectionButtonText(true);
+            updatePie();
         }
                 , year, month, day);
         toDatePickerDialog = new MaterialStyledDatePickerDialog(inflatedView.getContext(),
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        toDate = timeLogic.addDayToLong(
-                                timeLogic.getLongForDataBaseFromInts(year, month+1, dayOfMonth)
-                        );
-                        setSelectionButtonText(false);
-                        updatePie();
-                    }
+                (view, year1, month1, dayOfMonth) -> {
+                    toDate = timeLogic.addDayToLong(
+                            timeLogic.getLongForDataBaseFromInts(year1, month1 + 1, dayOfMonth)
+                    );
+                    setSelectionButtonText(false);
+                    updatePie();
                 }
                 , year, month, day);
     }
@@ -113,43 +106,27 @@ public class StatsFragment extends Fragment {
     }
 
     private void assignOnClickActivityChip() {
-        chipActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // if selected, deselect category
-                chipCategory.setChecked(false);
-                updatePie();
-            }
+        chipActivity.setOnClickListener(v -> {
+            // if selected, deselect category
+            chipCategory.setChecked(false);
+            updatePie();
         });
     }
 
     private void assignOnClickCategoryChip() {
-        chipCategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // if selected, deselect activity
-                chipActivity.setChecked(false);
-                updatePie();
-            }
+        chipCategory.setOnClickListener(v -> {
+            // if selected, deselect activity
+            chipActivity.setChecked(false);
+            updatePie();
         });
     }
 
     private void assignOnClickCalenderDialogFrom() {
-        materialButtonFromSelection.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fromDatePickerDialog.show();
-            }
-        });
+        materialButtonFromSelection.setOnClickListener(v -> fromDatePickerDialog.show());
     }
 
     private void assignOnClickCalenderDialogTo() {
-        materialButtonToSelection.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toDatePickerDialog.show();
-            }
-        });
+        materialButtonToSelection.setOnClickListener(v -> toDatePickerDialog.show());
     }
 
     private void assignViews() {
