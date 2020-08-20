@@ -5,10 +5,7 @@ import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
+import android.os.*;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.Toast;
@@ -19,6 +16,7 @@ import com.example.timetime.R;
 import com.example.timetime.database.TimeLogic;
 import com.example.timetime.database.entity.Activity;
 import com.example.timetime.ui.buttons.LogTimeToActivityButton;
+import com.example.timetime.utils.DevProperties;
 import com.example.timetime.utils.ParcelableActivity;
 import com.example.timetime.viewmodels.ActivityViewModel;
 import com.example.timetime.viewmodels.TimeLogViewModel;
@@ -46,7 +44,7 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
     private MaterialButton leftButton;
     private MaterialButton rightButton;
     private String mToolBarTime;
-    LogTimeToActivityButton baseActivityButtons;
+    LogTimeToActivityButton logTimeToActivityButton;
     private Long fromTime;
     private Long toTime;
     private boolean isTap = true;
@@ -74,20 +72,18 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
         setLeftButtonOnClick();
         setRightButtonOnClick();
 
-        baseActivityButtons = new LogTimeToActivityButton(this);
+        logTimeToActivityButton = new LogTimeToActivityButton(this);
 
         getTimeToDisplayOnToolBar();
         setUpToolBar(true);
-        baseActivityButtons.setUpActivityButtons(LogTimeToActivity.this,
+        logTimeToActivityButton.setUpActivityButtons(LogTimeToActivity.this,
                 mActivityViewModel,
                 timeLogViewModel,
                 mGridContext,
                 mGridLayout,
                 TEMPLATE_BUTTON);
 
-        setShowWhenLocked(true);
-        KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
-        keyguardManager.requestDismissKeyguard(this, null);
+        setUpNotificationBehavior();
     }
 
     public void getTimeToDisplayOnToolBar() {
@@ -177,7 +173,7 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
         leftButton.setOnClickListener(v -> {
             // toggles button behavior between default and multiple selection
             if (isTap) {
-                onLongPressOfActivity(-1, baseActivityButtons.getButtonList());
+                onLongPressOfActivity(-1, logTimeToActivityButton.getButtonList());
             }
             else {
                 multipleSelectionButtonBehavior();
@@ -199,7 +195,7 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
     private void multipleSelectionButtonBehavior() {
         leftButton.setText(R.string.time_log_button_left_action);
         rightButton.setText(R.string.time_log_button_right_action);
-        multipleSelectionResetButtonColors(baseActivityButtons.getButtonList());
+        multipleSelectionResetButtonColors(logTimeToActivityButton.getButtonList());
         isTap = true;
     }
 
@@ -228,10 +224,10 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
     public void onShortPressOfActivity(View view) {
         if (isTap) {
             if (isUpdate) {
-                baseActivityButtons.submitTimeLogForActivityUpdate(view, this.oldTimeLogId, oldCreatedTime, oldModifiedTime);
+                logTimeToActivityButton.submitTimeLogForActivityUpdate(view, this.oldTimeLogId, oldCreatedTime, oldModifiedTime);
             }
             else {
-                baseActivityButtons.submitTimeLogForActivity(view);
+                logTimeToActivityButton.submitTimeLogForActivity(view);
             }
         }
         else {
@@ -269,6 +265,15 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
         }
     }
 
+    private void setUpNotificationBehavior() {
+        boolean isNotification = getIntent().getBooleanExtra(DevProperties.IS_NOTIFICATION_EXTRA_KEY, false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            setShowWhenLocked(true);
+            KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+            keyguardManager.requestDismissKeyguard(this, null);
+        }
+        logTimeToActivityButton.setIsNotification(isNotification);
+    }
 
     // Getters
     public TimeLogic getTimeLogic() {
@@ -298,5 +303,4 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
         this.oldCreatedTime = oldCreatedTime;
         this.oldModifiedTime = oldModifiedTime;
     }
-
 }

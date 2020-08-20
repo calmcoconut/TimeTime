@@ -65,6 +65,11 @@ public class MainActivity extends AppCompatActivity {
         if (DevProperties.IS_LOCKSCREEN_NOTIFICATION_ENABLED) {
             LockScreenNotification.createRepeatingLockScreenNotification(this);
         }
+
+        // close app if launched from notification
+        if (getIntent().getBooleanExtra(DevProperties.IS_NOTIFICATION_EXTRA_KEY,false)) {
+            endApp();
+        }
     }
 
     private void initTabPageViewer() {
@@ -110,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
     private void setFabForTab(int pos) {
         setFabIcon(pos);
         switch (pos) {
@@ -136,6 +140,11 @@ public class MainActivity extends AppCompatActivity {
         if (pos == 4 && !fab.getDrawable().equals(cogDrawable)) {
             fab.setImageDrawable(cogDrawable);
         }
+    }
+
+    public void endApp() {
+        finishAndRemoveTask();
+        System.exit(0);
     }
 
     @Override

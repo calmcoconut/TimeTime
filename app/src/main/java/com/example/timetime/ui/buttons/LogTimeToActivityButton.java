@@ -7,6 +7,7 @@ import com.example.timetime.MainActivity;
 import com.example.timetime.database.TimeLogic;
 import com.example.timetime.database.entity.Activity;
 import com.example.timetime.database.entity.TimeLog;
+import com.example.timetime.utils.DevProperties;
 import com.example.timetime.viewmodels.TimeLogViewModel;
 import com.google.android.material.button.MaterialButton;
 import org.jetbrains.annotations.NotNull;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class LogTimeToActivityButton extends BaseActivityButton {
+    private boolean isNotification = false;
     private final OnLongPressActivityButtonListener listener;
 
     public LogTimeToActivityButton(OnLongPressActivityButtonListener onLongPressActivityButtonListener) {
@@ -48,7 +50,12 @@ public class LogTimeToActivityButton extends BaseActivityButton {
 
     public void launchHomeView() {
         Intent intent = new Intent(getContext(), MainActivity.class);
+        intent.putExtra(DevProperties.IS_NOTIFICATION_EXTRA_KEY, this.isNotification);
         getContext().startActivity(intent);
+    }
+
+    public void setIsNotification(boolean bool) {
+        isNotification = bool;
     }
 
     private void checkAndSubmitTimeLog(TimeLog timeLog) {
@@ -77,7 +84,7 @@ public class LogTimeToActivityButton extends BaseActivityButton {
 
     private TimeLog getTimeLog(View v, long oldTimeLogId, long oldCreatedTime, long oldModifiedTime) {
         Activity activity = (Activity) v.getTag();
-        TimeLog timeLog = new TimeLog(oldCreatedTime,oldModifiedTime,activity.getActivity(),activity.getColor(),
+        TimeLog timeLog = new TimeLog(oldCreatedTime, oldModifiedTime, activity.getActivity(), activity.getColor(),
                 activity.getIcon(), activity.getCategory());
         timeLog.setTimeLogId(oldTimeLogId);
         return timeLog;
