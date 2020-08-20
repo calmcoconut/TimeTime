@@ -45,6 +45,9 @@ dependencies {
     // data visualization
     implementation "com.github.PhilJay:MPAndroidChart:$androidChartVersion"
 
+    // Kotlin csv exporter
+    implementation "com.github.doyaaaaaken:kotlin-csv-jvm:0.11.0"
+
     // room components
     implementation "androidx.room:room-runtime:$roomVersion"
     annotationProcessor "androidx.room:room-compiler:$roomVersion"

@@ -1,6 +1,7 @@
 package com.example.timetime.ui.homesummary;
 
 
+import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -83,6 +84,10 @@ public class LogTimeToActivity extends AppCompatActivity implements LogTimeToAct
                 mGridContext,
                 mGridLayout,
                 TEMPLATE_BUTTON);
+
+        setShowWhenLocked(true);
+        KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+        keyguardManager.requestDismissKeyguard(this, null);
     }
 
     public void getTimeToDisplayOnToolBar() {

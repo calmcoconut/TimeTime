@@ -3,6 +3,8 @@
     package="com.example.timetime">
 
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 
     <application
         android:name=".AppStart"
@@ -26,7 +28,10 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ui.homesummary.LogTimeToActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
+            android:showOnLockScreen="true"
+            />
         <activity
             android:name=".ui.homesummary.LogTimeLogEditActivity"
             android:parentActivityName=".MainActivity" />

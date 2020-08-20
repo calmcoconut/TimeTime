@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
+import com.example.timetime.notifications.LockScreenNotification;
 import com.example.timetime.notifications.PushNotification;
 import com.example.timetime.ui.MainViewPagerAdapter;
 import com.example.timetime.ui.activitySummary.CreateActivityActivity;
@@ -58,7 +59,11 @@ public class MainActivity extends AppCompatActivity {
 
         // init notification
         if (DevProperties.IS_PUSH_NOTIFICATION_ENABLED) {
-            PushNotification.createRepeatingNotification(this);
+            PushNotification.createRepeatingPushNotification(this);
+        }
+
+        if (DevProperties.IS_LOCKSCREEN_NOTIFICATION_ENABLED) {
+            LockScreenNotification.createRepeatingLockScreenNotification(this);
         }
     }
 
