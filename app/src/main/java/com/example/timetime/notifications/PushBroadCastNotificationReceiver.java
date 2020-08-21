@@ -11,7 +11,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 import java.util.concurrent.TimeUnit;
 
-public class BroadCastNotificationReceiver extends BroadcastReceiver {
+public class PushBroadCastNotificationReceiver extends BroadcastReceiver {
     public static final String NOTIFICATION_PUSH_REPEATING = "repeating_interval_push_notification";
     public static final int NOTIFICATION_PUSH_REPEATING_ID = 1;
     public static final String NOTIFICATION_LOCKSCREEN_REPEATING = "repeating_interval_lockscreen_notification";

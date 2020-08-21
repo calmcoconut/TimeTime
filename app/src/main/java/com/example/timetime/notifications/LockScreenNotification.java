@@ -50,8 +50,8 @@ public class LockScreenNotification {
         if (alarmManager == null) {
             alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         }
-        Intent notificationIntent = new Intent(context, BroadCastNotificationReceiver.class)
-                .putExtra(BroadCastNotificationReceiver.NOTIFICATION_LOCKSCREEN_REPEATING,
+        Intent notificationIntent = new Intent(context, PushBroadCastNotificationReceiver.class)
+                .putExtra(PushBroadCastNotificationReceiver.NOTIFICATION_LOCKSCREEN_REPEATING,
                         notification);
 
         pendingIntent = PendingIntent.getBroadcast(
