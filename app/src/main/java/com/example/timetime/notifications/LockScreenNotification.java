@@ -56,9 +56,9 @@ public class LockScreenNotification {
 
         pendingIntent = PendingIntent.getBroadcast(
                 context,
-                0,
+                1,
                 notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                0);
 
         updateInterval();
     }
