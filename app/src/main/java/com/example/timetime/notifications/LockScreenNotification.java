@@ -24,7 +24,7 @@ public class LockScreenNotification {
     private static AlarmManager alarmManager;
     private static PendingIntent pendingIntentForBroadCastReceiver;
     private static PendingIntent pendingIntentForWork;
-    private static Long lockScreenInterval = DevProperties.INTERVAL_LOCKSCREEN_NOTIFICATION_MINUTES * 5L;
+    private static Long lockScreenInterval = DevProperties.INTERVAL_LOCKSCREEN_NOTIFICATION_MINUTES * 1000L;
 
     public static void createRepeatingLockScreenNotification(Context context) {
         Notification notification = buildNotification(context);
