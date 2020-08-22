@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void endApp() {
-        finishAndRemoveTask();
+//        finishAndRemoveTask();
     }
 
     @Override
