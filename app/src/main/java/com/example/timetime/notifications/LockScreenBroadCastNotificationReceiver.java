@@ -18,4 +18,7 @@ public class LockScreenBroadCastNotificationReceiver extends BroadcastReceiver {
             notificationManager.notify(NOTIFICATION_LOCKSCREEN_REPEATING_ID, lockScreenNotification);
         }
     }
+
+    public static void initNotification(Context context) {
+    }
 }

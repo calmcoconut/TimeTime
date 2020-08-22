@@ -29,7 +29,6 @@ public class LockScreenNotification {
     public static void createRepeatingLockScreenNotification(Context context) {
         Notification notification = buildNotification(context);
         initScheduleNotification(context, notification);
-//        initWorkManager(context);
     }
 
 

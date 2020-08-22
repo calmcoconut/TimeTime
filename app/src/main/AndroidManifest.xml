@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".AppStart"
@@ -47,6 +48,11 @@
             </intent-filter>
         </activity>
 
+        <receiver android:name=".notifications.RebootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
         <receiver android:name=".notifications.PushBroadCastNotificationReceiver" />
         <receiver android:name=".notifications.LockScreenBroadCastNotificationReceiver" />
 
