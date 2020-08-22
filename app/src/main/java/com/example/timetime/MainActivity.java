@@ -144,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void endApp() {
         finishAndRemoveTask();
-        System.exit(0);
     }
 
     @Override

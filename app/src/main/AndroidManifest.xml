@@ -48,6 +48,7 @@
         </activity>
 
         <receiver android:name=".notifications.PushBroadCastNotificationReceiver" />
+        <receiver android:name=".notifications.LockScreenBroadCastNotificationReceiver" />
 
         <meta-data
             android:name="preloaded_fonts"
