@@ -37,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // close app if launched from notification
+        if (getIntent().getBooleanExtra(DevProperties.IS_NOTIFICATION_EXTRA_KEY, false)) {
+            finishAffinity();
+        }
         setContentView(R.layout.activity_main);
 
         viewPager = findViewById(R.id.view_pager);
@@ -64,11 +68,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (DevProperties.IS_LOCKSCREEN_NOTIFICATION_ENABLED) {
             LockScreenNotification.createRepeatingLockScreenNotification(this);
-        }
-
-        // close app if launched from notification
-        if (getIntent().getBooleanExtra(DevProperties.IS_NOTIFICATION_EXTRA_KEY,false)) {
-            endApp();
         }
     }
 
@@ -143,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void endApp() {
-//        finishAndRemoveTask();
+        finishAndRemoveTask();
     }
 
     @Override

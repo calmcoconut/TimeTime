@@ -65,7 +65,7 @@ public class LockScreenNotification {
                 context,
                 1,
                 notificationIntent,
-                0);
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
         updateInterval();
     }
