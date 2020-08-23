@@ -8,10 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import androidx.core.app.NotificationCompat;
-import androidx.work.BackoffPolicy;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
 import com.example.timetime.AppStart;
 import com.example.timetime.R;
 import com.example.timetime.ui.homesummary.LogTimeToActivity;
@@ -24,7 +20,7 @@ public class LockScreenNotification {
     private static AlarmManager alarmManager;
     private static PendingIntent pendingIntentForBroadCastReceiver;
     private static PendingIntent pendingIntentForWork;
-    private static Long lockScreenInterval = DevProperties.INTERVAL_LOCKSCREEN_NOTIFICATION_MINUTES * 1000L;
+    private static Long lockScreenInterval = TimeUnit.MILLISECONDS.convert(DevProperties.INTERVAL_LOCKSCREEN_NOTIFICATION_MINUTES, TimeUnit.MINUTES);
 
     public static void createRepeatingLockScreenNotification(Context context) {
         Notification notification = buildNotification(context);
@@ -70,30 +66,41 @@ public class LockScreenNotification {
         updateInterval();
     }
 
-    private static void initWorkManager(Context context) {
-        WorkManager workManager = WorkManager.getInstance(context);
-        PeriodicWorkRequest screenOffWorkRequest =
-                new PeriodicWorkRequest.Builder(ScreenOnOffWorker.class,
-                        15, TimeUnit.MINUTES)
-                        .addTag(DevProperties.IS_NOTIFICATION_EXTRA_KEY)
-                        .setBackoffCriteria(BackoffPolicy.LINEAR, PeriodicWorkRequest.MIN_BACKOFF_MILLIS, TimeUnit.MILLISECONDS)
-                        .build();
-
-        workManager.enqueueUniquePeriodicWork(
-                "lockscreen",
-                ExistingPeriodicWorkPolicy.KEEP,
-                screenOffWorkRequest);
-    }
+//    private static void initWorkManager(Context context) {
+//        WorkManager workManager = WorkManager.getInstance(context);
+//        PeriodicWorkRequest screenOffWorkRequest =
+//                new PeriodicWorkRequest.Builder(ScreenOnOffWorker.class,
+//                        15, TimeUnit.MINUTES)
+//                        .addTag(DevProperties.IS_NOTIFICATION_EXTRA_KEY)
+//                        .setBackoffCriteria(BackoffPolicy.LINEAR, PeriodicWorkRequest.MIN_BACKOFF_MILLIS, TimeUnit.MILLISECONDS)
+//                        .build();
+//
+//        workManager.enqueueUniquePeriodicWork(
+//                "lockscreen",
+//                ExistingPeriodicWorkPolicy.KEEP,
+//                screenOffWorkRequest);
+//    }
 
     private static void updateInterval() {
         if (alarmManager != null) {
-            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, (SystemClock.elapsedRealtime() +
+            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, (SystemClock.elapsedRealtime() +
                     lockScreenInterval), lockScreenInterval, pendingIntentForBroadCastReceiver);
         }
     }
 
-    public static void disableLockScreenNotification() {
-        DevProperties.IS_LOCKSCREEN_NOTIFICATION_ENABLED = false;
+    public static void lockScreenNotificationEnabled(Context context, boolean bool) {
+        DevProperties.IS_LOCKSCREEN_NOTIFICATION_ENABLED = bool;
+        if (bool) {
+            if (alarmManager != null) {
+                alarmManager.cancel(pendingIntentForBroadCastReceiver);
+            }
+            createRepeatingLockScreenNotification(context);
+        }
+        else {
+            if (alarmManager != null) {
+                alarmManager.cancel(pendingIntentForBroadCastReceiver);
+            }
+        }
     }
 
     public static Long getLockScreenInterval() {
@@ -101,6 +108,7 @@ public class LockScreenNotification {
     }
 
     public static void setLockScreenInterval(Long lockScreenInterval) {
+        alarmManager.cancel(pendingIntentForBroadCastReceiver);
         LockScreenNotification.lockScreenInterval = lockScreenInterval;
         updateInterval();
     }

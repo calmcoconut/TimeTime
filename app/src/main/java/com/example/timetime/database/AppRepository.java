@@ -202,4 +202,7 @@ public class AppRepository {
                 mIconDao.insert(icon));
     }
 
+    public static void resetDatabase() {
+        AppDatabase.resetDatabase();
+    }
 }

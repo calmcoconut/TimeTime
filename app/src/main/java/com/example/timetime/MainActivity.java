@@ -3,6 +3,7 @@ package com.example.timetime;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -63,10 +64,12 @@ public class MainActivity extends AppCompatActivity {
 
         // init notification
         if (DevProperties.IS_PUSH_NOTIFICATION_ENABLED) {
+            Log.d("isSetting", String.valueOf(DevProperties.INTERVAL_PUSH_NOTIFICATION_MINUTES));
             PushNotification.createRepeatingPushNotification(this);
         }
 
         if (DevProperties.IS_LOCKSCREEN_NOTIFICATION_ENABLED) {
+            Log.d("isSetting", String.valueOf(DevProperties.INTERVAL_LOCKSCREEN_NOTIFICATION_MINUTES));
             LockScreenNotification.createRepeatingLockScreenNotification(this);
         }
     }

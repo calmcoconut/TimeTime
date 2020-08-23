@@ -12,10 +12,13 @@ import com.example.timetime.R;
 import com.example.timetime.ui.homesummary.LogTimeToActivity;
 import com.example.timetime.utils.DevProperties;
 
+import java.util.concurrent.TimeUnit;
+
 public class PushNotification {
     private static AlarmManager alarmManager;
     private static PendingIntent pendingIntent;
-    private static Long pushInterval = DevProperties.INTERVAL_PUSH_NOTIFICATION_MINUTES * 1000L;
+    private static Long pushInterval =
+            TimeUnit.MILLISECONDS.convert(DevProperties.INTERVAL_PUSH_NOTIFICATION_MINUTES, TimeUnit.MINUTES);
 
     public static void createRepeatingPushNotification(Context context) {
         Notification notification = buildNotification(context);
@@ -56,13 +59,24 @@ public class PushNotification {
 
     private static void updateInterval() {
         if (alarmManager != null) {
-            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, (SystemClock.elapsedRealtime() +
+            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, (SystemClock.elapsedRealtime() +
                     pushInterval), pushInterval, pendingIntent);
         }
     }
 
-    public static void disablePushNotification() {
-        DevProperties.IS_PUSH_NOTIFICATION_ENABLED = false;
+    public static void pushNotificationEnabled(Context context, boolean bool) {
+        DevProperties.IS_PUSH_NOTIFICATION_ENABLED = bool;
+        if (bool) {
+            if (alarmManager != null) {
+                alarmManager.cancel(pendingIntent);
+            }
+            createRepeatingPushNotification(context);
+        }
+        else {
+            if (alarmManager != null) {
+                alarmManager.cancel(pendingIntent);
+            }
+        }
     }
 
     public static Long getPushInterval() {
@@ -70,6 +84,7 @@ public class PushNotification {
     }
 
     public static void setPushInterval(Long pushInterval) {
+        alarmManager.cancel(pendingIntent);
         PushNotification.pushInterval = pushInterval;
         updateInterval();
     }

@@ -1,9 +1,25 @@
 package com.example.timetime.ui.settingsSummary;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
+import androidx.annotation.Nullable;
 import androidx.preference.*;
+import com.example.timetime.database.AppRepository;
+import com.example.timetime.database.database.AppDatabase;
+import com.example.timetime.database.database.DatabaseExportTool;
+import com.example.timetime.notifications.LockScreenNotification;
+import com.example.timetime.notifications.PushNotification;
+import com.example.timetime.utils.DevProperties;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
+
+import static android.app.Activity.RESULT_OK;
 
 public class AdvanceSettings extends PreferenceFragmentCompat {
     Context context;
@@ -13,7 +29,7 @@ public class AdvanceSettings extends PreferenceFragmentCompat {
     EditTextPreference lockScreenNotificationInterval;
     ListPreference timeFormat;
     Preference exportDatabase;
-    EditTextPreference deleteDatabase;
+    ListPreference deleteDatabase;
 
     PreferenceScreen screen;
 
@@ -27,6 +43,8 @@ public class AdvanceSettings extends PreferenceFragmentCompat {
 
         setPreferenceScreen(screen);
         setDependencies();
+        notificationOptionListeners();
+        otherOptionListener();
     }
 
     private void setDependencies() {
@@ -66,7 +84,7 @@ public class AdvanceSettings extends PreferenceFragmentCompat {
         lockScreenNotificationInterval.setSummaryProvider(provider -> lockScreenNotificationInterval.getText() + " minutes");
         lockScreenNotificationInterval.setOnBindEditTextListener(editText -> editText.setInputType(InputType.TYPE_CLASS_NUMBER));
         lockScreenNotificationInterval.setDialogTitle("Choose how often to be notified");
-        lockScreenNotificationInterval.setDefaultValue("30");
+        lockScreenNotificationInterval.setDefaultValue("45");
         notificationCategory.addPreference(lockScreenNotificationInterval);
     }
 
@@ -81,7 +99,7 @@ public class AdvanceSettings extends PreferenceFragmentCompat {
         timeFormat.setTitle("Time format");
         timeFormat.setEntries(new CharSequence[]{"12 HOUR", "24 HOUR"});
         timeFormat.setEntryValues(new CharSequence[]{"12", "24"});
-        timeFormat.setSummary("Configure to use a 12 hour format (1:00 PM) or a 24 hour format (13:00)");
+        timeFormat.setSummary("Configure to use a 12 hour format (1:00 PM) or a 24 hour format (13:00 PM)");
         timeFormat.setDialogTitle("Choose a time format");
         timeFormat.setDefaultValue("24");
         otherCategory.addPreference(timeFormat);
@@ -92,12 +110,98 @@ public class AdvanceSettings extends PreferenceFragmentCompat {
         exportDatabase.setSummary("export database to a local file for external use");
         otherCategory.addPreference(exportDatabase);
 
-        deleteDatabase = new EditTextPreference(context);
+        deleteDatabase = new ListPreference(context);
         deleteDatabase.setKey("delete_data");
         deleteDatabase.setTitle("Delete database");
-        deleteDatabase.setDialogTitle("TYPE DELETE TO CONFIRM");
+        deleteDatabase.setEntries(new CharSequence[]{"CANCEL", "CONFIRM"});
+        deleteDatabase.setEntryValues(new CharSequence[]{"0", "1"});
+        deleteDatabase.setDialogTitle("Delete the database?");
+        deleteDatabase.setDefaultValue("0");
 
         otherCategory.addPreference(deleteDatabase);
+    }
+
+    private void notificationOptionListeners() {
+        pushNotification.setOnPreferenceChangeListener((preference, newValue) -> {
+            PushNotification.pushNotificationEnabled(context, (boolean) newValue);
+            return true;
+        });
+
+        pushNotificationInterval.setOnPreferenceChangeListener((preference, newValue) -> {
+            try {
+                PushNotification.setPushInterval(Long.parseLong(String.valueOf(newValue)));
+            } catch (Exception e) {
+                return false;
+            }
+            return true;
+        });
+
+        lockScreenNotification.setOnPreferenceChangeListener((preference, newValue) -> {
+            LockScreenNotification.lockScreenNotificationEnabled(context, (boolean) newValue);
+            return true;
+        });
+
+        lockScreenNotificationInterval.setOnPreferenceChangeListener((preference, newValue) -> {
+            Log.d("isSetting", "changed lock screen interval");
+            try {
+                LockScreenNotification.setLockScreenInterval(Long.parseLong(String.valueOf(newValue)));
+            } catch (Exception e) {
+                return false;
+            }
+            return true;
+        });
+    }
+
+    private void otherOptionListener() {
+        timeFormat.setOnPreferenceChangeListener((preference, newValue) -> {
+            DevProperties.IS_24_HOUR_FORMAT = newValue.equals("24");
+            return true;
+        });
+        exportDatabase.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Log.d("isSetting", "export db");
+                Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("text/csv");
+                intent.putExtra(Intent.EXTRA_TITLE, DatabaseExportTool.exportName);
+                startActivityForResult(intent, DatabaseExportTool.CREATE_FILE);
+                return true;
+            }
+        });
+        deleteDatabase.setOnPreferenceChangeListener((preference, newValue) -> {
+            if (newValue.equals("1")) {
+                Log.d("isSetting", "delete db");
+                AppRepository.resetDatabase();
+            }
+            return false;
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == DatabaseExportTool.CREATE_FILE) {
+            if (resultCode == RESULT_OK) {
+                Uri uri = data.getData();
+                try {
+                    OutputStream outputStream = getContext().getContentResolver().openOutputStream(uri);
+                    AppDatabase.databaseWriteExecutor.execute(() ->
+                            {
+                                try {
+                                    outputStream.write(DatabaseExportTool.exportDatabaseToCsv(AppDatabase.getDatabase(getContext())).getBytes());
+                                    outputStream.close();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                    );
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public AdvanceSettings() {

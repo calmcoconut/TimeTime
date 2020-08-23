@@ -35,7 +35,7 @@ public abstract class AppDatabase extends RoomDatabase {
     // executor to handle background, async tasks
     public static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
-    private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
+    private static final RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
@@ -112,5 +112,12 @@ public abstract class AppDatabase extends RoomDatabase {
                 timeLogDao.insert(timeLog);
             }
         }
+    }
+
+    public static void resetDatabase() {
+        databaseWriteExecutor.execute(() -> {
+            UtilityClass.deleteAllDatabaseRows();
+            UtilityClass.loadFirstTimeDefaultDatabase();
+        });
     }
 }
