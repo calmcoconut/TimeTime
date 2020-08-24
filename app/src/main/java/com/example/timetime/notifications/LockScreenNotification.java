@@ -19,7 +19,6 @@ public class LockScreenNotification {
 
     private static AlarmManager alarmManager;
     private static PendingIntent pendingIntentForBroadCastReceiver;
-    private static PendingIntent pendingIntentForWork;
     private static Long lockScreenInterval = TimeUnit.MILLISECONDS.convert(DevProperties.INTERVAL_LOCKSCREEN_NOTIFICATION_MINUTES, TimeUnit.MINUTES);
 
     public static void createRepeatingLockScreenNotification(Context context) {
@@ -57,29 +56,19 @@ public class LockScreenNotification {
                 .putExtra(LockScreenBroadCastNotificationReceiver.NOTIFICATION_LOCKSCREEN_REPEATING,
                         notification);
 
-        pendingIntentForBroadCastReceiver = PendingIntent.getBroadcast(
-                context,
-                1,
-                notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        boolean alarmUp = (PendingIntent.getBroadcast(context, 1, notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT) == null);
 
-        updateInterval();
+        if (alarmUp) {
+            pendingIntentForBroadCastReceiver = PendingIntent.getBroadcast(
+                    context,
+                    1,
+                    notificationIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+
+            updateInterval();
+        }
     }
-
-//    private static void initWorkManager(Context context) {
-//        WorkManager workManager = WorkManager.getInstance(context);
-//        PeriodicWorkRequest screenOffWorkRequest =
-//                new PeriodicWorkRequest.Builder(ScreenOnOffWorker.class,
-//                        15, TimeUnit.MINUTES)
-//                        .addTag(DevProperties.IS_NOTIFICATION_EXTRA_KEY)
-//                        .setBackoffCriteria(BackoffPolicy.LINEAR, PeriodicWorkRequest.MIN_BACKOFF_MILLIS, TimeUnit.MILLISECONDS)
-//                        .build();
-//
-//        workManager.enqueueUniquePeriodicWork(
-//                "lockscreen",
-//                ExistingPeriodicWorkPolicy.KEEP,
-//                screenOffWorkRequest);
-//    }
 
     private static void updateInterval() {
         if (alarmManager != null) {

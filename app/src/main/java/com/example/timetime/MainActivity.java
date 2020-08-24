@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
@@ -12,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
+import com.example.timetime.database.TimeLogic;
 import com.example.timetime.notifications.LockScreenNotification;
 import com.example.timetime.notifications.PushNotification;
 import com.example.timetime.ui.MainViewPagerAdapter;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private static CoordinatorLayout mainView;
     private int tabNumber;
+    private ImageView homeImageView;
     FloatingActionButton fab;
 
     @Override
@@ -48,10 +51,12 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tab_layout);
         fab = findViewById(R.id.main_fab);
         mainView = findViewById(R.id.activity_main_view);
+        homeImageView = findViewById(R.id.home_image);
 
         addDrawable = ContextCompat.getDrawable(this, R.drawable.ic_add_black_24dp);
         cogDrawable = ContextCompat.getDrawable(this, R.drawable.ic_settings_black_24dp);
 
+        setHomeImage();
         // tab logic
         initTabPageViewer();
         fragmentManager = getSupportFragmentManager();
@@ -71,6 +76,31 @@ public class MainActivity extends AppCompatActivity {
         if (DevProperties.IS_LOCKSCREEN_NOTIFICATION_ENABLED) {
             Log.d("isSetting", String.valueOf(DevProperties.INTERVAL_LOCKSCREEN_NOTIFICATION_MINUTES));
             LockScreenNotification.createRepeatingLockScreenNotification(this);
+        }
+    }
+
+    private void setHomeImage() {
+        int time = TimeLogic.newInstance().getCurrentZonedDateTime().getHour();
+
+        if (time >= 5 && time < 12) {
+            homeImageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.image_morning));
+            return;
+        }
+        if (time >= 12 && time < 5) {
+            homeImageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.image_afternoon_cropped));
+            return;
+        }
+        if (time >= 5 && time < 8) {
+            homeImageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.image_evening));
+            return;
+        }
+        if (time >= 8 && time < 12) {
+            homeImageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.image_night));
+            return;
+        }
+        if (time >= 12 && time < 5) {
+            homeImageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.image_late_night));
+            return;
         }
     }
 

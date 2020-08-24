@@ -3,7 +3,7 @@ package com.example.timetime.ui.activitySummary;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import com.example.timetime.database.database.FirstDatabase;
+import com.example.timetime.utils.DevProperties;
 
 import java.util.Objects;
 
@@ -29,10 +29,10 @@ public class CreateActivityActivity extends BaseCreateActivity {
 
 
     public void setDefaultIcon() {
-        Drawable defaultIcon = getDrawable(FirstDatabase.INITIAL_ICON);
+        Drawable defaultIcon = getDrawable(DevProperties.INITIAL_ICON);
         getIconFab().setImageDrawable(defaultIcon);
         getIconFab().setColorFilter(Color.WHITE);
-        getIconFab().setTag(FirstDatabase.INITIAL_ICON);
+        getIconFab().setTag(DevProperties.INITIAL_ICON);
     }
 
     @Override

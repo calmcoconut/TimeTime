@@ -72,7 +72,4 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.1.0'
     // opencsv
     implementation 'com.opencsv:opencsv:4.6'
-    // android Work
-//    implementation "androidx.work:work-runtime:$work_version"
-//    implementation "androidx.work:work-rxjava2:$work_version"
 }

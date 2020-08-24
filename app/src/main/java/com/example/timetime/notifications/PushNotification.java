@@ -49,12 +49,18 @@ public class PushNotification {
                 .putExtra(PushBroadCastNotificationReceiver.NOTIFICATION_PUSH_REPEATING,
                         notification);
 
-        pendingIntent = PendingIntent.getBroadcast(context,
-                0,
-                notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        boolean alarmUp = (PendingIntent.getBroadcast(context, 0, notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT) == null);
 
-        updateInterval();
+        if (alarmUp) {
+            pendingIntent = PendingIntent.getBroadcast(context,
+                    0,
+                    notificationIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+
+            updateInterval();
+        }
+
     }
 
     private static void updateInterval() {

@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FirstDatabase {
-    public static int INITIAL_ICON;
     private final static Long DAY_SECONDS = 86400L;
     private final static Long HOUR_SECONDS = 3600L;
     private final static Long MINUTE_SECONDS = 60L;
@@ -23,7 +22,6 @@ public class FirstDatabase {
 
     public FirstDatabase() {
         this.mIconArray = createDefaultIconArray();
-        INITIAL_ICON = mIconArray[0].getIcon();
         this.mColorArray = createDefaultColorArray();
         this.mCategoryArray = createDefaultCategoryArray();
         this.mActivityArray = createDefaultActivityArray();
