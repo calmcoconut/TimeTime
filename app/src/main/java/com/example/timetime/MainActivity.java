@@ -86,19 +86,19 @@ public class MainActivity extends AppCompatActivity {
             homeImageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.image_morning));
             return;
         }
-        if (time >= 12 && time < 5) {
+        if (time >= 12 && time < 16) {
             homeImageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.image_afternoon_cropped));
             return;
         }
-        if (time >= 5 && time < 8) {
+        if (time >= 16 && time < 20) {
             homeImageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.image_evening));
             return;
         }
-        if (time >= 8 && time < 12) {
+        if (time >= 20 && time <= 23) {
             homeImageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.image_night));
             return;
         }
-        if (time >= 12 && time < 5) {
+        if (time >= 0 && time < 5) {
             homeImageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.image_late_night));
             return;
         }

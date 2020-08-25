@@ -50,7 +50,7 @@ public class PushNotification {
                         notification);
 
         boolean alarmUp = (PendingIntent.getBroadcast(context, 0, notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT) == null);
+                PendingIntent.FLAG_NO_CREATE) == null);
 
         if (alarmUp) {
             pendingIntent = PendingIntent.getBroadcast(context,

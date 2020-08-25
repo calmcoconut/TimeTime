@@ -15,7 +15,7 @@ public interface ActivityDao {
     @Query("DELETE FROM activity_table")
     void deleteAll();
 
-    @Query("SELECT * FROM activity_table")
+    @Query("SELECT * FROM activity_table ORDER BY id ASC")
     LiveData<List<Activity>> getAllActivity();
 
     @Query("SELECT *  FROM activity_table WHERE activity = :activityName")

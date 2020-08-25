@@ -8,7 +8,11 @@ import org.jetbrains.annotations.NotNull;
 
 @Entity(tableName = "activity_table")
 public class Activity {
-    @PrimaryKey
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name="id")
+    private Long activityId;
+
     @ColumnInfo(name="activity")
     @NonNull
     private String mActivity;
@@ -26,7 +30,7 @@ public class Activity {
     private String mColor;
 
     public Activity (@NotNull String activity, @NotNull String category,
-                     @NotNull int icon, @NotNull String color) {
+                     int icon, @NotNull String color) {
         this.mActivity = activity;
         this.mCategory = category;
         this.mIcon = icon;
@@ -56,7 +60,7 @@ public class Activity {
         return mIcon;
     }
 
-    public void setIcon(@NonNull int icon) {
+    public void setIcon(int icon) {
         this.mIcon = icon;
     }
 
@@ -67,5 +71,13 @@ public class Activity {
 
     public void setColor(@NonNull String color) {
         this.mColor = color;
+    }
+
+    public Long getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(Long activityId) {
+        this.activityId = activityId;
     }
 }

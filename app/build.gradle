@@ -70,6 +70,9 @@ dependencies {
 
     // other
     implementation 'androidx.annotation:annotation:1.1.0'
+    // work
+    implementation "androidx.work:work-runtime:$work_version"
+    implementation "androidx.work:work-rxjava2:$work_version"
     // opencsv
     implementation 'com.opencsv:opencsv:4.6'
 }

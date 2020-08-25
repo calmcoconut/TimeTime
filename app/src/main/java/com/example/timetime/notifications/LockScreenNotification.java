@@ -57,7 +57,7 @@ public class LockScreenNotification {
                         notification);
 
         boolean alarmUp = (PendingIntent.getBroadcast(context, 1, notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT) == null);
+                PendingIntent.FLAG_NO_CREATE) == null);
 
         if (alarmUp) {
             pendingIntentForBroadCastReceiver = PendingIntent.getBroadcast(
