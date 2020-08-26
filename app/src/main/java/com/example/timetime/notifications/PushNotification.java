@@ -1,31 +1,34 @@
 package com.example.timetime.notifications;
 
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.SystemClock;
+import android.util.Log;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.preference.PreferenceManager;
+import androidx.work.*;
 import com.example.timetime.AppStart;
 import com.example.timetime.R;
 import com.example.timetime.ui.homesummary.LogTimeToActivity;
 import com.example.timetime.utils.DevProperties;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.TimeUnit;
 
 public class PushNotification {
-    private static AlarmManager alarmManager;
-    private static PendingIntent pendingIntent;
-    private static Long pushInterval =
-            TimeUnit.MILLISECONDS.convert(DevProperties.INTERVAL_PUSH_NOTIFICATION_MINUTES, TimeUnit.MINUTES);
+    public static final String TAG_PUSH_NOTIFY = "push_notification";
+    public static final String WORK_TAG_PUSH_NOTIFY = "work_push_notification";
+    public static final int NOTIFICATION_PUSH_REPEATING_ID = 1;
 
     public static void createRepeatingPushNotification(Context context) {
-        Notification notification = buildNotification(context);
-        initScheduleNotification(context, notification);
+        initWorkScheduleNotification(context, null);
     }
 
-    private static Notification buildNotification(Context context) {
+    public static Notification buildNotification(Context context) {
         Intent logTimeToActivity = new Intent(context, LogTimeToActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, logTimeToActivity, 0);
 
@@ -41,57 +44,62 @@ public class PushNotification {
                 .build();
     }
 
-    private static void initScheduleNotification(Context context, Notification notification) {
-        if (alarmManager == null) {
-            alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        }
-        Intent notificationIntent = new Intent(context, PushBroadCastNotificationReceiver.class)
-                .putExtra(PushBroadCastNotificationReceiver.NOTIFICATION_PUSH_REPEATING,
-                        notification);
+    private static void initWorkScheduleNotification(Context context, @Nullable Integer intervalMinutes) {
+        WorkManager workManager = WorkManager.getInstance(context);
+        Constraints constraints = new Constraints.Builder()
+                .setRequiresDeviceIdle(false)
+                .build();
 
-        boolean alarmUp = (PendingIntent.getBroadcast(context, 0, notificationIntent,
-                PendingIntent.FLAG_NO_CREATE) == null);
+        int interval = intervalMinutes == null ?
+                Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString(
+                        DevProperties.PUSH_NOTIFICATION_SETTINGS_KEY,
+                        String.valueOf(DevProperties.INTERVAL_PUSH_NOTIFICATION_MINUTES))) : intervalMinutes;
+        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(PushNotificationSchedulerWorker.class,
+                interval, TimeUnit.MINUTES)
+                .setInitialDelay(interval, TimeUnit.MINUTES)
+                .addTag(TAG_PUSH_NOTIFY)
+                .setConstraints(constraints)
+                .setBackoffCriteria(BackoffPolicy.LINEAR, PeriodicWorkRequest.MIN_BACKOFF_MILLIS, TimeUnit.MILLISECONDS)
+                .build();
 
-        if (alarmUp) {
-            pendingIntent = PendingIntent.getBroadcast(context,
-                    0,
-                    notificationIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
+        workManager.enqueueUniquePeriodicWork(WORK_TAG_PUSH_NOTIFY,
+                ExistingPeriodicWorkPolicy.KEEP,
+                periodicWorkRequest);
 
-            updateInterval();
-        }
-
+        Log.d("isNotification", "push interval is " + interval);
     }
 
-    private static void updateInterval() {
-        if (alarmManager != null) {
-            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, (SystemClock.elapsedRealtime() +
-                    pushInterval), pushInterval, pendingIntent);
-        }
+    public static void rescheduleNotification(Context context, Integer intervalMinutes) {
+        endNotificationWork(context);
+        initWorkScheduleNotification(context, intervalMinutes);
     }
 
-    public static void pushNotificationEnabled(Context context, boolean bool) {
-        DevProperties.IS_PUSH_NOTIFICATION_ENABLED = bool;
-        if (bool) {
-            if (alarmManager != null) {
-                alarmManager.cancel(pendingIntent);
-            }
-            createRepeatingPushNotification(context);
-        }
-        else {
-            if (alarmManager != null) {
-                alarmManager.cancel(pendingIntent);
-            }
-        }
+    public static void endNotificationWork(Context context) {
+        WorkManager workManager = WorkManager.getInstance(context);
+        workManager.cancelAllWorkByTag(TAG_PUSH_NOTIFY);
     }
 
-    public static Long getPushInterval() {
-        return pushInterval;
-    }
+    public static class PushNotificationSchedulerWorker extends Worker {
 
-    public static void setPushInterval(Long pushInterval) {
-        alarmManager.cancel(pendingIntent);
-        PushNotification.pushInterval = pushInterval;
-        updateInterval();
+        public PushNotificationSchedulerWorker(@NonNull @NotNull Context context,
+                                               @NonNull @NotNull WorkerParameters workerParams) {
+            super(context, workerParams);
+        }
+
+        @NonNull
+        @NotNull
+        @Override
+        public Result doWork() {
+            Context context = getApplicationContext();
+            triggerPushNotification(context);
+            return Result.success();
+        }
+
+        private void triggerPushNotification(Context context) {
+            Log.d("isNotification", "push notification triggered");
+            Notification lockScreenNotification = PushNotification.buildNotification(context);
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+            notificationManager.notify(NOTIFICATION_PUSH_REPEATING_ID, lockScreenNotification);
+        }
     }
 }

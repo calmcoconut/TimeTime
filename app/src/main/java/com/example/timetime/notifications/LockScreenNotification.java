@@ -1,31 +1,69 @@
 package com.example.timetime.notifications;
 
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
+import android.util.Log;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.preference.PreferenceManager;
+import androidx.work.*;
 import com.example.timetime.AppStart;
 import com.example.timetime.R;
 import com.example.timetime.ui.homesummary.LogTimeToActivity;
 import com.example.timetime.utils.DevProperties;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.TimeUnit;
 
 public class LockScreenNotification {
 
-    private static AlarmManager alarmManager;
-    private static PendingIntent pendingIntentForBroadCastReceiver;
-    private static Long lockScreenInterval = TimeUnit.MILLISECONDS.convert(DevProperties.INTERVAL_LOCKSCREEN_NOTIFICATION_MINUTES, TimeUnit.MINUTES);
+    public static final String TAG_LOCKSCREEN_NOTIFY = "lock_screen_notification";
+    public static final String WORK_TAG_LOCKSCREEN_NOTIFY = "work_lock_screen_notification";
+    public static final int NOTIFICATION_LOCKSCREEN_REPEATING_ID = 2;
 
     public static void createRepeatingLockScreenNotification(Context context) {
-        Notification notification = buildNotification(context);
-        initScheduleNotification(context, notification);
+        initWorkScheduleNotification(context, null);
     }
 
+    private static void initWorkScheduleNotification(Context context, @Nullable Integer intervalMinutes) {
+        Constraints constraints = new Constraints.Builder()
+                .setRequiresDeviceIdle(true)
+                .build();
+
+        int interval = intervalMinutes == null ?
+                Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString(
+                        DevProperties.LOCK_SCREEN_NOTIFICATION_SETTINGS_KEY, String.valueOf(DevProperties.INTERVAL_PUSH_NOTIFICATION_MINUTES)))
+                : intervalMinutes;
+        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(LockScreenNotificationSchedulerWorker.class,
+                interval, TimeUnit.MINUTES)
+                .setInitialDelay(interval, TimeUnit.MINUTES)
+                .addTag(TAG_LOCKSCREEN_NOTIFY)
+                .setConstraints(constraints)
+                .setBackoffCriteria(BackoffPolicy.LINEAR, PeriodicWorkRequest.MIN_BACKOFF_MILLIS, TimeUnit.MILLISECONDS)
+                .build();
+
+        WorkManager workManager = WorkManager.getInstance(context);
+        workManager.enqueueUniquePeriodicWork(WORK_TAG_LOCKSCREEN_NOTIFY,
+                ExistingPeriodicWorkPolicy.KEEP,
+                periodicWorkRequest);
+
+        Log.d("isNotification", "lock screen interval is " + interval);
+    }
+
+    public static void rescheduleNotification(Context context, Integer intervalMinutes) {
+        endNotificationWork(context);
+        initWorkScheduleNotification(context, intervalMinutes);
+    }
+
+    public static void endNotificationWork(Context context) {
+        WorkManager workManager = WorkManager.getInstance(context);
+        workManager.cancelAllWorkByTag(TAG_LOCKSCREEN_NOTIFY);
+    }
 
     private static Notification buildNotification(Context context) {
         Intent logTimeToActivity = new Intent(context, LogTimeToActivity.class);
@@ -48,57 +86,28 @@ public class LockScreenNotification {
                 .build();
     }
 
-    private static void initScheduleNotification(Context context, Notification notification) {
-        if (alarmManager == null) {
-            alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+    public static class LockScreenNotificationSchedulerWorker extends Worker {
+
+        public LockScreenNotificationSchedulerWorker(@NonNull @NotNull Context context,
+                                                     @NonNull @NotNull WorkerParameters workerParams) {
+            super(context, workerParams);
         }
-        Intent notificationIntent = new Intent(context, LockScreenBroadCastNotificationReceiver.class)
-                .putExtra(LockScreenBroadCastNotificationReceiver.NOTIFICATION_LOCKSCREEN_REPEATING,
-                        notification);
 
-        boolean alarmUp = (PendingIntent.getBroadcast(context, 1, notificationIntent,
-                PendingIntent.FLAG_NO_CREATE) == null);
+        @NonNull
+        @NotNull
+        @Override
+        public Result doWork() {
+            Context context = getApplicationContext();
+            triggerLockScreenNotification(context);
 
-        if (alarmUp) {
-            pendingIntentForBroadCastReceiver = PendingIntent.getBroadcast(
-                    context,
-                    1,
-                    notificationIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
-
-            updateInterval();
+            return Result.success();
         }
-    }
 
-    private static void updateInterval() {
-        if (alarmManager != null) {
-            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, (SystemClock.elapsedRealtime() +
-                    lockScreenInterval), lockScreenInterval, pendingIntentForBroadCastReceiver);
+        private void triggerLockScreenNotification(Context context) {
+            Log.d("isNotification", "lock screen notification triggered");
+            Notification pushNotification = LockScreenNotification.buildNotification(context);
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+            notificationManager.notify(NOTIFICATION_LOCKSCREEN_REPEATING_ID, pushNotification);
         }
-    }
-
-    public static void lockScreenNotificationEnabled(Context context, boolean bool) {
-        DevProperties.IS_LOCKSCREEN_NOTIFICATION_ENABLED = bool;
-        if (bool) {
-            if (alarmManager != null) {
-                alarmManager.cancel(pendingIntentForBroadCastReceiver);
-            }
-            createRepeatingLockScreenNotification(context);
-        }
-        else {
-            if (alarmManager != null) {
-                alarmManager.cancel(pendingIntentForBroadCastReceiver);
-            }
-        }
-    }
-
-    public static Long getLockScreenInterval() {
-        return lockScreenInterval;
-    }
-
-    public static void setLockScreenInterval(Long lockScreenInterval) {
-        alarmManager.cancel(pendingIntentForBroadCastReceiver);
-        LockScreenNotification.lockScreenInterval = lockScreenInterval;
-        updateInterval();
     }
 }

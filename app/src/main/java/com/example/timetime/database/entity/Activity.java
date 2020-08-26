@@ -22,7 +22,6 @@ public class Activity {
     private String mCategory;
 
     @ColumnInfo(name = "icon")
-    @NonNull
     private int mIcon;
 
     @ColumnInfo(name = "color")

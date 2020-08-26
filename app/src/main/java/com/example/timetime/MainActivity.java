@@ -3,7 +3,6 @@ package com.example.timetime;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,8 +13,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 import com.example.timetime.database.TimeLogic;
-import com.example.timetime.notifications.LockScreenNotification;
-import com.example.timetime.notifications.PushNotification;
 import com.example.timetime.ui.MainViewPagerAdapter;
 import com.example.timetime.ui.activitySummary.CreateActivityActivity;
 import com.example.timetime.ui.categorysummary.CreateCategoryActivity;
@@ -63,20 +60,8 @@ public class MainActivity extends AppCompatActivity {
         adapter = new MainViewPagerAdapter(this, fragmentManager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         viewPager.setAdapter(adapter);
 
-
         // if started by another activity, update tab
         viewPager.setCurrentItem(getIntent().getIntExtra("tab", 0));
-
-        // init notification
-        if (DevProperties.IS_PUSH_NOTIFICATION_ENABLED) {
-            Log.d("isSetting", String.valueOf(DevProperties.INTERVAL_PUSH_NOTIFICATION_MINUTES));
-            PushNotification.createRepeatingPushNotification(this);
-        }
-
-        if (DevProperties.IS_LOCKSCREEN_NOTIFICATION_ENABLED) {
-            Log.d("isSetting", String.valueOf(DevProperties.INTERVAL_LOCKSCREEN_NOTIFICATION_MINUTES));
-            LockScreenNotification.createRepeatingLockScreenNotification(this);
-        }
     }
 
     private void setHomeImage() {

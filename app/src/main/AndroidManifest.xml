@@ -56,8 +56,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".notifications.PushBroadCastNotificationReceiver" />
-        <receiver android:name=".notifications.LockScreenBroadCastNotificationReceiver" />
 
         <meta-data
             android:name="preloaded_fonts"
