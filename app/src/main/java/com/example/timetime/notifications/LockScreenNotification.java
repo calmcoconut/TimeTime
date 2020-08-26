@@ -37,14 +37,14 @@ public class LockScreenNotification {
 
         int interval = intervalMinutes == null ?
                 Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString(
-                        DevProperties.LOCK_SCREEN_NOTIFICATION_SETTINGS_KEY, String.valueOf(DevProperties.INTERVAL_PUSH_NOTIFICATION_MINUTES)))
+                        DevProperties.LOCK_SCREEN_NOTIFICATION_INTERVAL_SETTINGS_KEY, String.valueOf(DevProperties.INTERVAL_PUSH_NOTIFICATION_MINUTES)))
                 : intervalMinutes;
         PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(LockScreenNotificationSchedulerWorker.class,
                 interval, TimeUnit.MINUTES)
                 .setInitialDelay(interval, TimeUnit.MINUTES)
                 .addTag(TAG_LOCKSCREEN_NOTIFY)
                 .setConstraints(constraints)
-                .setBackoffCriteria(BackoffPolicy.LINEAR, PeriodicWorkRequest.MIN_BACKOFF_MILLIS, TimeUnit.MILLISECONDS)
+//                .setBackoffCriteria(BackoffPolicy.LINEAR, PeriodicWorkRequest.MIN_BACKOFF_MILLIS, TimeUnit.MILLISECONDS)
                 .build();
 
         WorkManager workManager = WorkManager.getInstance(context);

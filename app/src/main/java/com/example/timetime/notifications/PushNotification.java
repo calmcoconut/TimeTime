@@ -52,7 +52,7 @@ public class PushNotification {
 
         int interval = intervalMinutes == null ?
                 Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString(
-                        DevProperties.PUSH_NOTIFICATION_SETTINGS_KEY,
+                        DevProperties.PUSH_NOTIFICATION_INTERVAL_SETTINGS_KEY,
                         String.valueOf(DevProperties.INTERVAL_PUSH_NOTIFICATION_MINUTES))) : intervalMinutes;
         PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(PushNotificationSchedulerWorker.class,
                 interval, TimeUnit.MINUTES)
