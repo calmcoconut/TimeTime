@@ -2,7 +2,9 @@ package com.example.timetime.ui.homesummary;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.View;
+import androidx.core.graphics.drawable.DrawableCompat;
 import com.example.timetime.database.TimeLogic;
 import com.example.timetime.database.entity.TimeLog;
 import com.example.timetime.utils.DevProperties;
@@ -32,7 +34,10 @@ public class TimeLogCard {
         holder.getTimeLogCardTimeSpan().setText(timeSpan);
         holder.getTimeLogCardTimeSpent().setText(timeSpentValue);
         holder.getTimeLogCardThumbnail().setBackgroundColor(Color.parseColor(("#" + color)));
-        holder.getTimeLogCardThumbnail().setImageDrawable(context.getDrawable(icon));
+        Drawable iconDrawable = context.getDrawable(icon);
+        Drawable wrappedDrawable = DrawableCompat.wrap(iconDrawable);
+        DrawableCompat.setTint(wrappedDrawable, Color.WHITE);
+        holder.getTimeLogCardThumbnail().setImageDrawable(wrappedDrawable);
 
         setupCorrectTitle(holder, timeLogic, timeLog, position);
     }
