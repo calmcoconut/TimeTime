@@ -81,7 +81,7 @@ public class AdvanceSettings extends PreferenceFragmentCompat {
         notificationCategory.addPreference(lockScreenNotification);
 
         lockScreenNotificationInterval = new EditTextPreference(context);
-        lockScreenNotificationInterval.setKey(DevProperties.PUSH_NOTIFICATION_INTERVAL_SETTINGS_KEY);
+        lockScreenNotificationInterval.setKey(DevProperties.LOCK_SCREEN_NOTIFICATION_INTERVAL_SETTINGS_KEY);
         lockScreenNotificationInterval.setTitle("Lock screen notification frequency");
         lockScreenNotificationInterval.setSummaryProvider(provider -> lockScreenNotificationInterval.getText() + " minutes");
         lockScreenNotificationInterval.setOnBindEditTextListener(editText -> editText.setInputType(InputType.TYPE_CLASS_NUMBER));
