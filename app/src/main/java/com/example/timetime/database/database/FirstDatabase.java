@@ -34,7 +34,7 @@ public class FirstDatabase {
         Field[] iconHolder = R.drawable.class.getFields();
         for (int i = 0; i < iconHolder.length; i++) {
             Field field = iconHolder[i];
-            if (field.getName().startsWith("icon")) {
+            if (field.getName().startsWith("icon_")) {
                 iconDrawables.add(field);
             }
         }
@@ -106,27 +106,27 @@ public class FirstDatabase {
         activityObjectsArray[0] = new Activity(         // sleep act
                 defaultActivitiesStrings[0]
                 , this.mCategoryArray[0].getCategory()  // health cat
-                , this.mIconArray[22].getIcon()         // icon_hotel (alphabetical)
+                , R.drawable.icon_hotel_24px         // icon_hotel (alphabetical)
                 , this.mColorArray[17].getColor());     // blue
         activityObjectsArray[1] = new Activity(         // eat act
                 defaultActivitiesStrings[1]
                 , this.mCategoryArray[0].getCategory()  // health cat
-                , this.mIconArray[15].getIcon()         // icon_fastfood_24px
+                , R.drawable.icon_fastfood_24px        // icon_fastfood_24px
                 , this.mColorArray[29].getColor());     // green
         activityObjectsArray[2] = new Activity(         // work act
                 defaultActivitiesStrings[2]
                 , this.mCategoryArray[1].getCategory()  // work cat
-                , this.mIconArray[2].getIcon()
+                , R.drawable.icon_briefcase
                 , this.mColorArray[42].getColor());     // orange
         activityObjectsArray[3] = new Activity(         // transportation act
                 defaultActivitiesStrings[3]
                 , this.mCategoryArray[2].getCategory()  // cat other
-                , this.mIconArray[9].getIcon()
+                , R.drawable.icon_commute_24px
                 , this.mColorArray[49].getColor());     // grey
         activityObjectsArray[4] = new Activity(         // relaxing act
                 defaultActivitiesStrings[4]
                 , this.mCategoryArray[0].getCategory()  // health cat
-                , this.mIconArray[8].getIcon()
+                , R.drawable.icon_baseline_nature_24
                 , this.mColorArray[3].getColor());     // red
         return activityObjectsArray;
     }
@@ -139,7 +139,7 @@ public class FirstDatabase {
                 , timeStampNow
                 , DevProperties.WELCOME_TIME_LOG
                 , "ff5252"
-                , this.mIconArray[0].getIcon()
+                , DevProperties.INITIAL_ICON
                 , DevProperties.WELCOME_TIME_LOG)};
         timeLogs[0].setTimeLogId(DevProperties.WELCOME_TIME_LOG_ID);
 
