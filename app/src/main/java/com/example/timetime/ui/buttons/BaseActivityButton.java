@@ -37,7 +37,6 @@ public abstract class BaseActivityButton {
     public void setUpActivityButtons(LifecycleOwner lifecycleOwner, ActivityViewModel activityViewModel,
                                      TimeLogViewModel timeLogViewModel,
                                      Context gridContext, GridLayout gridLayout, MaterialButton TEMPLATE_BUTTON) {
-        // TODO assure that minimum number of activities in the database is 1 or THIS WILL LOOP FOREVER.
         this.TEMPLATE_BUTTON = TEMPLATE_BUTTON;
         this.owner = lifecycleOwner;
         this.activityViewModel = activityViewModel;

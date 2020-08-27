@@ -126,7 +126,7 @@ public class FirstDatabase {
         activityObjectsArray[4] = new Activity(         // relaxing act
                 defaultActivitiesStrings[4]
                 , this.mCategoryArray[0].getCategory()  // health cat
-                , R.drawable.icon_baseline_nature_24
+                , R.drawable.icon_local_cafe_24px
                 , this.mColorArray[3].getColor());     // red
         return activityObjectsArray;
     }
