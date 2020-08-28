@@ -32,7 +32,7 @@ public class LockScreenNotification {
 
     private static void initWorkScheduleNotification(Context context, @Nullable Integer intervalMinutes) {
         Constraints constraints = new Constraints.Builder()
-                .setRequiresDeviceIdle(true)
+                .setRequiresDeviceIdle(false) // possible way of only displaying notification on lockscreen
                 .build();
 
         int interval = intervalMinutes == null ?
@@ -44,7 +44,7 @@ public class LockScreenNotification {
                 .setInitialDelay(interval, TimeUnit.MINUTES)
                 .addTag(TAG_LOCKSCREEN_NOTIFY)
                 .setConstraints(constraints)
-//                .setBackoffCriteria(BackoffPolicy.LINEAR, PeriodicWorkRequest.MIN_BACKOFF_MILLIS, TimeUnit.MILLISECONDS)
+                .setBackoffCriteria(BackoffPolicy.LINEAR, PeriodicWorkRequest.MIN_BACKOFF_MILLIS, TimeUnit.MILLISECONDS)
                 .build();
 
         WorkManager workManager = WorkManager.getInstance(context);
